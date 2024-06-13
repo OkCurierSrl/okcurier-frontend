@@ -1,0 +1,18 @@
+<div class="header">
+  <div class="brand">
+    <img src="assets/logo.png" alt="Ok Curier Logo">
+  </div>
+  <div class="nav">
+    <a routerLink="#">Cere Oferta</a>
+    <a routerLink="#">Cum Comand</a>
+    <a routerLink="#">Informatii</a>
+  </div>
+  <div class="auth-buttons">
+    <ng-container *ngIf="auth.isAuthenticated$ | async; else login">
+      <button pButton type="button" label="Logout" class="p-button-danger" (click)="logout()"></button>
+    </ng-container>
+    <ng-template #login>
+      <button pButton type="button" label="Login" class="p-button-success" (click)="loginWithRedirect()"></button>
+    </ng-template>
+  </div>
+</div>

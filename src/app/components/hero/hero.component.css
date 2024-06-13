@@ -1,0 +1,91 @@
+.hero {
+  position: relative;
+  text-align: center;
+  padding: 2rem 0;
+  color: white;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero h1 {
+  font-size: 2rem;
+  color: inherit;
+}
+
+.hero h2 {
+  font-size: 1.5rem;
+  color: inherit;
+}
+
+.hero .accent {
+  color: var(--ok-accent-color);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing);
+}
+
+.services {
+  display: flex;
+  justify-content: space-around;
+  margin: 1rem 0;
+}
+
+.service-card {
+  text-align: center;
+}
+
+.service-card img {
+  height: 80px;
+}
+
+.calculator {
+  background-color: var(--ok-secondary-color);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.field {
+  flex: 1 1 20%;
+  margin: 1rem;
+}
+
+.dropdown {
+  flex: 1 1 30%;
+  width: 200px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.field input,
+.field p-dropdown {
+  width: 100%;
+}
+
+.p-tabview .p-tabview-nav {
+  background-color: var(--ok-secondary-color);
+}
+
+.p-tabview .p-tabview-panels {
+  background-color: var(--ok-secondary-color);
+}
+
+.p-button-success {
+  background-color: var(--ok-primary-color);
+  border: none;
+}

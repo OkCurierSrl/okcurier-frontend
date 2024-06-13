@@ -1,0 +1,35 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+  --ok-primary-color: #d50c0c;
+  --ok-secondary-color: #9b9797;
+  --ok-grey-color: #6c757d;
+  --ok-dark-color: #343a40;
+  --ok-accent-color: #28a745;
+  --font-family: 'Roboto', sans-serif;
+  --spacing: 1rem;
+  --header-height: 10rem;
+}
+
+body {
+  font-family: var(--font-family), serif;
+  margin: 0;
+  padding: 0;
+}
+
+
+/*body {*/
+/*  margin: 0;*/
+/*  padding: 0;*/
+/*  font-family: var(--font-family), serif;*/
+/*  background-image: url('assets/background.gif'); !* Path to your GIF *!*/
+/*  background-size: cover;*/
+/*  background-position: center;*/
+/*  background-repeat: no-repeat;*/
+/*  overflow: hidden;*/
+/*  color: white;*/
+/*}*/
+
+.container {
+  position: relative;
+  z-index: 1;
+}

@@ -1,0 +1,56 @@
+<div class="hero">
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>Trimiteti colete online in Romania si in Europa</h1>
+    <h2>incepand de la <span class="accent">9.49 lei + tva</span></h2>
+  </div>
+</div>
+
+<div class="container">
+  <div class="services">
+    <div class="service-card" *ngFor="let service of services">
+      <img [src]="service.logo" alt="{{ service.name }}">
+      <p>de la {{ service.price }} RON</p>
+    </div>
+  </div>
+  <div class="calculator">
+    <p-tabView>
+      <p-tabPanel header="Trimite in tara">
+        <div class="form">
+          <div class="field dropdown">
+            <label for="from">Localitate expeditie</label>
+            <p-dropdown id="from" [options]="locations" [(ngModel)]="selectedLocation" placeholder="Ex: Cluj-Napoca"></p-dropdown>
+          </div>
+          <div class="field dropdown">
+            <label for="to">Localitate destinatie</label>
+            <p-dropdown id="to" [options]="locations" [(ngModel)]="selectedDestination" placeholder="Ex: Bucuresti"></p-dropdown>
+          </div>
+          <div class="field dropdown">
+            <label for="type">Alege tipul pachetului</label>
+            <p-dropdown id="type" [options]="packageTypes" [(ngModel)]="selectedPackageType" placeholder="Plic"></p-dropdown>
+          </div>
+          <div class="field">
+            <label for="weight">Greutate (kg)</label>
+            <input id="weight" type="text" pInputText placeholder="Greutate (kg)">
+          </div>
+          <div class="field">
+            <label for="length">Lungime (cm)</label>
+            <input id="length" type="text" pInputText placeholder="Lungime (cm)">
+          </div>
+          <div class="field">
+            <label for="width">Latime (cm)</label>
+            <input id="width" type="text" pInputText placeholder="Latime (cm)">
+          </div>
+          <div class="field">
+            <label for="height">Inaltime (cm)</label>
+            <input id="height" type="text" pInputText placeholder="Inaltime (cm)">
+          </div>
+          <button pButton type="button" label="Calculeaza tariful" class="p-button-success"></button>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Trimite in strainatate">
+        <!-- Similar form structure for international shipping -->
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>
