@@ -1,11 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
   --ok-primary-color: #d50c0c;
+  --ok-primary-color-light: #f64f4f;
   --ok-secondary-color: #9b9797;
+  --ok-secondary-color-light: #c9c1c1;
+  --ok-accent-color: #20be44;
+  --ok-accent-color-light: #80d092;
+  --font-family: 'Roboto', sans-serif;
   --ok-grey-color: #6c757d;
   --ok-dark-color: #343a40;
-  --ok-accent-color: #28a745;
-  --font-family: 'Roboto', sans-serif;
   --spacing: 1rem;
   --header-height: 10rem;
 }
@@ -15,19 +18,6 @@ body {
   margin: 0;
   padding: 0;
 }
-
-
-/*body {*/
-/*  margin: 0;*/
-/*  padding: 0;*/
-/*  font-family: var(--font-family), serif;*/
-/*  background-image: url('assets/background.gif'); !* Path to your GIF *!*/
-/*  background-size: cover;*/
-/*  background-position: center;*/
-/*  background-repeat: no-repeat;*/
-/*  overflow: hidden;*/
-/*  color: white;*/
-/*}*/
 
 .container {
   position: relative;

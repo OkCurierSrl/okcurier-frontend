@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NavBarComponent } from './components/nav-bar/nav-bar.component';
-import { FooterComponent } from './components/footer/footer.component';
+import { NavBarComponent } from './components/public/nav-bar/nav-bar.component';
+import { FooterComponent } from './components/public/footer/footer.component';
 import {ApiService} from "./api.service";
 
 @Component({
@@ -16,7 +16,7 @@ export class AppComponent {
   private message: string;
 
   constructor(public api: ApiService) {
-    this.api.getHello().subscribe(data => this.message = data as string);
+    // this.api.getHello().subscribe(data => this.message = data as string);
   }
 
 }

@@ -1,0 +1,107 @@
+.admin-prices {
+  margin: var(--spacing);
+  padding: var(--spacing);
+  background-color: var(--ok-dark-color);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+.courier-selection {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing);
+}
+
+.service-card {
+  margin: 0 var(--spacing);
+  cursor: pointer;
+}
+
+.service-card img {
+  height: 80px;
+  transition: transform 0.2s;
+}
+
+.service-card img:hover,
+.service-card.selected img {
+  transform: scale(1.1);
+  border: 2px solid var(--ok-accent-color);
+}
+
+.prices-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--spacing);
+}
+
+.prices-table th {
+  padding: 0.5rem;
+  text-align: center;
+  border-bottom: 1px solid var(--ok-grey-color);
+}
+
+.prices-table th.grouped-left {
+  background-color: var(--ok-primary-color);
+  color: white;
+}
+
+.prices-table th.grouped-middle {
+  background-color: var(--ok-secondary-color);
+  color: white;
+}
+
+.prices-table th.grouped-right {
+  background-color: var(--ok-accent-color);
+  color: white;
+}
+
+.prices-table td {
+  padding: 0.5rem;
+  text-align: center;
+  border-bottom: 1px solid var(--ok-grey-color);
+}
+
+.prices-table td input {
+  width: 100%;
+  max-width: 120px;
+  padding: 0.5rem;
+  border: 1px solid var(--ok-grey-color);
+  border-radius: 5px;
+}
+
+.prices-table td input.modified {
+  border-color: var(--ok-accent-color);
+  background-color: var(--ok-secondary-color);
+}
+
+.grouped-left {
+  background-color: var(--ok-primary-color-light);
+}
+
+.grouped-middle {
+  background-color: var(--ok-secondary-color-light);
+}
+
+.grouped-right {
+  background-color: var(--ok-accent-color-light);
+}
+
+.modify-button {
+  padding: 0.5rem 1rem;
+  background-color: var(--ok-accent-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+
+.alert {
+  margin-top: var(--spacing);
+  padding: var(--spacing);
+  background-color: var(--ok-accent-color);
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+}

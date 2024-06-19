@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 import config from '../../auth_config.json';
 
-const { domain, clientId, authorizationParams: { audience }, apiUri, errorPath } = config as {
+const {domain, clientId, authorizationParams: {audience}, apiUri, errorPath} = config as {
   domain: string;
   clientId: string;
   authorizationParams: {
@@ -19,14 +19,15 @@ export const environment = {
     domain,
     clientId,
     authorizationParams: {
-      ...(audience && audience !== 'YOUR_API_IDENTIFIER' ? { audience } : null),
+      ...(audience && audience !== 'https://okcurier-staging.eu.auth0.com/api/v2/' ? {audience} : null),
       redirect_uri: window.location.origin,
     },
     errorPath,
   },
   httpInterceptor: {
     allowedList: [`${apiUri}/*`],
-  },
+  }, apiUrl: 'http://localhost:8080'
+
 };
 
 /*

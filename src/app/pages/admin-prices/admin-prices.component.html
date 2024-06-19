@@ -1,0 +1,35 @@
+<div class="admin-prices">
+  <div class="courier-selection">
+    <div class="service-card" *ngFor="let courier of couriers" [class.selected]="courier.name === selectedCourier" (click)="selectCourier(courier.name)">
+      <img [src]="courier.logo" alt="{{ courier.name }}">
+    </div>
+  </div>
+
+  <table class="prices-table">
+    <thead>
+    <tr>
+      <th class="grouped-left">Business Pricing</th>
+      <th class="grouped-middle">Service</th>
+      <th class="grouped-right">Standard Pricing</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let service of services">
+      <td class="grouped-left">
+        <div>{{ calculatePremiumResult(service) }}</div>
+        <input type="number" [(ngModel)]="service.premiumAddedPrice" placeholder="Business Adaos" [class.modified]="modified"/>
+      </td>
+      <td class="grouped-middle">
+        <div>{{ service.serviceName | titlecase }}</div>
+        <input type="number" [(ngModel)]="service.basePrice" placeholder="Base Price" [class.modified]="modified"/>
+      </td>
+      <td class="grouped-right">
+        <div>{{ calculateStandardResult(service) }}</div>
+        <input type="number" [(ngModel)]="service.standardAddedPrice" placeholder="Standard Adaos" [class.modified]="modified"/>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <button class="modify-button" (click)="modifyPrices()">Modify</button>
+  <div *ngIf="modified" class="alert">Prices modified successfully!</div>
+</div>
