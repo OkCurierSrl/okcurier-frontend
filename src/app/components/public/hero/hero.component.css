@@ -89,3 +89,48 @@
   background-color: var(--ok-primary-color);
   border: none;
 }
+
+.container {
+  margin: var(--spacing);
+}
+
+.field-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing);
+}
+
+.field {
+  flex: 1;
+  min-width: 150px;
+  margin-right: var(--spacing);
+}
+
+.field-row:last-child .field {
+  margin-right: 0;
+}
+
+.suggestions-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--ok-grey-color);
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: white;
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+.suggestions-list li {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.suggestions-list li:hover {
+  background-color: var(--ok-grey-color);
+}

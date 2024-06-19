@@ -1,11 +1,3 @@
-<div class="hero">
-  <div class="overlay"></div>
-  <div class="content">
-    <h1>Trimiteti colete online in Romania si in Europa</h1>
-    <h2>incepand de la <span class="accent">9.49 lei + tva</span></h2>
-  </div>
-</div>
-
 <div class="container">
   <div class="services">
     <div class="service-card" *ngFor="let service of services">
@@ -17,35 +9,59 @@
     <p-tabView>
       <p-tabPanel header="Trimite in tara">
         <div class="form">
-          <div class="field dropdown">
-            <label for="from">Localitate expeditie</label>
-            <p-dropdown id="from" [options]="locations" [(ngModel)]="selectedLocation" placeholder="Ex: Cluj-Napoca"></p-dropdown>
+          <div class="field-row">
+            <div class="field">
+              <label for="from">Localitate expeditie</label>
+              <input id="from" type="text" pInputText (input)="onCityInputChange($event, 'location')" [(ngModel)]="selectedLocation">
+              <ul *ngIf="activeField === 'location' && (citySuggestions | async)?.length" class="suggestions-list">
+                <li *ngFor="let suggestion of citySuggestions | async" (click)="selectSuggestion(suggestion)">
+                  {{ suggestion.label }}
+                </li>
+              </ul>
+            </div>
+            <div class="field">
+              <label for="to">Localitate destinatie</label>
+              <input id="to" type="text" pInputText (input)="onCityInputChange($event, 'destination')" [(ngModel)]="selectedDestination">
+              <ul *ngIf="activeField === 'destination' && (citySuggestions | async)?.length" class="suggestions-list">
+                <li *ngFor="let suggestion of citySuggestions | async" (click)="selectSuggestion(suggestion)">
+                  {{ suggestion.label }}
+                </li>
+              </ul>
+            </div>
           </div>
-          <div class="field dropdown">
-            <label for="to">Localitate destinatie</label>
-            <p-dropdown id="to" [options]="locations" [(ngModel)]="selectedDestination" placeholder="Ex: Bucuresti"></p-dropdown>
+          <div class="field-row">
+            <div class="field dropdown">
+              <label for="type">Tip pachet</label>
+              <p-dropdown id="type" [options]="getPackageTypeOptions()" [(ngModel)]="selectedPackageType" placeholder="Plic" (onChange)="onPackageTypeChange($event)"></p-dropdown>
+            </div>
+            <div class="field">
+              <label for="weight">Greutate (kg)</label>
+              <input id="weight" type="text" pInputText [(ngModel)]="weight" placeholder="Greutate (kg)" [disabled]="isPlic">
+            </div>
+            <div class="field">
+              <label for="length">Lungime (cm)</label>
+              <input id="length" type="text" pInputText [(ngModel)]="length" placeholder="Lungime (cm)" [disabled]="isPlic">
+            </div>
+            <div class="field">
+              <label for="width">Latime (cm)</label>
+              <input id="width" type="text" pInputText [(ngModel)]="width" placeholder="Latime (cm)" [disabled]="isPlic">
+            </div>
+            <div class="field">
+              <label for="height">Inaltime (cm)</label>
+              <input id="height" type="text" pInputText [(ngModel)]="height" placeholder="Inaltime (cm)" [disabled]="isPlic">
+            </div>
           </div>
-          <div class="field dropdown">
-            <label for="type">Alege tipul pachetului</label>
-            <p-dropdown id="type" [options]="packageTypes" [(ngModel)]="selectedPackageType" placeholder="Plic"></p-dropdown>
+          <div class="field-row">
+            <button pButton type="button" label="Calculeaza tariful" class="p-button-success" (click)="calculateTariff()"></button>
           </div>
-          <div class="field">
-            <label for="weight">Greutate (kg)</label>
-            <input id="weight" type="text" pInputText placeholder="Greutate (kg)">
-          </div>
-          <div class="field">
-            <label for="length">Lungime (cm)</label>
-            <input id="length" type="text" pInputText placeholder="Lungime (cm)">
-          </div>
-          <div class="field">
-            <label for="width">Latime (cm)</label>
-            <input id="width" type="text" pInputText placeholder="Latime (cm)">
-          </div>
-          <div class="field">
-            <label for="height">Inaltime (cm)</label>
-            <input id="height" type="text" pInputText placeholder="Inaltime (cm)">
-          </div>
-          <button pButton type="button" label="Calculeaza tariful" class="p-button-success"></button>
+        </div>
+        <div *ngIf="prices">
+          <h3>Tarife:</h3>
+          <ul>
+            <li *ngFor="let price of prices">
+              {{ price.courier }}: {{ price.totalPrice }} RON
+            </li>
+          </ul>
         </div>
       </p-tabPanel>
       <p-tabPanel header="Trimite in strainatate">

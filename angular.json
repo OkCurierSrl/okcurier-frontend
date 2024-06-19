@@ -70,7 +70,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "login-demo:build"
+            "buildTarget": "login-demo:build",
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {
