@@ -1,5 +1,5 @@
 {
-  "name": "login-demo",
+  "name": "okcurieri-frontend",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -14,7 +14,7 @@
     "dev": "npm-run-all --parallel start server:api",
     "prod": "npm-run-all --parallel server:app server:api",
     "postbuild": "npm run copy:server",
-    "copy:server": "copyfiles server.js auth_config.json dist/login-demo"
+    "copy:server": "copyfiles server.js auth_config.json dist/okcurieri-frontend"
   },
   "private": true,
   "dependencies": {

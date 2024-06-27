@@ -6,14 +6,14 @@ const authConfig = require('./auth_config.json');
 
 const app = express();
 
-const port = process.env.SERVER_PORT || 4200;
+// Use the PORT provided by Heroku or default to 4200 for local development
+const port = process.env.PORT || 4200;
 
 app.use(morgan('dev'));
 
 app.use(
   helmet({
     contentSecurityPolicy: {
-      // reportOnly: true,
       directives: {
         'default-src': ["'self'"],
         'connect-src': ["'self'", 'https://*.auth0.com', authConfig.apiUri],
@@ -29,6 +29,12 @@ app.use(
   })
 );
 
-app.use(express.static(join(__dirname, 'dist')));
+// Serve static files from the dist directory
+app.use(express.static(join(__dirname, 'dist/okcurier-frontend')));
+
+// Serve the index.html file on any request
+app.get('*', (req, res) => {
+  res.sendFile(join(__dirname, 'dist/okcurier-frontend/index.html'));
+});
 
 app.listen(port, () => console.log(`App server listening on port ${port}`));
