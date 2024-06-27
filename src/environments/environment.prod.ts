@@ -20,4 +20,5 @@ export const environment = {
   httpInterceptor: {
     allowedList: [`${apiUri}/*`],
   },
+  apiUrl: 'https://okcurier-backend-0f6dc5b97bfd.herokuapp.com'  // Heroku deployed backend URL
 };

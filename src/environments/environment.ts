@@ -26,7 +26,8 @@ export const environment = {
   },
   httpInterceptor: {
     allowedList: [`${apiUri}/*`],
-  }, apiUrl: 'http://localhost:8080'
+  },
+  apiUrl: 'http://localhost:8080'
 
 };
 
