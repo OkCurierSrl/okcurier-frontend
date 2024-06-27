@@ -1,0 +1,10 @@
+{
+  "domain": "okcurier-staging.eu.auth0.com",
+  "clientId": "AbybAkzIS7jaPkT4Fv4AjLR93xUsxQG5",
+  "authorizationParams": {
+    "audience": "https://okcurier-staging.eu.auth0.com/api/v2/"
+  },
+  "apiUri": "http://localhost:3001",
+  "appUri": "http://localhost:4200",
+  "errorPath": "/error"
+}
