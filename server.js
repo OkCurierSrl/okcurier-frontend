@@ -16,7 +16,7 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         'default-src': ["'self'"],
-        'connect-src': ["'self'", 'https://*.auth0.com', authConfig.apiUri],
+        'connect-src': ["'self'", 'https://*.auth0.com', authConfig.apiUri, 'https://okcurier-backend-0f6dc5b97bfd.herokuapp.com'],
         'frame-src': ["'self'", 'https://*.auth0.com'],
         'base-uri': ["'self'"],
         'block-all-mixed-content': [],
