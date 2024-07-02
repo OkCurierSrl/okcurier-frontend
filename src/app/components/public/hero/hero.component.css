@@ -110,6 +110,7 @@
   margin-right: 0;
 }
 
+/* Updated suggestions list styles */
 .suggestions-list {
   list-style-type: none;
   margin: 0;
@@ -120,7 +121,7 @@
   background-color: white;
   position: absolute;
   z-index: 1000;
-  width: 100%;
+  width: calc(100% - 2rem); /* Adjust width to match input including margins */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
 }
@@ -133,4 +134,18 @@
 
 .suggestions-list li:hover {
   background-color: var(--ok-grey-color);
+}
+
+/* Additional styles for better appearance */
+.suggestions-list li:not(:last-child) {
+  border-bottom: 1px solid var(--ok-grey-color);
+}
+
+.field input {
+  position: relative;
+}
+
+.field input:focus + .suggestions-list,
+.field input:hover + .suggestions-list {
+  display: block;
 }

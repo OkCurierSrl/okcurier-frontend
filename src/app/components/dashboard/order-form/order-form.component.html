@@ -1,0 +1,104 @@
+<div class="order-form">
+  <p-card>
+    <h2>{{ title }}</h2>
+    <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+      <div class="p-field">
+        <label for="name">Nume</label>
+        <input id="name" pInputText formControlName="name" placeholder="Adauga numele {{ title }}" />
+        <div *ngIf="orderForm.get('name').invalid && orderForm.get('name').touched" class="error">
+          Numele este obligatoriu.
+        </div>
+      </div>
+
+      <div class="p-field">
+        <label for="phone1">Numar de Telefon</label>
+        <input id="phone1" pInputText formControlName="phone1" placeholder="Adauga numarul de telefon" />
+        <div *ngIf="orderForm.get('phone1').invalid && orderForm.get('phone1').touched" class="error">
+          Numarul de telefon trebuie sa fie valid.
+        </div>
+      </div>
+
+      <div class="p-field">
+        <label for="phone2">Numar de Telefon 2</label>
+        <input id="phone2" pInputText formControlName="phone2" placeholder="Adauga numarul de telefon 2" />
+        <div *ngIf="orderForm.get('phone2').invalid && orderForm.get('phone2').touched" class="error">
+          Numarul de telefon trebuie sa fie valid.
+        </div>
+      </div>
+
+      <div class="p-field">
+        <p-dropdown [options]="stateSuggestions" formControlName="state" placeholder="Judet" inputId="state" optionLabel="name"></p-dropdown>
+      </div>
+
+
+      <div class="p-field">
+        <label for="city">Localitate</label>
+        <input id="city" #cityInput pInputText formControlName="city" (input)="onCityInput($event)" placeholder="Localitate" autocomplete="off" />
+        <ul *ngIf="citySuggestions.length" class="suggestions-list">
+          <li *ngFor="let suggestion of citySuggestions" (click)="selectCity(suggestion.description)">
+            {{ suggestion.description }}
+          </li>
+        </ul>
+        <div *ngIf="orderForm.get('city').invalid && orderForm.get('city').touched" class="error">
+          Localitatea este invalida.
+        </div>
+      </div>
+
+      <div class="p-field">
+        <label for="street">Strada</label>
+        <input id="street" #streetInput pInputText formControlName="street" (input)="onAddressInput($event)" placeholder="Strada" />
+        <ul *ngIf="addressSuggestions.length" class="suggestions-list">
+          <li *ngFor="let suggestion of addressSuggestions" (click)="selectAddress(suggestion)">
+            {{ suggestion.description }}
+          </li>
+        </ul>
+        <div *ngIf="orderForm.get('street').invalid && orderForm.get('street').touched" class="error">
+          Strada este obligatorie.
+        </div>
+      </div>
+
+      <div class="p-field">
+        <label for="number">Numarul</label>
+        <input id="number" #numberInput pInputText formControlName="number" (input)="onNumberInput($event)" placeholder="Adauga numarul" />
+        <ul *ngIf="numberSuggestions.length" class="suggestions-list">
+          <li *ngFor="let suggestion of numberSuggestions" (click)="selectNumber(suggestion)">
+            {{ suggestion.description }}
+          </li>
+        </ul>
+        <div *ngIf="orderForm.get('number').invalid && orderForm.get('number').touched" class="error">
+          Numarul este obligatoriu.
+        </div>
+      </div>
+
+
+      <div class="p-field">
+        <label for="postalCode">Cod Postal</label>
+        <input id="postalCode" #postalCodeInput pInputText formControlName="postalCode" placeholder="Adauga codul postal" />
+        <div *ngIf="orderForm.get('postalCode').invalid && orderForm.get('postalCode').touched" class="error">
+          Codul postal este invalid.
+        </div>
+      </div>
+
+      <div class="p-field p-grid">
+        <div class="p-col">
+          <label for="block">Bloc</label>
+          <input id="block" pInputText formControlName="block" placeholder="Adauga bloc" />
+        </div>
+        <div class="p-col">
+          <label for="staircase">Scara</label>
+          <input id="staircase" pInputText formControlName="staircase" placeholder="Adauga scara" />
+        </div>
+        <div class="p-col">
+          <label for="floor">Etaj</label>
+          <input id="floor" pInputText formControlName="floor" placeholder="Adauga etaj" />
+        </div>
+        <div class="p-col">
+          <label for="apartment">Apartament</label>
+          <input id="apartment" pInputText formControlName="apartment" placeholder="Adauga apartament" />
+        </div>
+      </div>
+
+      <button pButton type="submit" label="Submit" class="p-mt-2"></button>
+    </form>
+  </p-card>
+</div>

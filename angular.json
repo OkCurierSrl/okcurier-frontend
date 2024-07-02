@@ -75,6 +75,7 @@
           },
           "configurations": {
             "production": {
+              "proxyConfig": "proxy.conf.json",
               "buildTarget": "okcurier-frontend:build:production"
             }
           }

@@ -1,0 +1,64 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: var(--spacing);
+}
+
+.form-wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: var(--spacing);
+}
+
+.order-form,
+.package-section {
+  flex: 1;
+  margin: var(--spacing);
+  max-width: 30%;
+}
+
+.package-form {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--ok-dark-color);
+  padding: var(--spacing);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: var(--spacing);
+}
+
+.p-field {
+  margin-bottom: var(--spacing);
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--ok-secondary-color);
+  border-radius: 4px;
+  background-color: var(--ok-secondary-color-light);
+  color: var(--ok-grey-color);
+}
+
+input::placeholder {
+  color: var(--ok-grey-color);
+}
+
+p-checkbox {
+  margin-bottom: var(--spacing);
+}
+
+button {
+  width: 100%;
+}
+
+.p-mt-2 {
+  margin-top: var(--spacing);
+}
+
+h2 {
+  color: white;
+}
