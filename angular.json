@@ -27,7 +27,8 @@
               "node_modules/highlight.js/styles/monokai-sublime.css",
               "node_modules/primeng/resources/themes/saga-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/primeicons/primeicons.css"
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
             ],
             "scripts": [],
             "vendorChunk": true,
@@ -98,7 +99,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
             ],
             "scripts": []
           }
@@ -126,103 +128,6 @@
         }
       }
     },
-    "package-form": {
-      "projectType": "application",
-      "schematics": {},
-      "root": "projects/package-form",
-      "sourceRoot": "projects/package-form/src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:application",
-          "options": {
-            "outputPath": "dist/package-form",
-            "index": "projects/package-form/src/index.html",
-            "browser": "projects/package-form/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
-            "tsConfig": "projects/package-form/tsconfig.app.json",
-            "assets": [
-              "projects/package-form/src/favicon.ico",
-              "projects/package-form/src/assets"
-            ],
-            "styles": [
-              "projects/package-form/src/styles.css"
-            ],
-            "scripts": []
-          },
-          "configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "configurations": {
-            "production": {
-              "buildTarget": "package-form:build:production"
-            },
-            "development": {
-              "buildTarget": "package-form:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "package-form:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
-            "tsConfig": "projects/package-form/tsconfig.spec.json",
-            "assets": [
-              "projects/package-form/src/favicon.ico",
-              "projects/package-form/src/assets"
-            ],
-            "styles": [
-              "projects/package-form/src/styles.css"
-            ],
-            "scripts": []
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "projects/package-form/**/*.ts",
-              "projects/package-form/**/*.html"
-            ]
-          }
-        }
-      }
-    }
   },
   "cli": {
     "analytics": false,

@@ -1,64 +1,77 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: var(--spacing);
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 .form-wrapper {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-row {
+  display: flex;
   width: 100%;
-  gap: var(--spacing);
+  justify-content: space-around; /* Ensures even spacing between components */
+  align-items: flex-start; /* Align items at the start of the flex container */
 }
 
-.order-form,
+.form-column {
+  flex: 1; /* Allows the columns to take equal space */
+  min-width: 300px; /* Ensure minimum width for each column */
+  margin: 0 10px; /* Add some space between columns */
+}
+
 .package-section {
-  flex: 1;
-  margin: var(--spacing);
-  max-width: 30%;
-}
-
-.package-form {
   display: flex;
   flex-direction: column;
-  background-color: var(--ok-dark-color);
-  padding: var(--spacing);
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: var(--spacing);
+  align-items: center;
 }
 
-.p-field {
-  margin-bottom: var(--spacing);
+.extra-services {
+  margin-bottom: 1rem;
 }
 
-input {
-  width: 100%;
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 1px solid var(--ok-secondary-color);
-  border-radius: 4px;
-  background-color: var(--ok-secondary-color-light);
-  color: var(--ok-grey-color);
+.extra-service-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-input::placeholder {
-  color: var(--ok-grey-color);
+.extra-service-item i {
+  font-size: 1.5rem;
+  margin-right: 10px;
+  cursor: pointer;
+  color: #007bff; /* Change to preferred color */
 }
 
-p-checkbox {
-  margin-bottom: var(--spacing);
+.extra-service-item label {
+  cursor: pointer;
 }
 
-button {
-  width: 100%;
+.extra-service-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  accent-color: #007bff; /* Change to preferred color */
+  cursor: pointer;
 }
 
-.p-mt-2 {
-  margin-top: var(--spacing);
+.extra-service-item label {
+  cursor: pointer;
 }
 
-h2 {
-  color: white;
+.add-icon {
+  color: green;
+  cursor: pointer;
+  font-size: 2rem;
+  margin-top: 1rem;
+}
+
+.add-icon:hover {
+  color: darkgreen;
+}
+
+button.p-mt-2 {
+  margin-top: 1rem;
 }

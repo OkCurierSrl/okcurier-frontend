@@ -1,0 +1,43 @@
+.package-form {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.compact-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.small-field {
+  flex: 1;
+  min-width: 50px;
+}
+
+.small-field input {
+  width: 100%;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.p-field label {
+  display: block;
+  font-size: 0.8rem;
+  margin-bottom: 0.2rem;
+}
+
+.error {
+  color: red;
+  font-size: 0.9rem;
+}
+
+.remove-icon {
+  color: red;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.remove-icon:hover {
+  color: darkred;
+}
