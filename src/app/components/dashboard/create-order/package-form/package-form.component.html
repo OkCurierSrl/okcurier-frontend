@@ -1,0 +1,23 @@
+<div class="package-form">
+  <h2>Colet: {{ index + 1 }}</h2>
+  <form [formGroup]="packageForm">
+    <div class="p-field" [ngClass]="{'invalid': packageForm.get('length').invalid && packageForm.get('length').touched}">
+      <label for="length">Lungime</label>
+      <input id="length" pInputText type="number" formControlName="length" placeholder="0" />
+    </div>
+    <div class="p-field" [ngClass]="{'invalid': packageForm.get('width').invalid && packageForm.get('width').touched}">
+      <label for="width">Latime</label>
+      <input id="width" pInputText type="number" formControlName="width" placeholder="0" />
+    </div>
+    <div class="p-field" [ngClass]="{'invalid': packageForm.get('height').invalid && packageForm.get('height').touched}">
+      <label for="height">Inaltime</label>
+      <input id="height" pInputText type="number" formControlName="height" placeholder="0" />
+    </div>
+    <div class="p-field" [ngClass]="{'invalid': packageForm.get('weight').invalid && packageForm.get('weight').touched}">
+      <label for="weight">Greutate</label>
+      <input id="weight" pInputText type="number" formControlName="weight" placeholder="0" />
+    </div>
+    <!-- Add other fields similarly -->
+    <button pButton type="button" label="Remove Package" (click)="removePackage(index)"></button>
+  </form>
+</div>

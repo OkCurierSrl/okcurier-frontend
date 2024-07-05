@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { PlacesService } from "../../../services/places.service";
+import { PlacesService } from "../../../../services/places.service";
 import { CardModule } from "primeng/card";
 import { DropdownModule } from "primeng/dropdown";
 import { NgForOf, NgIf } from "@angular/common";
@@ -32,6 +32,10 @@ export class OrderFormComponent implements OnInit {
   @ViewChild('postalCodeInput') postalCodeInput: ElementRef;
 
   orderForm: FormGroup;
+  expeditorForm: FormGroup;
+  destinatarForm: FormGroup;
+  packages: FormGroup[] = [];
+
   stateSuggestions: any[] = [
     { name: "Alba" },
     { name: "Bucuresi" },
@@ -138,40 +142,18 @@ export class OrderFormComponent implements OnInit {
     );
   }
 
-    // postalCodeValidator(control: FormControl): Observable<any> {
-    //     console.log('Postal code validation started');
-    //
-    //     if (!this.orderForm) {
-    //         console.log('Order form not initialized');
-    //         return of(null);
-    //     }
-    //
-    //     const cityControl = this.orderForm.get('city');
-    //
-    //     if (!cityControl) {
-    //         console.log('City control not found');
-    //         return of(null);
-    //     }
-    //
-    //     console.log('City control found, validating the postal code');
-    //
-    //     return this.placesService.validatePostalCode(control.value, cityControl.value).pipe(
-    //         map(isValid => {
-    //             console.log('Postal code validation completed');
-    //             return (isValid ? null : {invalidPostalCode: true})
-    //         }),
-    //         catchError(() => {
-    //             console.log('Error occurred while validating postal code');
-    //             return of({invalidPostalCode: true})
-    //         })
-    //     );
-    // }
-
   onSubmit(): void {
-    if (this.orderForm.valid) {
-      console.log(`${this.title} Form submitted`, this.orderForm.value);
+    if (this.allFormsValid()) {
+      // Handle form submission
     } else {
-      console.log(`${this.title} Form is invalid`);
+      // Mark all fields as touched to show validation errors
+      this.orderForms.forEach(form => form.markAllAsTouched());
+      this.packages.forEach(package => package.markAllAsTouched());
     }
   }
+
+  allFormsValid(): boolean {
+    return this.orderForms.every(form => form.valid) && this.packages.every(package => package.valid);
+  }
+
 }

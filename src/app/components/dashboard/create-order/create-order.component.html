@@ -5,50 +5,10 @@
     <app-order-form title="Destinatar"></app-order-form>
     <div class="package-section">
       <div *ngFor="let package of packages; let i = index" class="package-form">
-        <h2>Colet: {{ i + 1 }}</h2>
-        <form [formGroup]="package">
-          <div class="p-field">
-            <label for="length">Lungime</label>
-            <input id="length" pInputText type="number" formControlName="length" placeholder="0" />
-          </div>
-          <div class="p-field">
-            <label for="width">Latime</label>
-            <input id="width" pInputText type="number" formControlName="width" placeholder="0" />
-          </div>
-          <div class="p-field">
-            <label for="height">Inaltime</label>
-            <input id="height" pInputText type="number" formControlName="height" placeholder="0" />
-          </div>
-          <div class="p-field">
-            <label for="weight">Greutate</label>
-            <input id="weight" pInputText type="number" formControlName="weight" placeholder="0" />
-          </div>
-          <div class="p-field">
-            <p-checkbox formControlName="saturdayDelivery" binary="true" label="Livrare Sambata"></p-checkbox>
-          </div>
-          <div class="p-field">
-            <p-checkbox formControlName="exchangeDocument" binary="true" label="Document la schimb"></p-checkbox>
-          </div>
-          <div class="p-field">
-            <p-checkbox formControlName="exchangePackage" binary="true" label="Colet la schimb"></p-checkbox>
-          </div>
-          <div class="p-field">
-            <p-checkbox formControlName="openPackage" binary="true" label="Deschidere Colet"></p-checkbox>
-          </div>
-          <div class="p-field">
-            <p-checkbox formControlName="insurance" binary="true" label="Asigurare"></p-checkbox>
-          </div>
-          <div class="p-field">
-            <p-checkbox formControlName="addTransportCost" binary="true" label="Adauga pretul transportului in ramburs"></p-checkbox>
-          </div>
-          <div class="p-field">
-            <p-checkbox formControlName="cashOnDelivery" binary="true" label="Ramburs in cont"></p-checkbox>
-          </div>
-          <button pButton type="button" label="Remove Package" (click)="removePackage(i)"></button>
-        </form>
+        <app-package-form [index]="i" [packageForm]="package"></app-package-form>
       </div>
       <button pButton type="button" label="Add Package" (click)="addPackage()" class="p-mt-2"></button>
-      <button pButton type="button" label="Submit" (click)="onSubmit()" class="p-mt-2"></button>
     </div>
+    <button pButton type="button" label="Alege oferta" (click)="onSubmit()" class="p-mt-2"></button>
   </div>
 </div>

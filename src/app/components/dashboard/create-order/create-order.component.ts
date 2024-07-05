@@ -1,15 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {OrderFormComponent} from "../order-form/order-form.component";
+import {OrderFormComponent} from "./order-form/order-form.component";
 import {InputTextModule} from "primeng/inputtext";
 import {CheckboxModule} from "primeng/checkbox";
 import {ButtonDirective} from "primeng/button";
+import {PackageFormComponent} from "./package-form/package-form.component";
 
 @Component({
   selector: 'app-create-order',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, OrderFormComponent, InputTextModule, CheckboxModule, ButtonDirective],
+  imports: [CommonModule, ReactiveFormsModule, OrderFormComponent, InputTextModule, CheckboxModule, ButtonDirective, PackageFormComponent],
   templateUrl: './create-order.component.html',
   styleUrl: './create-order.component.css'
 })
