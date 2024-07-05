@@ -2,7 +2,7 @@
   <p-card>
     <h2>{{ title }}</h2>
     <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-      <div class="p-field">
+      <div class="p-field" [ngClass]="{'invalid': orderForm.get('name').invalid && orderForm.get('name').touched}">
         <label for="name">Nume</label>
         <input id="name" pInputText formControlName="name" placeholder="Adauga numele {{ title }}" />
         <div *ngIf="orderForm.get('name').invalid && orderForm.get('name').touched" class="error">
@@ -10,7 +10,7 @@
         </div>
       </div>
 
-      <div class="p-field">
+      <div class="p-field" [ngClass]="{'invalid': orderForm.get('phone1').invalid && orderForm.get('phone1').touched}">
         <label for="phone1">Numar de Telefon</label>
         <input id="phone1" pInputText formControlName="phone1" placeholder="Adauga numarul de telefon" />
         <div *ngIf="orderForm.get('phone1').invalid && orderForm.get('phone1').touched" class="error">
@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <div class="p-field">
+      <div class="p-field" [ngClass]="{'invalid': orderForm.get('phone2').invalid && orderForm.get('phone2').touched}">
         <label for="phone2">Numar de Telefon 2</label>
         <input id="phone2" pInputText formControlName="phone2" placeholder="Adauga numarul de telefon 2" />
         <div *ngIf="orderForm.get('phone2').invalid && orderForm.get('phone2').touched" class="error">
@@ -30,8 +30,7 @@
         <p-dropdown [options]="stateSuggestions" formControlName="state" placeholder="Judet" inputId="state" optionLabel="name"></p-dropdown>
       </div>
 
-
-      <div class="p-field">
+      <div class="p-field" [ngClass]="{'invalid': orderForm.get('city').invalid && orderForm.get('city').touched}">
         <label for="city">Localitate</label>
         <input id="city" #cityInput pInputText formControlName="city" (input)="onCityInput($event)" placeholder="Localitate" autocomplete="off" />
         <ul *ngIf="citySuggestions.length" class="suggestions-list">
@@ -44,7 +43,7 @@
         </div>
       </div>
 
-      <div class="p-field">
+      <div class="p-field" [ngClass]="{'invalid': orderForm.get('street').invalid && orderForm.get('street').touched}">
         <label for="street">Strada</label>
         <input id="street" #streetInput pInputText formControlName="street" (input)="onAddressInput($event)" placeholder="Strada" />
         <ul *ngIf="addressSuggestions.length" class="suggestions-list">
@@ -57,7 +56,7 @@
         </div>
       </div>
 
-      <div class="p-field">
+      <div class="p-field" [ngClass]="{'invalid': orderForm.get('number').invalid && orderForm.get('number').touched}">
         <label for="number">Numarul</label>
         <input id="number" #numberInput pInputText formControlName="number" (input)="onNumberInput($event)" placeholder="Adauga numarul" />
         <ul *ngIf="numberSuggestions.length" class="suggestions-list">
@@ -70,8 +69,7 @@
         </div>
       </div>
 
-
-      <div class="p-field">
+      <div class="p-field" [ngClass]="{'invalid': orderForm.get('postalCode').invalid && orderForm.get('postalCode').touched}">
         <label for="postalCode">Cod Postal</label>
         <input id="postalCode" #postalCodeInput pInputText formControlName="postalCode" placeholder="Adauga codul postal" />
         <div *ngIf="orderForm.get('postalCode').invalid && orderForm.get('postalCode').touched" class="error">

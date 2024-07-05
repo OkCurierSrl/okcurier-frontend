@@ -2,28 +2,30 @@
   <h1>Trimite Colet</h1>
   <div class="form-wrapper">
     <div class="form-row">
-      <div class="form-column">
+      <div class="form-column" id="expeditorFormColumn">
         <app-order-form [formGroup]="expeditorForm" title="Expeditor"></app-order-form>
       </div>
-      <div class="form-column">
+      <div class="form-column" id="destinatarFormColumn">
         <app-order-form [formGroup]="destinatarForm" title="Destinatar"></app-order-form>
       </div>
-      <div class="form-column package-section">
-        <div class="extra-services">
-          <h3>Servicii Extra</h3>
-          <div *ngFor="let service of extraServices" class="extra-service-item">
-            <i [ngClass]="{'fas fa-check-square': selectedServices[service.value], 'far fa-square': !selectedServices[service.value]}"
-               (click)="toggleService(service.value)">
-            </i>
-            <label (click)="toggleService(service.value)">{{service.label}}</label>
+      <div class="form-column package-section" id="packageSection">
+        <div class="scrollable-content">
+          <div class="extra-services">
+            <h3>Servicii Extra</h3>
+            <div *ngFor="let service of extraServices" class="extra-service-item">
+              <i [ngClass]="{'fas fa-check-square': selectedServices[service.value], 'far fa-square': !selectedServices[service.value]}"
+                 (click)="toggleService(service.value)">
+              </i>
+              <label (click)="toggleService(service.value)">{{service.label}}</label>
+            </div>
           </div>
+          <div *ngFor="let courierPackage of courierPackages; let i = index" class="package-form">
+            <app-package-form [index]="i" [packageForm]="courierPackage"></app-package-form>
+          </div>
+          <i class="fas fa-plus-circle add-icon" (click)="addPackage()"></i>
         </div>
-        <div *ngFor="let courierPackage of courierPackages; let i = index" class="package-form">
-          <app-package-form [index]="i" [packageForm]="courierPackage"></app-package-form>
-        </div>
-        <i class="fas fa-plus-circle add-icon" (click)="addPackage()"></i>
       </div>
     </div>
-    <button pButton type="button" label="Alege oferta" (click)="onSubmit()" class="p-mt-2"></button>
+    <button pButton type="button" label="Cere oferta" (click)="onSubmit()" [disabled]="!isFormValid()" class="p-mt-2"></button>
   </div>
 </div>

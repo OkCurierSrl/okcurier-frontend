@@ -1,13 +1,11 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { PlacesService } from "../../../../services/places.service";
 import { CardModule } from "primeng/card";
 import { DropdownModule } from "primeng/dropdown";
-import { NgForOf, NgIf } from "@angular/common";
+import { NgClass, NgForOf, NgIf } from "@angular/common";
 import { ChipsModule } from "primeng/chips";
 import { ButtonDirective } from "primeng/button";
+import { PlacesService } from "../../../../services/places.service";
 
 @Component({
   selector: 'app-order-form',
@@ -20,7 +18,8 @@ import { ButtonDirective } from "primeng/button";
     NgIf,
     NgForOf,
     ChipsModule,
-    ButtonDirective
+    ButtonDirective,
+    NgClass
   ],
   styleUrls: ['./order-form.component.css']
 })
@@ -34,7 +33,7 @@ export class OrderFormComponent implements OnInit {
   orderForm: FormGroup;
   stateSuggestions: any[] = [
     { name: "Alba" },
-    { name: "Bucuresi" },
+    { name: "Bucuresti" },
     { name: "Napoca" },
     { name: "Timis" }
   ];
@@ -54,11 +53,11 @@ export class OrderFormComponent implements OnInit {
       name: ['', Validators.required],
       phone1: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       phone2: ['', [Validators.pattern(/^[0-9]{10}$/)]],
-      city: ['', Validators.required, this.cityValidator.bind(this)],
+      city: ['', Validators.required],
       state: ['', Validators.required],
       street: ['', Validators.required],
       number: ['', Validators.required],
-      postalCode: ['', [Validators.required]], // this.postalCodeValidator.bind(this)
+      postalCode: ['', [Validators.required]],
       block: [''],
       staircase: [''],
       floor: [''],
@@ -130,48 +129,33 @@ export class OrderFormComponent implements OnInit {
     this.numberSuggestions = [];
   }
 
-  cityValidator(control: FormControl): Observable<any> {
-    if (!this.orderForm) return of(null); // Ensure form is initialized
-    return this.placesService.validateCity(control.value).pipe(
-      map(isValid => (isValid ? null : { invalidCity: true })),
-      catchError(() => of({ invalidCity: true }))
-    );
-  }
-
-    // postalCodeValidator(control: FormControl): Observable<any> {
-    //     console.log('Postal code validation started');
-    //
-    //     if (!this.orderForm) {
-    //         console.log('Order form not initialized');
-    //         return of(null);
-    //     }
-    //
-    //     const cityControl = this.orderForm.get('city');
-    //
-    //     if (!cityControl) {
-    //         console.log('City control not found');
-    //         return of(null);
-    //     }
-    //
-    //     console.log('City control found, validating the postal code');
-    //
-    //     return this.placesService.validatePostalCode(control.value, cityControl.value).pipe(
-    //         map(isValid => {
-    //             console.log('Postal code validation completed');
-    //             return (isValid ? null : {invalidPostalCode: true})
-    //         }),
-    //         catchError(() => {
-    //             console.log('Error occurred while validating postal code');
-    //             return of({invalidPostalCode: true})
-    //         })
-    //     );
-    // }
-
   onSubmit(): void {
     if (this.orderForm.valid) {
       console.log(`${this.title} Form submitted`, this.orderForm.value);
     } else {
       console.log(`${this.title} Form is invalid`);
+      this.markFormGroupTouched(this.orderForm);
+      this.logFormErrors(this.orderForm);
     }
+  }
+
+  markFormGroupTouched(formGroup: FormGroup): void {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
+
+  logFormErrors(formGroup: FormGroup): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      if (control instanceof FormControl && control.invalid) {
+        console.log(`Field ${key} is invalid:`, control.errors);
+      } else if (control instanceof FormGroup) {
+        this.logFormErrors(control);
+      }
+    });
   }
 }

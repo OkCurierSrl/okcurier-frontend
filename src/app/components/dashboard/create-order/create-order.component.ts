@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {OrderFormComponent} from "./order-form/order-form.component";
@@ -14,14 +14,14 @@ import {PackageFormComponent} from "./package-form/package-form.component";
   templateUrl: './create-order.component.html',
   styleUrl: './create-order.component.css'
 })
-export class CreateOrderComponent implements OnInit {
+export class CreateOrderComponent implements OnInit, AfterViewInit {
   expeditorForm: FormGroup;
   destinatarForm: FormGroup;
   courierPackages: FormGroup[] = [];
-  extraServices: any;
+  extraServices: any[];
   selectedServices: { [key: string]: boolean } = {};
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private renderer: Renderer2, private el: ElementRef) {
     this.extraServices = [
       { label: 'Livrare Sambata', value: 'saturdayDelivery' },
       { label: 'Document la schimb', value: 'exchangeDocument' },
@@ -31,7 +31,6 @@ export class CreateOrderComponent implements OnInit {
       { label: 'Adauga pretul transportului in ramburs', value: 'addTransportCost' },
       { label: 'Ramburs in cont', value: 'cashOnDelivery' }
     ];
-
   }
 
   ngOnInit(): void {
@@ -68,23 +67,27 @@ export class CreateOrderComponent implements OnInit {
     this.addPackage(); // Initialize with one package form
   }
 
-  toggleService(service: string) {
-    this.selectedServices[service] = !this.selectedServices[service];
+  ngAfterViewInit(): void {
+    this.setPackagesHeight();
+  }
+
+  setPackagesHeight(): void {
+    const expeditorFormColumn = this.el.nativeElement.querySelector('#expeditorFormColumn');
+    const packageSection = this.el.nativeElement.querySelector('#packageSection');
+
+    if (expeditorFormColumn && packageSection) {
+      const formHeight = expeditorFormColumn.offsetHeight;
+      this.renderer.setStyle(packageSection, 'height', `${formHeight}px`);
+      this.renderer.setStyle(packageSection.querySelector('.scrollable-content'), 'max-height', `${formHeight}px`);
+    }
   }
 
   addPackage(): void {
     const packageForm = this.fb.group({
-      length: ['', Validators.required],
-      width: ['', Validators.required],
-      height: ['', Validators.required],
-      weight: ['', Validators.required],
-      saturdayDelivery: [false],
-      exchangeDocument: [false],
-      exchangePackage: [false],
-      openPackage: [false],
-      insurance: [false],
-      addTransportCost: [false],
-      cashOnDelivery: [false]
+      length: ['', [Validators.required, Validators.min(1)]],
+      width: ['', [Validators.required, Validators.min(1)]],
+      height: ['', [Validators.required, Validators.min(1)]],
+      weight: ['', [Validators.required, Validators.min(1), Validators.max(31)]]
     });
     this.courierPackages.push(packageForm);
   }
@@ -93,19 +96,35 @@ export class CreateOrderComponent implements OnInit {
     this.courierPackages.splice(index, 1);
   }
 
+  toggleService(service: string): void {
+    this.selectedServices[service] = !this.selectedServices[service];
+  }
+
   onSubmit(): void {
-    if (this.allFormsValid()) {
-      // Handle form submission
-      console.log('All forms are valid. Submitting...');
+    if (this.isFormValid()) {
+      const orderDetails = {
+        expeditor: this.expeditorForm.value,
+        destinatar: this.destinatarForm.value,
+        packages: this.courierPackages.map(pkg => pkg.value),
+        extraServices: this.selectedServices
+      };
+      console.log('Order Details:', orderDetails);
     } else {
-      // Mark all fields as touched to show validation errors
       this.expeditorForm.markAllAsTouched();
       this.destinatarForm.markAllAsTouched();
-      this.courierPackages.forEach(courierPackage => courierPackage.markAllAsTouched());
+      this.courierPackages.forEach(pkg => pkg.markAllAsTouched());
     }
   }
 
-  allFormsValid(): boolean {
-    return this.expeditorForm.valid && this.destinatarForm.valid && this.courierPackages.every(courierPackage => courierPackage.valid);
+  isFormValid(): boolean {
+      console.log("Expeditor form valid:", this.expeditorForm.valid);
+      console.log("Destinatar form valid:", this.destinatarForm.valid);
+      console.log("Package count:", this.courierPackages.length > 0);
+
+      this.courierPackages.forEach((pkg, idx) => {
+          console.log(`Package ${idx + 1} valid:`, pkg.valid);
+      });
+
+      return this.expeditorForm.valid && this.destinatarForm.valid && this.courierPackages.length > 0 && this.courierPackages.every(pkg => pkg.valid);
   }
 }

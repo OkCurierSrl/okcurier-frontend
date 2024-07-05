@@ -1,17 +1,3 @@
-:root {
-  --ok-primary-color: #d50c0c;
-  --ok-primary-color-light: #f64f4f;
-  --ok-secondary-color: #9b9797;
-  --ok-secondary-color-light: #c9c1c1;
-  --ok-accent-color: #20be44;
-  --ok-accent-color-light: #80d092;
-  --font-family: 'Roboto', sans-serif;
-  --ok-grey-color: #6c757d;
-  --ok-dark-color: #343a40;
-  --spacing: 1rem;
-  --header-height: 10rem;
-}
-
 .p-card {
   background-color: var(--ok-dark-color);
   padding: var(--spacing);
