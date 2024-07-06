@@ -3,12 +3,13 @@
   <div class="form-wrapper">
     <div class="form-row">
       <div class="form-column" id="expeditorFormColumn">
-        <app-order-form [formGroup]="expeditorForm" title="Expeditor"></app-order-form>
+        <app-order-form #expeditorForm title="Expeditor" (formValidityChange)="onExpeditorFormValidityChange($event)"></app-order-form>
       </div>
       <div class="form-column" id="destinatarFormColumn">
-        <app-order-form [formGroup]="destinatarForm" title="Destinatar"></app-order-form>
+        <app-order-form #destinatarForm title="Destinatar" (formValidityChange)="onDestinatarFormValidityChange($event)"></app-order-form>
       </div>
       <div class="form-column package-section" id="packageSection">
+        <app-package-overview id="packageOverview" [packages]="courierPackages"></app-package-overview>
         <div class="scrollable-content">
           <div class="extra-services">
             <h3>Servicii Extra</h3>
@@ -17,15 +18,25 @@
                  (click)="toggleService(service.value)">
               </i>
               <label (click)="toggleService(service.value)">{{service.label}}</label>
+              <div *ngIf="service.value === 'insurance' && selectedServices[service.value]" class="extra-input">
+                <input type="number" min="0" [(ngModel)]="assuranceValue" placeholder="Valoare asigurată" />
+              </div>
+              <div *ngIf="service.value === 'cashOnDelivery' && selectedServices[service.value]" class="extra-input">
+                <input type="number" min="0" [(ngModel)]="cashOnDeliveryValue" placeholder="Valoare ramburs în cont" />
+              </div>
+
             </div>
           </div>
           <div *ngFor="let courierPackage of courierPackages; let i = index" class="package-form">
-            <app-package-form [index]="i" [packageForm]="courierPackage"></app-package-form>
+            <app-package-form [index]="i" [packageForm]="courierPackage.form" (remove)="removePackage(i)" (validityChange)="onPackageValidityChange(i, $event)"></app-package-form>
           </div>
           <i class="fas fa-plus-circle add-icon" (click)="addPackage()"></i>
         </div>
       </div>
     </div>
-    <button pButton type="button" label="Cere oferta" (click)="onSubmit()" [disabled]="!isFormValid()" class="p-mt-2"></button>
+    <button pButton type="button" (click)="onSubmit()" [disabled]="!isFormValid()" class="arrow-button">
+      <img src="assets/logo.png" alt="OK Curier Logo" class="button-logo">
+      <span class="button-text">Cere oferta</span>
+    </button>
   </div>
 </div>

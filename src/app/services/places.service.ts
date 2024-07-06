@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Observable, of} from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -40,4 +40,11 @@ export class PlacesService {
     const url = `/api/place/autocomplete/json?input=${encodeURIComponent(postalCode)} ${encodeURIComponent(city)}&types=address&components=country:ro&key=${this.apiKey}`;
     return this.http.get(url).pipe(map((res: any) => res.predictions.length > 0));
   }
+
+  getCities(county: string): Observable<any[]> {
+    const input = `county ${county}`;
+    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(input)}&types=locality&components=country:ro&key=${this.apiKey}`;
+    return this.http.get(url).pipe(map((res: any) => res.results.map((result: any) => ({ name: result.name }))));
+  }
+
 }

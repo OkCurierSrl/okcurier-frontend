@@ -1,7 +1,7 @@
 <div class="order-form">
   <p-card>
     <h2>{{ title }}</h2>
-    <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="orderForm">
       <div class="p-field" [ngClass]="{'invalid': orderForm.get('name').invalid && orderForm.get('name').touched}">
         <label for="name">Nume</label>
         <input id="name" pInputText formControlName="name" placeholder="Adauga numele {{ title }}" />
@@ -26,21 +26,13 @@
         </div>
       </div>
 
+
       <div class="p-field">
-        <p-dropdown [options]="stateSuggestions" formControlName="state" placeholder="Judet" inputId="state" optionLabel="name"></p-dropdown>
+        <p-dropdown [options]="counties" formControlName="county" optionLabel="name" (onChange)="onCountyChange($event)" placeholder="Judet"></p-dropdown>
       </div>
 
-      <div class="p-field" [ngClass]="{'invalid': orderForm.get('city').invalid && orderForm.get('city').touched}">
-        <label for="city">Localitate</label>
-        <input id="city" #cityInput pInputText formControlName="city" (input)="onCityInput($event)" placeholder="Localitate" autocomplete="off" />
-        <ul *ngIf="citySuggestions.length" class="suggestions-list">
-          <li *ngFor="let suggestion of citySuggestions" (click)="selectCity(suggestion.description)">
-            {{ suggestion.description }}
-          </li>
-        </ul>
-        <div *ngIf="orderForm.get('city').invalid && orderForm.get('city').touched" class="error">
-          Localitatea este invalida.
-        </div>
+      <div class="p-field">
+        <p-dropdown [options]="cities" formControlName="city" optionLabel="name" placeholder="Localitate"></p-dropdown>
       </div>
 
       <div class="p-field" [ngClass]="{'invalid': orderForm.get('street').invalid && orderForm.get('street').touched}">

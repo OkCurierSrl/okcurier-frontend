@@ -1,12 +1,16 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import {Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter} from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CardModule } from "primeng/card";
-import { DropdownModule } from "primeng/dropdown";
+import {DropdownChangeEvent, DropdownModule} from "primeng/dropdown";
 import { NgClass, NgForOf, NgIf } from "@angular/common";
 import { ChipsModule } from "primeng/chips";
 import { ButtonDirective } from "primeng/button";
 import { PlacesService } from "../../../../services/places.service";
 
+/**
+ * Represents the Order Form Component.
+ * @class
+ */
 @Component({
   selector: 'app-order-form',
   templateUrl: './order-form.component.html',
@@ -23,38 +27,50 @@ import { PlacesService } from "../../../../services/places.service";
   ],
   styleUrls: ['./order-form.component.css']
 })
+
 export class OrderFormComponent implements OnInit {
   @Input() title: string;
+  @Output() formValidityChange = new EventEmitter<boolean>();
   @ViewChild('cityInput') cityInput: ElementRef;
   @ViewChild('streetInput') streetInput: ElementRef;
   @ViewChild('numberInput') numberInput: ElementRef;
   @ViewChild('postalCodeInput') postalCodeInput: ElementRef;
 
   orderForm: FormGroup;
-  stateSuggestions: any[] = [
-    { name: "Alba" },
-    { name: "Bucuresti" },
-    { name: "Napoca" },
-    { name: "Timis" }
-  ];
-  citySuggestions: any[] = [];
   addressSuggestions: any[] = [];
   numberSuggestions: any[] = [];
+  counties: any[] = [];
+  cities: any[] = [];
 
   constructor(private fb: FormBuilder, private placesService: PlacesService) {}
 
   ngOnInit(): void {
     this.initForm();
-    this.loadStates();
+    this.loadCounties();
+    this.orderForm.statusChanges.subscribe(status => {
+      this.formValidityChange.emit(this.orderForm.valid);
+      this.logFormValidity();
+
+    });
   }
+
+  // todo delete
+  logFormValidity(): void {
+    Object.keys(this.orderForm.controls).forEach(key => {
+      const control = this.orderForm.get(key);
+      console.log(`${key} valid:`, control.valid);
+    });
+    console.log(`Form valid: ${this.orderForm.valid}`);
+  }
+
 
   initForm(): void {
     this.orderForm = this.fb.group({
       name: ['', Validators.required],
       phone1: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       phone2: ['', [Validators.pattern(/^[0-9]{10}$/)]],
-      city: ['', Validators.required],
-      state: ['', Validators.required],
+      county: ['', Validators.required],
+      city: [''],
       street: ['', Validators.required],
       number: ['', Validators.required],
       postalCode: ['', [Validators.required]],
@@ -65,25 +81,61 @@ export class OrderFormComponent implements OnInit {
     });
   }
 
-  loadStates(): void {
-    // Implement this method to load states from an API or a static list
+  loadCounties(): void {
+    this.counties = [
+      { name: "Alba" },
+      { name: "Arad" },
+      { name: "Argeș" },
+      { name: "Bacău" },
+      { name: "Bihor" },
+      { name: "Bistrița-Năsăud" },
+      { name: "Botoșani" },
+      { name: "Brașov" },
+      { name: "Brăila" },
+      { name: "Buzău" },
+      { name: "Caraș-Severin" },
+      { name: "Călărași" },
+      { name: "Cluj" },
+      { name: "Constanța" },
+      { name: "Covasna" },
+      { name: "Dâmbovița" },
+      { name: "Dolj" },
+      { name: "Galați" },
+      { name: "Giurgiu" },
+      { name: "Gorj" },
+      { name: "Harghita" },
+      { name: "Hunedoara" },
+      { name: "Ialomița" },
+      { name: "Iași" },
+      { name: "Ilfov" },
+      { name: "Maramureș" },
+      { name: "Mehedinți" },
+      { name: "Mureș" },
+      { name: "Neamț" },
+      { name: "Olt" },
+      { name: "Prahova" },
+      { name: "Satu Mare" },
+      { name: "Sălaj" },
+      { name: "Sibiu" },
+      { name: "Suceava" },
+      { name: "Teleorman" },
+      { name: "Timiș" },
+      { name: "Tulcea" },
+      { name: "Vaslui" },
+      { name: "Vâlcea" },
+      { name: "Vrancea" },
+      { name: "București" }
+    ];
   }
 
-  onCityInput(event: any): void {
-    const input = event.target.value;
-    if (input) {
-      this.placesService.getCitySuggestions(input).subscribe(suggestions => {
-        this.citySuggestions = suggestions;
-      });
-    } else {
-      this.citySuggestions = [];
-    }
-  }
-
-  selectCity(city: string): void {
-    this.orderForm.patchValue({ city: city.split(',')[0] });
-    this.citySuggestions = [];
-    this.streetInput.nativeElement.focus(); // Focus on street input
+  onCountyChange(event: any): void {
+    // const county = event.value.name;
+    // this.placesService.getCities(county).subscribe(data => {
+    //   this.cities = data;
+    //   this.orderForm.get('city').reset(); // Reset city when county changes
+    // }, error => {
+    //   console.error('Error loading cities: ', error);
+    // });
   }
 
   onAddressInput(event: any): void {
@@ -127,35 +179,5 @@ export class OrderFormComponent implements OnInit {
       this.postalCodeInput.nativeElement.focus(); // Focus on postal code input
     });
     this.numberSuggestions = [];
-  }
-
-  onSubmit(): void {
-    if (this.orderForm.valid) {
-      console.log(`${this.title} Form submitted`, this.orderForm.value);
-    } else {
-      console.log(`${this.title} Form is invalid`);
-      this.markFormGroupTouched(this.orderForm);
-      this.logFormErrors(this.orderForm);
-    }
-  }
-
-  markFormGroupTouched(formGroup: FormGroup): void {
-    Object.values(formGroup.controls).forEach(control => {
-      control.markAsTouched();
-      if (control instanceof FormGroup) {
-        this.markFormGroupTouched(control);
-      }
-    });
-  }
-
-  logFormErrors(formGroup: FormGroup): void {
-    Object.keys(formGroup.controls).forEach(key => {
-      const control = formGroup.get(key);
-      if (control instanceof FormControl && control.invalid) {
-        console.log(`Field ${key} is invalid:`, control.errors);
-      } else if (control instanceof FormGroup) {
-        this.logFormErrors(control);
-      }
-    });
   }
 }

@@ -71,3 +71,94 @@
 button.p-mt-2 {
   margin-top: 1rem;
 }
+
+.submit-button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.2rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.submit-button:not(:disabled):hover {
+  background-color: #0056b3;
+}
+
+.submit-button:not(:disabled):active {
+  transform: translateY(2px);
+}
+
+.submit-button:not(:disabled):focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.25);
+}
+
+.extra-input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-left: var(--spacing);
+  }
+
+
+
+.arrow-button {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin: 1rem;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+}
+
+.arrow-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.arrow-button:not(:disabled):hover {
+  background-color: #0056b3;
+}
+
+.arrow-button .button-text {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.arrow-button .button-logo {
+  position: absolute;
+  left: -50px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  transition: left 1s ease;
+  border-radius: 50%;
+}
+
+.arrow-button:not(:disabled):hover .button-text {
+  transform: translateX(2rem);
+}
+
+.arrow-button:not(:disabled):hover .button-logo {
+  left: calc(100% - 50px);
+}

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ChipsModule} from "primeng/chips";
 import {ButtonDirective} from "primeng/button";
@@ -20,6 +20,8 @@ import {NgClass, NgIf} from "@angular/common";
 export class PackageFormComponent implements OnInit {
   @Input() index: number;
   @Input() packageForm: FormGroup;
+  @Output() validityChange = new EventEmitter<boolean>();
+  @Output() remove = new EventEmitter<number>();
 
   dimensionError: boolean = false;
   weightError: boolean = false;
@@ -27,32 +29,27 @@ export class PackageFormComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    if (!this.packageForm) {
-      this.packageForm = this.fb.group({
-        length: ['', [Validators.required, Validators.min(1)]],
-        width: ['', [Validators.required, Validators.min(1)]],
-        height: ['', [Validators.required, Validators.min(1)]],
-        weight: ['', [Validators.required, Validators.min(1), Validators.max(31)]]
-      });
-    }
-
-    this.packageForm.valueChanges.subscribe(() => {
-      this.validateDimensions();
-      this.validateWeight();
+    this.packageForm.statusChanges.subscribe(() => {
+      this.checkValidity();
     });
+    this.checkValidity();
   }
 
-  validateDimensions(): void {
-    const { length, width, height } = this.packageForm.value;
+  checkValidity(): void {
+    const length = this.packageForm.get('length').value;
+    const width = this.packageForm.get('width').value;
+    const height = this.packageForm.get('height').value;
+    const weight = this.packageForm.get('weight').value;
+
     this.dimensionError = (length + width + height) > 180;
-  }
-
-  validateWeight(): void {
-    const { weight } = this.packageForm.value;
     this.weightError = weight > 31;
+
+    const isValid = this.packageForm.valid && !this.dimensionError && !this.weightError;
+    this.validityChange.emit(isValid);
   }
 
-  removePackage(index: number): void {
-    // Emit an event to remove the package from parent component
+  removePackage(): void {
+    this.remove.emit(this.index);
   }
+
 }
