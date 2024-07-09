@@ -1,0 +1,25 @@
+<div class="courier-options">
+  <h2>Alegeți una din ofertele de mai jos:</h2>
+  <div *ngFor="let courier of couriers"
+       class="courier-option"
+       [ngClass]="{'selected': courier.selected}"
+       (click)="selectCourier(courier)"
+       tabindex="0"
+       role="button"
+       [attr.aria-pressed]="courier.selected">
+    <div class="courier-details">
+      <img [src]="getCourierLogo(courier.courier)" alt="{{ courier.courier }} logo">
+      <span class="price"><i class="fas fa-money-bill-wave"></i> {{ courier.totalPrice.toFixed(2) }} RON</span>
+    </div>
+    <div class="courier-info">
+      <span><i class="fas fa-home"></i> Ridicare: {{ pickupDate }}</span>
+      <span><i class="fas fa-truck"></i> Deadline: {{ deadlineDate }}</span>
+      <span><i class="fas fa-clock"></i> 17:00</span>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn btn-primary" (click)="generateAWB()">Generează AWB</button>
+    <button class="btn btn-primary" (click)="orderCourier()">Comanda Curier</button>
+    <button class="btn btn-secondary" (click)="goBack()">Înapoi</button>
+  </div>
+</div>

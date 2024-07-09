@@ -16,53 +16,9 @@ import {CheckboxModule} from "primeng/checkbox";
 import {ButtonDirective} from "primeng/button";
 import {PackageFormComponent} from "./package-form/package-form.component";
 import {PackageOverviewComponent} from "./package-overview/package-overview.component";
-
-interface OrderData {
-  expeditor: {
-    name: string;
-    phone1: string;
-    phone2?: string;
-    county: string;
-    city: string;
-    street: string;
-    number: string;
-    postalCode: string;
-    block?: string;
-    staircase?: string;
-    floor?: string;
-    apartment?: string;
-  };
-  destinatar: {
-    name: string;
-    phone1: string;
-    phone2?: string;
-    county: string;
-    city: string;
-    street: string;
-    number: string;
-    postalCode: string;
-    block?: string;
-    staircase?: string;
-    floor?: string;
-    apartment?: string;
-  };
-  packages: {
-    length: number;
-    width: number;
-    height: number;
-    weight: number;
-  }[];
-  extraServices: {
-    livrareSambata?: boolean;
-    documentSchimb?: boolean;
-    coletSchimb?: boolean;
-    deschidereColet?: boolean;
-    asigurare?: number;
-    transportRamburs?: boolean;
-    rambursCont?: number;
-  };
-  isPlicSelected: boolean;
-}
+import {PriceCalculationService} from "../../../services/price-calculation.service";
+import {Router} from "@angular/router";
+import {OrderData} from "./order.data";
 
 
 @Component({
@@ -82,7 +38,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   destinatarFormValid: boolean = false;
   courierPackages: { form: FormGroup, valid: boolean }[] = [];
   extraServices: { label: string, value: string }[] = [
-    {label: 'Livrare Sambata', value: 'livrareSambata'},
+    {label: 'Retur', value: 'returColetNelivrat'},
     {label: 'Document la schimb', value: 'documentSchimb'},
     {label: 'Colet la schimb', value: 'coletSchimb'},
     {label: 'Deschidere Colet', value: 'deschidereColet'},
@@ -96,7 +52,11 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   isPlicSelected: boolean;
 
 
-  constructor(private fb: FormBuilder, private renderer: Renderer2, private el: ElementRef) {}
+  constructor(private fb: FormBuilder,
+              private renderer: Renderer2,
+              private el: ElementRef,
+              private priceCalculationService: PriceCalculationService,
+              private router: Router) {}
 
   ngOnInit(): void {
     this.addPackage(); // Initialize with one package
@@ -209,12 +169,16 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       const destinatarData = this.destinatarFormComponent.orderForm.getRawValue();
       const packagesData = this.courierPackages.map(pkg => pkg.form.getRawValue());
 
+      // Convert county objects to strings
+      expeditorData.county = expeditorData.county.name;
+      destinatarData.county = destinatarData.county.name;
+
       const orderData: OrderData = {
         expeditor: expeditorData,
         destinatar: destinatarData,
-        packages: this.isPlicSelected ? []: packagesData,
+        packages: this.isPlicSelected ? [] : packagesData,
         extraServices: {
-          livrareSambata: this.selectedServices['livrareSambata'],
+          returColetNelivrat: this.selectedServices['returColetNelivrat'],
           documentSchimb: this.selectedServices['documentSchimb'],
           coletSchimb: this.selectedServices['coletSchimb'],
           deschidereColet: this.selectedServices['deschidereColet'],
@@ -225,9 +189,20 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
         isPlicSelected: this.isPlicSelected,
       };
 
-      // Submit the form
-      console.log('Form is valid. Submitting...', orderData);
-      // Add your form submission logic here (e.g., send orderData to your server)
+      // Log the payload for debugging
+      console.log('Submitting order data:', JSON.stringify(orderData, null, 2));
+
+      this.priceCalculationService.getPrices(orderData).subscribe(
+        (response) => {
+          console.log('Order submitted successfully', response);
+          this.router.navigate(['/courier-options'], { queryParams: { couriers: JSON.stringify(response) } });
+          // Handle the successful response here
+        },
+        (error) => {
+          console.error('Error submitting order', error);
+          // Handle the error here
+        }
+      );
     } else {
       console.log('Form is invalid. Cannot submit.');
     }

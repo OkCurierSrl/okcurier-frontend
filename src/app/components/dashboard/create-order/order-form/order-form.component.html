@@ -37,14 +37,15 @@
 
       <div class="p-field" [ngClass]="{'invalid': orderForm.get('street').invalid && orderForm.get('street').touched}">
         <label for="street">Strada</label>
-        <input id="street" #streetInput pInputText formControlName="street" (input)="onAddressInput($event)" placeholder="Strada" />
+        <input id="street" pInputText formControlName="streetInput" (input)="onAddressInput($event)" placeholder="Strada" #streetInputField [ngClass]="{'valid': orderForm.get('street').valid && orderForm.get('street').touched}" />
         <ul *ngIf="addressSuggestions.length" class="suggestions-list">
-          <li *ngFor="let suggestion of addressSuggestions" (click)="selectAddress(suggestion)">
+          <li *ngFor="let suggestion of addressSuggestions" (click)="selectAddress(suggestion, streetInputField)">
             {{ suggestion.description }}
           </li>
         </ul>
+        <input type="hidden" formControlName="street" />
         <div *ngIf="orderForm.get('street').invalid && orderForm.get('street').touched" class="error">
-          Strada este obligatorie.
+          Strada este obligatorie și trebuie să fie o opțiune validă.
         </div>
       </div>
 

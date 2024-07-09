@@ -9,6 +9,8 @@ import {AdminLayoutComponent} from "./components/admin/admin-layout/admin-layout
 import {AdminPricesComponent} from "./pages/admin-prices/admin-prices.component";
 import {DashboardLayoutComponent} from "./components/dashboard/dashboard-layout/dashboard-layout.component";
 import {CreateOrderComponent} from "./components/dashboard/create-order/create-order.component";
+import {CourierOptionsComponent} from "./components/dashboard/courier-options/courier-options.component";
+import {OrderListComponent} from "./components/dashboard/order-list/order-list.component";
 
 export const routes: Routes = [
   {
@@ -19,6 +21,15 @@ export const routes: Routes = [
   {
     path: 'order',
     component: CreateOrderComponent,
+    canActivate: [authGuardFn],
+  },
+  {
+    path: 'courier-options',
+    component: CourierOptionsComponent,
+    canActivate: [authGuardFn],
+  },
+  { path: 'order-list',
+    component: OrderListComponent,
     canActivate: [authGuardFn],
   },
 

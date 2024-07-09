@@ -1,0 +1,135 @@
+/* Global Styles */
+:root {
+  --primary-color: #1E90FF;
+  --primary-color-light: #63B3ED;
+  --secondary-color: #2D3748;
+  --secondary-color-light: #4A5568;
+  --accent-color: #48BB78;
+  --accent-color-light: #68D391;
+  --font-family: 'Roboto', sans-serif;
+  --grey-color: #A0AEC0;
+  --dark-color: #1A202C;
+  --spacing: 1rem;
+  --header-height: 10rem;
+  --icon-color: #E53E3E; /* Red color for icons */
+  --background-color: #ffffff; /* White background */
+  --secondary-background-color: #2D3748; /* Darker secondary background */
+}
+
+/* Courier Options Styles */
+.courier-options {
+  font-family: var(--font-family);
+  color: var(--background-color); /* White color for text */
+  padding: var(--spacing);
+  background-color: var(--secondary-background-color); /* Darker secondary background */
+  border-radius: 10px;
+  max-width: 800px;
+  margin: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.courier-option {
+  background-color: var(--background-color); /* White background */
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: var(--spacing);
+  margin-bottom: var(--spacing);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+  color: var(--dark-color); /* Dark color for text */
+}
+
+.courier-option.selected {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-color-light);
+}
+
+.courier-option:hover {
+  background-color: var(--secondary-color-light);
+}
+
+.courier-details {
+  display: flex;
+  align-items: center;
+}
+
+.courier-details img {
+  width: 50px;
+  height: auto;
+  margin-right: var(--spacing);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.price {
+  color: var(--accent-color);
+  font-size: 1.4rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.price i {
+  margin-right: 0.5rem;
+  color: var(--icon-color); /* Red icon */
+}
+
+.courier-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  color: var(--grey-color);
+  text-align: right;
+}
+
+.courier-info span {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  color: var(--dark-color); /* Dark color for text */
+}
+
+.courier-info i {
+  margin-right: 0.5rem;
+  color: var(--icon-color); /* Red icons */
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--spacing);
+}
+
+.actions .btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 10px;
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+.actions .btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.actions .btn-primary:hover {
+  background-color: var(--primary-color-light);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.actions .btn-secondary {
+  background-color: var(--secondary-color);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.actions .btn-secondary:hover {
+  background-color: var(--secondary-color-light);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}

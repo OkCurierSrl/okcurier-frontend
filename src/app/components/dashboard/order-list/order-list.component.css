@@ -1,0 +1,150 @@
+/* order-list.component.css */
+.order-list-container {
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 1rem;
+  max-width: 1200px;
+  margin: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.order-list-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.order-list-actions input,
+.order-list-actions select {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-right: 0.5rem;
+}
+
+.order-list-actions button {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.order-list-actions button:hover {
+  background-color: #0056b3;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.order-list-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.order-list-table th,
+.order-list-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.order-list-table th {
+  background-color: #343a40;
+  color: white;
+}
+
+.order-list-table td {
+  background-color: #ffffff;
+}
+
+.order-list-table tr:hover td {
+  background-color: #f1f1f1;
+}
+
+.order-list-table img {
+  width: 30px;
+  height: auto;
+}
+
+.btn-action {
+  background-color: #28a745;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: white;
+  margin: 0 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.btn-action i {
+  font-size: 1rem;
+}
+
+.btn-action:hover {
+  background-color: #218838;
+}
+
+.btn-pagination {
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  color: white;
+  margin: 0 0.25rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-pagination.active,
+.btn-pagination:hover {
+  background-color: #0056b3;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.status-awb-generat {
+  color: #ffc107; /* Yellow */
+}
+
+.status-comanda-trimisa {
+  color: #28a745; /* Green */
+}
+
+.status-neridicat {
+  color: #dc3545; /* Red */
+}
+
+.status-intarziat {
+  color: #ff6347; /* Orange */
+}
+
+.status-livrat {
+  color: #20c997; /* Teal */
+}
+
+.status-anulat {
+  color: #6c757d; /* Grey */
+}
+
+.status-inchis-intern {
+  color: #17a2b8; /* Cyan */
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}

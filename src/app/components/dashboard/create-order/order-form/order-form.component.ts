@@ -52,6 +52,17 @@ export class OrderFormComponent implements OnInit {
       this.logFormValidity();
 
     });
+
+    // Watch the streetInput field and validate it
+    this.orderForm.get('streetInput').valueChanges.subscribe(value => {
+      if (value && !this.isSuggestionValid(value)) {
+        this.orderForm.get('street').setValue('');
+        this.orderForm.get('street').setErrors({ invalid: true });
+      } else if (value) {
+        this.orderForm.get('street').setErrors(null);
+      }
+    });
+
   }
 
   // todo delete
@@ -72,6 +83,7 @@ export class OrderFormComponent implements OnInit {
       county: ['', Validators.required],
       city: [''],
       street: ['', Validators.required],
+      streetInput: ['', Validators.required], // Input field for user typing
       number: ['', Validators.required],
       postalCode: ['', [Validators.required]],
       block: [''],
@@ -142,18 +154,36 @@ export class OrderFormComponent implements OnInit {
     const input = event.target.value;
     if (input) {
       this.placesService.getAddressSuggestions(input).subscribe(suggestions => {
-        this.addressSuggestions = suggestions;
+        this.addressSuggestions = suggestions.map(suggestion => ({
+          description: this.extractStreetName(suggestion.description),
+          rawDescription: suggestion.description
+        }));
       });
     } else {
       this.addressSuggestions = [];
     }
   }
 
-  selectAddress(address: any): void {
-    this.orderForm.patchValue({ street: address.description.split(',')[0] });
+
+  selectAddress(suggestion: any, streetInputField: HTMLInputElement) {
+    this.orderForm.patchValue({
+      street: suggestion.rawDescription, // Hidden field for validated street
+      streetInput: suggestion.description // Displayed input field
+    });
+    streetInputField.value = suggestion.description;
     this.addressSuggestions = [];
-    this.numberInput.nativeElement.focus(); // Focus on number input
   }
+
+  isSuggestionValid(input: string): boolean {
+    return this.addressSuggestions.some(suggestion => suggestion.description === input);
+  }
+
+  extractStreetName(description: string): string {
+    // Extract the street name from the full description
+    const parts = description.split(',');
+    return parts[0] || description;
+  }
+
 
   onNumberInput(event: any): void {
     const input = event.target.value;
