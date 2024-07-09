@@ -36,6 +36,19 @@
   box-sizing: border-box;
 }
 
+.toggle-plic {
+  margin-bottom: 1rem;
+}
+
+.plic-info {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background-color: #e7f3fe;
+  border-left: 4px solid #2196F3;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
 .extra-services {
   margin-bottom: 1rem;
 }
@@ -57,11 +70,42 @@
   cursor: pointer;
 }
 
+.extra-input {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-left: var(--spacing);
+}
+
+.styled-input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.styled-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.fas, .far {
+  font-size: 1.2rem;
+  color: #007bff;
+}
+
+.fas:hover, .far:hover {
+  color: #0056b3;
+}
+
 .add-icon {
   color: green;
   cursor: pointer;
   font-size: 2rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .add-icon:hover {
@@ -101,15 +145,6 @@ button.p-mt-2 {
   outline: none;
   box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.25);
 }
-
-.extra-input {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    margin-left: var(--spacing);
-  }
-
-
 
 .arrow-button {
   position: relative;
@@ -162,3 +197,71 @@ button.p-mt-2 {
 .arrow-button:not(:disabled):hover .button-logo {
   left: calc(100% - 50px);
 }
+
+.toggle-plic {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #28a745;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.label-text {
+  margin-left: 10px;
+  font-size: 1rem;
+  vertical-align: middle;
+  line-height: 34px;
+}
+
+.plic-info {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background-color: #e7f3fe;
+  border-left: 4px solid #2196F3;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+

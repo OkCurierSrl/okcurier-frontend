@@ -22,6 +22,7 @@ export class PackageFormComponent implements OnInit {
   @Input() packageForm: FormGroup;
   @Output() validityChange = new EventEmitter<boolean>();
   @Output() remove = new EventEmitter<number>();
+  @Output() weightChange = new EventEmitter<void>();
 
   dimensionError: boolean = false;
   weightError: boolean = false;
@@ -33,6 +34,10 @@ export class PackageFormComponent implements OnInit {
       this.checkValidity();
     });
     this.checkValidity();
+    this.packageForm.get('weight').valueChanges.subscribe(() => {
+      this.weightChange.emit();
+    });
+
   }
 
   checkValidity(): void {
