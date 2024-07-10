@@ -8,6 +8,7 @@
     <table class="order-list-table">
       <thead>
       <tr>
+        <th>Actiuni</th>
         <th>Numar AWB</th>
         <th>Curier</th>
         <th>Nume Expeditor</th>
@@ -23,9 +24,9 @@
         <th>Greutate</th>
         <th>Ramburs</th>
         <th>Status</th>
-        <th>Actiuni</th>
       </tr>
       <tr>
+        <th></th>
         <th><input type="text" [(ngModel)]="filter.awb" (input)="filterOrders()" placeholder="Filtreaza AWB"></th>
         <th><input type="text" [(ngModel)]="filter.courier" (input)="filterOrders()" placeholder="Filtreaza Curier"></th>
         <th><input type="text" [(ngModel)]="filter.senderName" (input)="filterOrders()" placeholder="Filtreaza Expeditor"></th>
@@ -45,7 +46,6 @@
         <th><input type="text" [(ngModel)]="filter.weight" (input)="filterOrders()" placeholder="Filtreaza Greutate"></th>
         <th><input type="text" [(ngModel)]="filter.cashOnDelivery" (input)="filterOrders()" placeholder="Filtreaza Ramburs"></th>
         <th><input type="text" [(ngModel)]="filter.status" (input)="filterOrders()" placeholder="Filtreaza Status"></th>
-        <th></th>
       </tr>
       </thead>
       <tbody>

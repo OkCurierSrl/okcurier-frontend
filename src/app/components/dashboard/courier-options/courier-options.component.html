@@ -1,5 +1,5 @@
 <div class="courier-options">
-  <h2>Alegeți una din ofertele de mai jos:</h2>
+  <h4>Alegeți una din ofertele de mai jos:</h4>
   <div *ngFor="let courier of couriers"
        class="courier-option"
        [ngClass]="{'selected': courier.selected}"
@@ -12,9 +12,14 @@
       <span class="price"><i class="fas fa-money-bill-wave"></i> {{ courier.totalPrice.toFixed(2) }} RON</span>
     </div>
     <div class="courier-info">
-      <span><i class="fas fa-home"></i> Ridicare: {{ pickupDate }}</span>
-      <span><i class="fas fa-truck"></i> Deadline: {{ deadlineDate }}</span>
+      <span><i class="fas fa-home"></i> <b>Ridicare:</b> 11-07-2024</span>
+      <span><i class="fas fa-truck"></i> <b>Deadline:</b> 13-07-2024</span>
       <span><i class="fas fa-clock"></i> 17:00</span>
+      <span><i class="fas fa-credit-card"></i></span>
+      <span><i class="fas fa-envelope"></i></span>
+      <span><i class="fas fa-calendar"></i></span>
+      <span><i class="fas fa-file-alt"></i></span>
+      <span><i class="fas fa-shield-alt"></i></span>
     </div>
   </div>
   <div class="actions">
