@@ -1,16 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --ok-primary-color: #d50c0c;
+  --ok-primary-color: rgb(239 68 68);
+  --ok-primary-color-dark: rgb(234, 40, 40);
   --ok-primary-color-light: #f64f4f;
   --ok-secondary-color: #9b9797;
   --ok-secondary-color-light: #c9c1c1;
   --ok-accent-color: #20be44;
   --ok-accent-color-light: #80d092;
-  --font-family: 'Roboto', sans-serif;
-  --ok-grey-color: #6c757d;
-  --ok-dark-color: #343a40;
+  --font-family: 'Poppins', sans-serif;
+  --ok-grey-colo-lightr: rgb(196, 196, 208);
+  --ok-grey-color: rgb(161 161 170);
+  --ok-dark-color: rgb(63 63 70);
   --spacing: 1rem;
   --header-height: 10rem;
+  --radius: 10px
 }
 
 body {

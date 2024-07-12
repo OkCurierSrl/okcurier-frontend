@@ -1,17 +1,17 @@
 <div class="package-form">
-  <h2>Colet: {{ index + 1 }}</h2>
+  <h5>Colet: {{ index + 1 }}</h5>
   <form [formGroup]="packageForm">
     <div class="compact-form">
       <div class="small-field p-field" [ngClass]="{'invalid': packageForm.get('length').invalid && packageForm.get('length').touched}">
-        <label for="length">L</label>
+        <label for="length">Lungime</label>
         <input id="length" pInputText type="number" min="0" formControlName="length" placeholder="0" />
       </div>
       <div class="small-field p-field" [ngClass]="{'invalid': packageForm.get('width').invalid && packageForm.get('width').touched}">
-        <label for="width">l</label>
+        <label for="width">latime</label>
         <input id="width" pInputText type="number" min="0" formControlName="width" placeholder="0" />
       </div>
       <div class="small-field p-field" [ngClass]="{'invalid': packageForm.get('height').invalid && packageForm.get('height').touched}">
-        <label for="height">h</label>
+        <label for="height">inaltime</label>
         <input id="height" pInputText type="number" min="0" formControlName="height" placeholder="0" />
       </div>
       <div class="small-field p-field" [ngClass]="{'invalid': packageForm.get('weight').invalid && packageForm.get('weight').touched}">

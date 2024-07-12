@@ -34,17 +34,49 @@
   border: 1px solid #ccc;
   padding: var(--spacing);
   box-sizing: border-box;
+  margin-bottom: var(--spacing);
+  border-radius: var(--radius);
+  background-color: var(--ok-dark-color);
+  color: whitesmoke;
 }
 
-.toggle-plic {
-  margin-bottom: 1rem;
+.toggle-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: var(--spacing);
+}
+
+.toggle-btn {
+  background-color: #2D3748;
+  color: #FFFFFF;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.toggle-btn i {
+  margin-right: 0.5rem;
+}
+
+.toggle-btn.active {
+  background-color: #d50c0c;
+  color: #FFFFFF;
+}
+
+.toggle-btn:hover {
+  background-color: #4A5568;
 }
 
 .plic-info {
   margin-bottom: 1rem;
   padding: 0.5rem;
-  background-color: #e7f3fe;
-  border-left: 4px solid #2196F3;
+  background-color: var(--ok-grey-color);
+  border-left: 1px solid var(--ok-primary-color);
   border-radius: 4px;
   font-size: 0.875rem;
 }
@@ -60,14 +92,17 @@
 }
 
 .extra-service-item i {
-  font-size: 1.5rem;
+  font-size: 1.0rem;
   margin-right: 10px;
+  margin-bottom: 10px;
   cursor: pointer;
-  color: #007bff;
+  color: whitesmoke;
+  background-color: whitesmoke;
 }
 
 .extra-service-item label {
   cursor: pointer;
+  font-size: .875rem;
 }
 
 .extra-input {
@@ -88,28 +123,28 @@
 }
 
 .styled-input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  border-color: var(--ok-primary-color);
+  box-shadow: 0 0 5px var(--ok-primary-color-dark)
 }
 
 .fas, .far {
-  font-size: 1.2rem;
-  color: #007bff;
+  font-size: .875rem;
+  color: whitesmoke;
 }
 
 .fas:hover, .far:hover {
-  color: #0056b3;
+  color: var(--ok-primary-color-dark);;
 }
 
 .add-icon {
-  color: green;
+  color: var(--ok-primary-color);
   cursor: pointer;
   font-size: 2rem;
   margin-top: 0.5rem;
 }
 
 .add-icon:hover {
-  color: darkgreen;
+  color: var(--ok-primary-color-dark);
 }
 
 button.p-mt-2 {
@@ -120,8 +155,8 @@ button.p-mt-2 {
   width: 100%;
   padding: 1rem;
   font-size: 1.2rem;
-  background-color: #007bff;
-  color: #fff;
+  background-color: var(--ok-primary-color);
+  color: whitesmoke;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -134,7 +169,7 @@ button.p-mt-2 {
 }
 
 .submit-button:not(:disabled):hover {
-  background-color: #0056b3;
+  background-color: var(--ok-primary-color);
 }
 
 .submit-button:not(:disabled):active {
@@ -143,7 +178,7 @@ button.p-mt-2 {
 
 .submit-button:not(:disabled):focus {
   outline: none;
-  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.25);
+  box-shadow: 0 0 0 4px rgba(255, 0, 0, 0.25);
 }
 
 .arrow-button {
@@ -155,7 +190,7 @@ button.p-mt-2 {
   font-size: 1.2rem;
   font-weight: bold;
   color: #fff;
-  background-color: #007bff;
+  background-color: var(--ok-primary-color);
   border: none;
   border-radius: 50px;
   cursor: pointer;
@@ -169,7 +204,7 @@ button.p-mt-2 {
 }
 
 .arrow-button:not(:disabled):hover {
-  background-color: #0056b3;
+  background-color: var(--ok-primary-color);
 }
 
 .arrow-button .button-text {
@@ -198,23 +233,37 @@ button.p-mt-2 {
   left: calc(100% - 50px);
 }
 
-.toggle-plic {
+.toggle-buttons {
   display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
+  gap: 1rem;
 }
 
-.toggle-switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
+.toggle-btn {
+  background-color: var(--ok-primary-color);
+  color: #FFFFFF;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.toggle-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+.toggle-btn svg {
+  margin-right: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.toggle-btn.active {
+  background-color: var(--ok-primary-color-dark);
+  color: #FFFFFF;
+}
+
+.toggle-btn:hover {
+  background-color: var(--ok-primary-color-dark);
 }
 
 .slider {
@@ -256,12 +305,5 @@ input:checked + .slider:before {
   line-height: 34px;
 }
 
-.plic-info {
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  background-color: #e7f3fe;
-  border-left: 4px solid #2196F3;
-  border-radius: 4px;
-  font-size: 0.875rem;
-}
+
 

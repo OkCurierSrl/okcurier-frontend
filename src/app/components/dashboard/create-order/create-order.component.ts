@@ -137,11 +137,6 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     }
   }
 
-  togglePlic(): void {
-    this.isPlicSelected = !this.isPlicSelected;
-    this.setPackagesHeight(); // Recalculate height after toggling
-  }
-
   get filteredExtraServices() {
     if (this.isPlicSelected) {
       return this.extraServices.filter(service => service.value !== 'rambursCont');
@@ -205,6 +200,15 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       );
     } else {
       console.log('Form is invalid. Cannot submit.');
+    }
+  }
+
+  selectPlic(b: boolean) {
+    this.isPlicSelected = b;
+    if (!b) {
+      this.addPackage()
+    } else {
+      this.courierPackages = []
     }
   }
 }

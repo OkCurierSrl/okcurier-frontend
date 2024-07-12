@@ -1,7 +1,7 @@
 /* Global Styles */
 .courier-options {
   font-family: 'Roboto', sans-serif;
-  color: #FFFFFF; /* White text color */
+  color: whitesmoke; /* White text color */
   padding: 1rem;
   background-color: rgb(63 63 70); /* Darker secondary background */
   border-radius: 10px;
@@ -29,7 +29,7 @@
 }
 
 .courier-option:hover {
-  background-color: #4A5568;
+  background-color: var(--ok-grey-colo-lightr);
 }
 
 .courier-details {
@@ -53,14 +53,14 @@
 
 .price i {
   margin-left: 0.5rem;
-  color: #E53E3E; /* Red icon */
+  color: var(--ok-primary-color); /* Red icon */
 }
 
 .courier-info {
   display: flex;
   flex-direction: row; /* Make information inline */
   align-items: center;
-  color: #FFFFFF; /* White text color */
+  color: whitesmoke; /* White text color */
 }
 
 .courier-info span {
@@ -72,8 +72,9 @@
 }
 
 .courier-info i {
-  color: #E53E3E; /* Red icons */
+  color: var(--ok-primary-color); /* Red icons */
    margin-left: 0.5rem;
+  margin-bottom: 0.3rem
 }
 
 .icon-group {
@@ -91,7 +92,7 @@
   content: attr(title);
   position: absolute;
   background: rgba(0, 0, 0, 0.75);
-  color: #FFFFFF;
+  color: whitesmoke;
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   top: -1.5rem;
@@ -117,7 +118,7 @@
 
 .actions .btn-primary {
   background-color: #d50c0c;
-  color: #FFFFFF;
+  color: whitesmoke;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -127,8 +128,8 @@
 }
 
 .actions .btn-secondary {
-  background-color: #2D3748;
-  color: #FFFFFF;
+  background-color: var(--ok-grey-color);
+  color: whitesmoke;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 

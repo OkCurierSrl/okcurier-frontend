@@ -1,6 +1,6 @@
 <div class="order-form">
   <p-card>
-    <h2>{{ title }}</h2>
+    <h4>{{ title }}</h4>
     <form [formGroup]="orderForm">
       <div class="p-field" [ngClass]="{'invalid': orderForm.get('name').invalid && orderForm.get('name').touched}">
         <label for="name">Nume</label>
@@ -12,7 +12,7 @@
 
       <div class="p-field" [ngClass]="{'invalid': orderForm.get('phone1').invalid && orderForm.get('phone1').touched}">
         <label for="phone1">Numar de Telefon</label>
-        <input id="phone1" pInputText formControlName="phone1" placeholder="Adauga numarul de telefon" />
+        <input id="phone1" pInputText formControlName="phone1" placeholder="numarul de telefon" />
         <div *ngIf="orderForm.get('phone1').invalid && orderForm.get('phone1').touched" class="error">
           Numarul de telefon trebuie sa fie valid.
         </div>
@@ -20,19 +20,19 @@
 
       <div class="p-field" [ngClass]="{'invalid': orderForm.get('phone2').invalid && orderForm.get('phone2').touched}">
         <label for="phone2">Numar de Telefon 2</label>
-        <input id="phone2" pInputText formControlName="phone2" placeholder="Adauga numarul de telefon 2" />
+        <input id="phone2" pInputText formControlName="phone2" placeholder="numarul de telefon 2" />
         <div *ngIf="orderForm.get('phone2').invalid && orderForm.get('phone2').touched" class="error">
           Numarul de telefon trebuie sa fie valid.
         </div>
       </div>
 
       <div class="p-grid dropdowns">
-        <div class="p-col">
-          <p-dropdown [options]="counties" formControlName="county" optionLabel="name" (onChange)="onCountyChange($event)" placeholder="Judet"></p-dropdown>
+        <div class="p-col-6">
+          <p-dropdown [options]="counties" autoWidth="false" formControlName="county" optionLabel="name" autoWidth="false" [style]="{'width':'100%'}" (onChange)="onCountyChange($event)" placeholder="Judet"></p-dropdown>
         </div>
 
-        <div class="p-col">
-          <p-dropdown [options]="cities" formControlName="city" optionLabel="name" placeholder="Localitate"></p-dropdown>
+        <div class="p-col-6">
+          <p-dropdown [options]="cities" autoWidth="false" formControlName="city" optionLabel="name"  autoWidth="false" [style]="{'width':'100%'}" placeholder="Localitate"></p-dropdown>
         </div>
       </div>
 
@@ -51,9 +51,9 @@
       </div>
 
       <div class="p-grid">
-        <div class="p-col" [ngClass]="{'invalid': orderForm.get('number').invalid && orderForm.get('number').touched}">
+        <div class="p-col-6" [ngClass]="{'invalid': orderForm.get('number').invalid && orderForm.get('number').touched}">
           <label for="number">Numarul</label>
-          <input id="number" #numberInput pInputText formControlName="number" (input)="onNumberInput($event)" placeholder="Adauga numarul" />
+          <input id="number" #numberInput pInputText formControlName="number" (input)="onNumberInput($event)" placeholder="numarul" />
           <ul *ngIf="numberSuggestions.length" class="suggestions-list">
             <li *ngFor="let suggestion of numberSuggestions" (click)="selectNumber(suggestion)">
               {{ suggestion.description }}
@@ -64,31 +64,31 @@
           </div>
         </div>
 
-        <div class="p-col"  [ngClass]="{'invalid': orderForm.get('postalCode').invalid && orderForm.get('postalCode').touched}">
+        <div class="p-col-6"  [ngClass]="{'invalid': orderForm.get('postalCode').invalid && orderForm.get('postalCode').touched}">
           <label for="postalCode">Cod Postal</label>
-          <input id="postalCode" #postalCodeInput pInputText formControlName="postalCode" placeholder="Adauga codul postal" />
+          <input id="postalCode" #postalCodeInput pInputText formControlName="postalCode" placeholder="codul postal" />
           <div *ngIf="orderForm.get('postalCode').invalid && orderForm.get('postalCode').touched" class="error">
             Codul postal este invalid.
           </div>
         </div>
       </div>
 
-      <div class="p-field p-grid second-grid">
-        <div class="p-col">
+      <div class="p-grid second-grid">
+        <div class="p-col-3">
           <label for="block">Bloc</label>
-          <input id="block" pInputText formControlName="block" placeholder="Adauga bloc" />
+          <input id="block" pInputText formControlName="block" placeholder="bloc" />
         </div>
-        <div class="p-col">
+        <div class="p-col-3">
           <label for="staircase">Scara</label>
-          <input id="staircase" pInputText formControlName="staircase" placeholder="Adauga scara" />
+          <input id="staircase" pInputText formControlName="staircase" placeholder="scara" />
         </div>
-        <div class="p-col">
+        <div class="p-col-3">
           <label for="floor">Etaj</label>
-          <input id="floor" pInputText formControlName="floor" placeholder="Adauga etaj" />
+          <input id="floor" pInputText formControlName="floor" placeholder="etaj" />
         </div>
-        <div class="p-col">
+        <div class="p-col-3">
           <label for="apartment">Apartament</label>
-          <input id="apartment" pInputText formControlName="apartment" placeholder="Adauga apartament" />
+          <input id="apartment" pInputText formControlName="apartment" placeholder="apartament" />
         </div>
       </div>
     </form>
