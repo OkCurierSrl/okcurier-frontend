@@ -26,13 +26,14 @@
         </div>
       </div>
 
+      <div class="p-grid dropdowns">
+        <div class="p-col">
+          <p-dropdown [options]="counties" formControlName="county" optionLabel="name" (onChange)="onCountyChange($event)" placeholder="Judet"></p-dropdown>
+        </div>
 
-      <div class="p-field">
-        <p-dropdown [options]="counties" formControlName="county" optionLabel="name" (onChange)="onCountyChange($event)" placeholder="Judet"></p-dropdown>
-      </div>
-
-      <div class="p-field">
-        <p-dropdown [options]="cities" formControlName="city" optionLabel="name" placeholder="Localitate"></p-dropdown>
+        <div class="p-col">
+          <p-dropdown [options]="cities" formControlName="city" optionLabel="name" placeholder="Localitate"></p-dropdown>
+        </div>
       </div>
 
       <div class="p-field" [ngClass]="{'invalid': orderForm.get('street').invalid && orderForm.get('street').touched}">
@@ -49,28 +50,30 @@
         </div>
       </div>
 
-      <div class="p-field" [ngClass]="{'invalid': orderForm.get('number').invalid && orderForm.get('number').touched}">
-        <label for="number">Numarul</label>
-        <input id="number" #numberInput pInputText formControlName="number" (input)="onNumberInput($event)" placeholder="Adauga numarul" />
-        <ul *ngIf="numberSuggestions.length" class="suggestions-list">
-          <li *ngFor="let suggestion of numberSuggestions" (click)="selectNumber(suggestion)">
-            {{ suggestion.description }}
-          </li>
-        </ul>
-        <div *ngIf="orderForm.get('number').invalid && orderForm.get('number').touched" class="error">
-          Numarul este obligatoriu.
+      <div class="p-grid">
+        <div class="p-col" [ngClass]="{'invalid': orderForm.get('number').invalid && orderForm.get('number').touched}">
+          <label for="number">Numarul</label>
+          <input id="number" #numberInput pInputText formControlName="number" (input)="onNumberInput($event)" placeholder="Adauga numarul" />
+          <ul *ngIf="numberSuggestions.length" class="suggestions-list">
+            <li *ngFor="let suggestion of numberSuggestions" (click)="selectNumber(suggestion)">
+              {{ suggestion.description }}
+            </li>
+          </ul>
+          <div *ngIf="orderForm.get('number').invalid && orderForm.get('number').touched" class="error">
+            Numarul este obligatoriu.
+          </div>
+        </div>
+
+        <div class="p-col"  [ngClass]="{'invalid': orderForm.get('postalCode').invalid && orderForm.get('postalCode').touched}">
+          <label for="postalCode">Cod Postal</label>
+          <input id="postalCode" #postalCodeInput pInputText formControlName="postalCode" placeholder="Adauga codul postal" />
+          <div *ngIf="orderForm.get('postalCode').invalid && orderForm.get('postalCode').touched" class="error">
+            Codul postal este invalid.
+          </div>
         </div>
       </div>
 
-      <div class="p-field" [ngClass]="{'invalid': orderForm.get('postalCode').invalid && orderForm.get('postalCode').touched}">
-        <label for="postalCode">Cod Postal</label>
-        <input id="postalCode" #postalCodeInput pInputText formControlName="postalCode" placeholder="Adauga codul postal" />
-        <div *ngIf="orderForm.get('postalCode').invalid && orderForm.get('postalCode').touched" class="error">
-          Codul postal este invalid.
-        </div>
-      </div>
-
-      <div class="p-field p-grid">
+      <div class="p-field p-grid second-grid">
         <div class="p-col">
           <label for="block">Bloc</label>
           <input id="block" pInputText formControlName="block" placeholder="Adauga bloc" />

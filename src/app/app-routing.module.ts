@@ -11,6 +11,7 @@ import {DashboardLayoutComponent} from "./components/dashboard/dashboard-layout/
 import {CreateOrderComponent} from "./components/dashboard/create-order/create-order.component";
 import {CourierOptionsComponent} from "./components/dashboard/courier-options/courier-options.component";
 import {OrderListComponent} from "./components/dashboard/order-list/order-list.component";
+import {OrderFormComponent} from "./components/dashboard/create-order/order-form/order-form.component";
 
 export const routes: Routes = [
   {
@@ -21,6 +22,11 @@ export const routes: Routes = [
   {
     path: 'order',
     component: CreateOrderComponent,
+    canActivate: [authGuardFn],
+  },
+  {
+    path: 'test',
+    component: OrderFormComponent,
     canActivate: [authGuardFn],
   },
   {

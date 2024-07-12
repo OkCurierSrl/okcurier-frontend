@@ -16,14 +16,14 @@ import { PlacesService } from "../../../../services/places.service";
   templateUrl: './order-form.component.html',
   standalone: true,
   imports: [
-    CardModule,
-    ReactiveFormsModule,
     DropdownModule,
     NgIf,
     NgForOf,
     ChipsModule,
     ButtonDirective,
-    NgClass
+    NgClass,
+    CardModule,
+    ReactiveFormsModule
   ],
   styleUrls: ['./order-form.component.css']
 })

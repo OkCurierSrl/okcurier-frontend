@@ -1,13 +1,17 @@
-.p-card {
-  background-color: var(--ok-dark-color);
-  padding: var(--spacing);
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  margin: 0 auto;
+/* Ensure background color is applied */
+:host ::ng-deep .p-card {
+  background-color: rgb(63, 63, 70) !important;
+  color: #FFFFFF !important; /* Ensure text color is white */
 }
 
-h2 {
+:host ::ng-deep .p-card-content,
+:host ::ng-deep .p-card-body,
+:host ::ng-deep .p-card .p-card-header {
+  background-color: rgb(63, 63, 70) !important;
+  color: #FFFFFF !important; /* Ensure text color is white */
+}
+
+.order-form h2 {
   color: white;
   margin-bottom: var(--spacing);
 }
@@ -66,10 +70,14 @@ input::placeholder {
 }
 
 .p-col {
+  flex: 1 1 calc(50% - var(--spacing));
+}
+
+.second-grid .p-col {
   flex: 1 1 calc(25% - var(--spacing));
 }
 
-.p-col input {
+.p-col input, .p-col p-dropdown {
   width: 100%;
 }
 
