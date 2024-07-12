@@ -1,14 +1,27 @@
-/* order-list.component.css */
 .order-list-container {
-  font-family: 'Roboto', sans-serif;
-  color: #333;
+  font-family: 'Poppins', sans-serif;
+  color: var(--ok-dark-color);;
   background-color: #f8f9fa;
   border-radius: 10px;
   padding: 1rem;
-  max-width: 1200px;
   margin: auto;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--ok-dark-color);
+  width: 100%;
+  min-height: 1000px;
+  font-size: 1rem;
 }
+
+/* Center the table within its container */
+.table-responsive {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+.order-list-table {
+  margin: 0 auto;
+}
+
 
 .order-list-actions {
   display: flex;
@@ -28,73 +41,132 @@
   padding: 0.5rem 1rem;
   border-radius: 5px;
   border: none;
-  background-color: #007bff;
+  background-color: var(--ok-primary-color);
   color: white;
   cursor: pointer;
 }
 
 .order-list-actions button:hover {
-  background-color: #0056b3;
+  background-color: var(--ok-primary-color-dark);;
 }
 
-.table-responsive {
-  overflow-x: auto;
+
+.p-calendar {
+  width: 100% !important;
+  max-width: 200px;
+}
+
+:host ::ng-deep .p-datepicker {
+  z-index: 1000 !important;
 }
 
 .order-list-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed; /* Ensure fixed layout */
 }
 
 .order-list-table th,
 .order-list-table td {
-  padding: 0.75rem;
-  text-align: left;
-  border-bottom: 1px solid #dee2e6;
+  text-align: center;
+  border: 1px solid var(--ok-primary-color);
+  width: calc(100% / 16); /* Fixed width for 16 columns */
+  word-wrap: break-word; /* Wrap text within cells */
+  overflow-wrap: break-word; /* Wrap text within cells */
+  white-space: normal; /* Allow text wrapping */
 }
 
 .order-list-table th {
-  background-color: #343a40;
-  color: white;
+  background-color: var(--ok-grey-color);
+  color: var(--ok-primary-color-dark);
 }
 
+.order-list-table th input {
+  max-width: 100%;
+  height: 3rem;
+  allign-items: center;
+}
+
+
 .order-list-table td {
-  background-color: #ffffff;
+  background-color: var(--ok-grey-color);
+}
+
+.order-list-table tr:nth-child(even) td {
+  background-color: var(--ok-grey-colo-lightr);
 }
 
 .order-list-table tr:hover td {
-  background-color: #f1f1f1;
+  background-color: var(--ok-grey-colo-lightr);
 }
 
+/* Set specific width for Actiuni column */
+.order-list-table th:nth-child(1), /* Actiuni */
+.order-list-table td:nth-child(1) {
+  max-width: 120px; /* Adjust this value as necessary */
+  width: 120px;
+}
+
+/* Set specific widths for Numar Colete and Greutate columns */
+.order-list-table th:nth-child(12), /* Numar Colete */
+.order-list-table td:nth-child(12) {
+  max-width: 20px; /* Set a smaller max-width */
+  width: 20px;
+}
+
+.order-list-table th:nth-child(13), /* Greutate */
+.order-list-table td:nth-child(13) {
+  max-width: 20px; /* Set a smaller max-width */
+  width: 20px;
+}
+
+
 .order-list-table img {
-  width: 30px;
+  width: 70px;
   height: auto;
 }
 
+.filler-row {
+  background-color: #ffffff;
+  height: 40px; /* Adjust this value to match your row height */
+  border: 1px solid #dee2e6;
+}
+
+.filler-cell {
+  border: 1px solid #dee2e6;
+}
+
+.btn-action i {
+  font-size: 0.5rem;
+}
 .btn-action {
-  background-color: #28a745;
+  background-color: var(--ok-accent-color);
   border: none;
   border-radius: 5px;
   padding: 0.5rem;
   cursor: pointer;
   color: white;
   margin: 0 0.25rem;
-  display: inline-flex;
+  display: inline-block; /* Change to inline-block */
   align-items: center;
   justify-content: center;
+  width: 20px; /* Remove full width */
   transition: background-color 0.3s ease;
 }
-
-.btn-action i {
-  font-size: 1rem;
+.action-buttons {
+  display: flex;
+  gap: 0.5rem; /* Adjust spacing between buttons */
 }
+
+
 
 .btn-action:hover {
   background-color: #218838;
 }
 
+
 .btn-pagination {
-  background-color: #007bff;
+  background-color: var(--ok-primary-color);
   border: none;
   border-radius: 5px;
   padding: 0.5rem 1rem;
@@ -106,13 +178,32 @@
 
 .btn-pagination.active,
 .btn-pagination:hover {
-  background-color: #0056b3;
+  background-color: var(--ok-primary-color-dark);
 }
 
-.actions {
-  display: flex;
-  justify-content: center;
+.btn-action {
+  background-color: var(--ok-accent-color);
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: white;
+  margin: .25rem;
+  display: flex; /* Use flex to ensure full height */
   align-items: center;
+  justify-content: center;
+  height: 100%; /* Ensure button takes full height */
+  width: 100%; /* Ensure button takes full width */
+  transition: background-color 0.3s ease;
+}
+
+
+.btn-action i {
+  font-size: 1rem;
+}
+
+.btn-action:hover {
+  background-color: #218838;
 }
 
 .status-awb-generat {

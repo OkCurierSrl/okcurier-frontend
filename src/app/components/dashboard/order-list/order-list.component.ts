@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {CalendarModule} from "primeng/calendar";
+import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
 
 interface Package {
   number: string;
@@ -39,7 +40,8 @@ interface Order {
     FormsModule,
     CalendarModule,
     NgIf,
-    NgForOf
+    NgForOf,
+    BsDatepickerModule
   ],
   styleUrls: ['./order-list.component.css']
 })
@@ -50,6 +52,7 @@ export class OrderListComponent implements OnInit {
   currentPage: number = 1;
   searchTerm: string = '';
   filterProperty: string = 'all';
+  dateRange: Date[];
 
   filter: any = {
     awb: '',
@@ -68,6 +71,7 @@ export class OrderListComponent implements OnInit {
     cashOnDelivery: '',
     status: ''
   };
+  minimumRows: number = 20;
 
   constructor(private router: Router) {}
 
@@ -209,26 +213,52 @@ export class OrderListComponent implements OnInit {
     }
   }
 
-  filterOrders(): void {
+  onDateRangeChange(value: Date[]): void {
+    this.dateRange = value;
+    this.filterOrders();
+  }
+
+
+  filterOrders() {
     this.filteredOrders = this.orders.filter(order => {
-      return Object.keys(this.filter).every(key => {
-        if (key === 'creationDateRange' || key === 'pickupDateRange') {
-          if (this.filter[key]) {
-            const [startDate, endDate] = this.filter[key];
-            const date = new Date(order[key === 'creationDateRange' ? 'creationDate' : 'pickupDate']);
-            return date >= startDate && date <= endDate;
-          }
-          return true;
-        }
-        return order[key].toString().toLowerCase().includes(this.filter[key].toLowerCase());
-      });
+      const matchesAwb = order.awb.includes(this.filter.awb);
+      const matchesCourier = order.courier.includes(this.filter.courier);
+      const matchesSenderName = order.senderName.includes(this.filter.senderName);
+      const matchesSenderAddress = order.senderAddress.includes(this.filter.senderAddress);
+      const matchesRecipientName = order.recipientName.includes(this.filter.recipientName);
+      const matchesRecipientAddress = order.recipientAddress.includes(this.filter.recipientAddress);
+      const matchesCount = order.count.toString().includes(this.filter.count);
+      const matchesIban = order.iban.includes(this.filter.iban);
+      const matchesOrderNumber = order.orderNumber.includes(this.filter.orderNumber);
+      const matchesPackageCount = order.packageCount.toString().includes(this.filter.packageCount);
+      const matchesWeight = order.weight.toString().includes(this.filter.weight);
+      const matchesCashOnDelivery = order.cashOnDelivery.toString().includes(this.filter.cashOnDelivery);
+      const matchesStatus = order.status.includes(this.filter.status);
+
+      const matchesCreationDateRange = this.filter.creationDateRange
+        ? new Date(order.creationDate) >= new Date(this.filter.creationDateRange[0])
+        && new Date(order.creationDate) <= new Date(this.filter.creationDateRange[1])
+        : true;
+
+      const matchesPickupDateRange = this.filter.pickupDateRange
+        ? new Date(order.pickupDate) >= new Date(this.filter.pickupDateRange[0])
+        && new Date(order.pickupDate) <= new Date(this.filter.pickupDateRange[1])
+        : true;
+
+      return matchesAwb && matchesCourier && matchesSenderName && matchesSenderAddress
+        && matchesRecipientName && matchesRecipientAddress && matchesCount && matchesIban
+        && matchesOrderNumber && matchesPackageCount && matchesWeight && matchesCashOnDelivery
+        && matchesStatus && matchesCreationDateRange && matchesPickupDateRange;
     });
+
+    this.currentPage = 1;
+    this.pages = this.getPagesArray();
   }
 
-  togglePackageDetails(order: Order): void {
-    order.showPackages = !order.showPackages;
+  getPagesArray() {
+    const totalPages = Math.ceil(this.filteredOrders.length / 10);
+    return Array(totalPages).fill(0).map((x, i) => i + 1);
   }
-
   viewOrder(order: Order): void {
     // Handle view order logic
     this.router.navigate(['/order-details', order.awb]);

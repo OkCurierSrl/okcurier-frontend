@@ -17,7 +17,6 @@
         <th>Adresa Destinatar</th>
         <th>Data Creare</th>
         <th>Data Ridicare</th>
-        <th>Count</th>
         <th>IBAN</th>
         <th>Numar Comanda</th>
         <th>Numar Colete</th>
@@ -26,36 +25,36 @@
         <th>Status</th>
       </tr>
       <tr>
-        <th></th>
-        <th><input type="text" [(ngModel)]="filter.awb" (input)="filterOrders()" placeholder="Filtreaza AWB"></th>
-        <th><input type="text" [(ngModel)]="filter.courier" (input)="filterOrders()" placeholder="Filtreaza Curier"></th>
-        <th><input type="text" [(ngModel)]="filter.senderName" (input)="filterOrders()" placeholder="Filtreaza Expeditor"></th>
-        <th><input type="text" [(ngModel)]="filter.senderAddress" (input)="filterOrders()" placeholder="Filtreaza Adresa Exp."></th>
-        <th><input type="text" [(ngModel)]="filter.recipientName" (input)="filterOrders()" placeholder="Filtreaza Destinatar"></th>
-        <th><input type="text" [(ngModel)]="filter.recipientAddress" (input)="filterOrders()" placeholder="Filtreaza Adresa Dest."></th>
+        <th>Download/View/Print</th>
+        <th><input type="text" [(ngModel)]="filter.awb" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.courier" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.senderName" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.senderAddress" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.recipientName" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.recipientAddress" (input)="filterOrders()"></th>
         <th>
           <p-calendar [(ngModel)]="filter.creationDateRange" selectionMode="range" dateFormat="dd-mm-yy" (onSelect)="filterOrders()"></p-calendar>
         </th>
         <th>
           <p-calendar [(ngModel)]="filter.pickupDateRange" selectionMode="range" dateFormat="dd-mm-yy" (onSelect)="filterOrders()"></p-calendar>
         </th>
-        <th><input type="text" [(ngModel)]="filter.count" (input)="filterOrders()" placeholder="Filtreaza Count"></th>
-        <th><input type="text" [(ngModel)]="filter.iban" (input)="filterOrders()" placeholder="Filtreaza IBAN"></th>
-        <th><input type="text" [(ngModel)]="filter.orderNumber" (input)="filterOrders()" placeholder="Filtreaza Numar Comanda"></th>
-        <th><input type="text" [(ngModel)]="filter.packageCount" (input)="filterOrders()" placeholder="Filtreaza Numar Colete"></th>
-        <th><input type="text" [(ngModel)]="filter.weight" (input)="filterOrders()" placeholder="Filtreaza Greutate"></th>
-        <th><input type="text" [(ngModel)]="filter.cashOnDelivery" (input)="filterOrders()" placeholder="Filtreaza Ramburs"></th>
-        <th><input type="text" [(ngModel)]="filter.status" (input)="filterOrders()" placeholder="Filtreaza Status"></th>
+        <th><input type="text" [(ngModel)]="filter.iban" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.orderNumber" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.packageCount" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.weight" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.cashOnDelivery" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.status" (input)="filterOrders()"></th>
       </tr>
       </thead>
       <tbody>
       <ng-container *ngFor="let order of filteredOrders">
         <tr>
           <td class="actions">
-            <button class="btn btn-action" (click)="downloadOrder(order)"><i class="fas fa-download"></i></button>
-            <button class="btn btn-action" (click)="viewOrder(order)"><i class="fas fa-eye"></i></button>
-            <button class="btn btn-action" (click)="printOrder(order)"><i class="fas fa-print"></i></button>
-            <button class="btn btn-action" (click)="togglePackageDetails(order)"><i class="fas" [ngClass]="order.showPackages ? 'fa-chevron-up' : 'fa-chevron-down'"></i></button>
+            <div class="action-buttons">
+              <button class="btn btn-action" (click)="downloadOrder(order)"><i class="fas fa-download"></i></button>
+              <button class="btn btn-action" (click)="viewOrder(order)"><i class="fas fa-eye"></i></button>
+              <button class="btn btn-action" (click)="printOrder(order)"><i class="fas fa-print"></i></button>
+            </div>
           </td>
           <td>{{ order.awb }}</td>
           <td><img [src]="getCourierLogo(order.courier)" alt="{{ order.courier }} logo"></td>
@@ -65,7 +64,6 @@
           <td>{{ order.recipientAddress }}</td>
           <td>{{ order.creationDate }}</td>
           <td>{{ order.pickupDate }}</td>
-          <td>{{ order.count }}</td>
           <td>{{ order.iban }}</td>
           <td>{{ order.orderNumber }}</td>
           <td>{{ order.packageCount }}</td>
