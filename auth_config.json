@@ -7,4 +7,5 @@
   "apiUri": "${API_URI}",
   "appUri": "${APP_URI}",
   "errorPath": "/error"
+
 }
