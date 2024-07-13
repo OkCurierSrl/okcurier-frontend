@@ -1,0 +1,47 @@
+.package-overview {
+  padding: 0.2rem;
+  background-color: var(--ok-dark-color);
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.875rem;
+  color: whitesmoke;
+}
+
+.package-overview .overview-header {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 0.1rem;
+}
+
+.package-overview .count,
+.package-overview .weight {
+  flex: 1;
+  margin: 0 0.2rem;
+}
+
+.package-overview .count h3,
+.package-overview .weight h3 {
+  margin: 0;
+  font-size: 1.0rem;
+  color: whitesmoke;
+}
+
+.package-overview .info {
+  padding: 0.2rem;
+  background-color: var(--ok-grey-color);
+  border-left: 4px solid var(--ok-primary-color);
+  margin-top: 0.2rem;
+  border-radius: 4px;
+  animation: fadeIn 0.5s ease-in-out;
+  font-size: 0.75rem;
+}
+
+.package-overview .info p {
+  margin: 0.1rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

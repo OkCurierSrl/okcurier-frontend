@@ -7,11 +7,35 @@ import {authGuardFn} from '@auth0/auth0-angular';
 import {MainLayoutComponent} from "./components/public/main-layout/main-layout.component";
 import {AdminLayoutComponent} from "./components/admin/admin-layout/admin-layout.component";
 import {AdminPricesComponent} from "./pages/admin-prices/admin-prices.component";
+import {DashboardLayoutComponent} from "./components/dashboard/dashboard-layout/dashboard-layout.component";
+import {CreateOrderComponent} from "./components/dashboard/create-order/create-order.component";
+import {CourierOptionsComponent} from "./components/dashboard/courier-options/courier-options.component";
+import {OrderListComponent} from "./components/dashboard/order-list/order-list.component";
+import {OrderFormComponent} from "./components/dashboard/create-order/order-form/order-form.component";
 
 export const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
+    canActivate: [authGuardFn],
+  },
+  {
+    path: 'order',
+    component: CreateOrderComponent,
+    canActivate: [authGuardFn],
+  },
+  {
+    path: 'test',
+    component: OrderFormComponent,
+    canActivate: [authGuardFn],
+  },
+  {
+    path: 'courier-options',
+    component: CourierOptionsComponent,
+    canActivate: [authGuardFn],
+  },
+  { path: 'order-list',
+    component: OrderListComponent,
     canActivate: [authGuardFn],
   },
 
@@ -21,6 +45,16 @@ export const routes: Routes = [
     children: [
       {
         path: 'prices',
+        component: AdminPricesComponent,
+        canActivate: [authGuardFn],
+      }]
+  },
+  {
+    path: 'dashboard',
+    component: DashboardLayoutComponent,
+    children: [
+      {
+        path: 'profil',
         component: AdminPricesComponent,
         canActivate: [authGuardFn],
       }]

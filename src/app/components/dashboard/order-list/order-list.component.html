@@ -1,0 +1,105 @@
+<div class="order-list-container">
+  <h2>Lista cu AWB</h2>
+  <div class="order-list-actions">
+    <button (click)="exportToExcel()">Export Excel</button>
+    <button (click)="printOrders()">Print</button>
+  </div>
+  <div class="table-responsive">
+    <table class="order-list-table">
+      <thead>
+      <tr>
+        <th>Actiuni</th>
+        <th>Numar AWB</th>
+        <th>Curier</th>
+        <th>Nume Expeditor</th>
+        <th>Adresa Expeditor</th>
+        <th>Nume Destinatar</th>
+        <th>Adresa Destinatar</th>
+        <th>Data Creare</th>
+        <th>Data Ridicare</th>
+        <th>IBAN</th>
+        <th>Numar Comanda</th>
+        <th>Numar Colete</th>
+        <th>Greutate</th>
+        <th>Ramburs</th>
+        <th>Status</th>
+      </tr>
+      <tr>
+        <th>Download/View/Print</th>
+        <th><input type="text" [(ngModel)]="filter.awb" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.courier" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.senderName" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.senderAddress" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.recipientName" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.recipientAddress" (input)="filterOrders()"></th>
+        <th>
+          <p-calendar [(ngModel)]="filter.creationDateRange" selectionMode="range" dateFormat="dd-mm-yy" (onSelect)="filterOrders()"></p-calendar>
+        </th>
+        <th>
+          <p-calendar [(ngModel)]="filter.pickupDateRange" selectionMode="range" dateFormat="dd-mm-yy" (onSelect)="filterOrders()"></p-calendar>
+        </th>
+        <th><input type="text" [(ngModel)]="filter.iban" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.orderNumber" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.packageCount" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.weight" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.cashOnDelivery" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.status" (input)="filterOrders()"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngFor="let order of filteredOrders">
+        <tr>
+          <td class="actions">
+            <div class="action-buttons">
+              <button class="btn btn-action" (click)="downloadOrder(order)"><i class="fas fa-download"></i></button>
+              <button class="btn btn-action" (click)="viewOrder(order)"><i class="fas fa-eye"></i></button>
+              <button class="btn btn-action" (click)="printOrder(order)"><i class="fas fa-print"></i></button>
+            </div>
+          </td>
+          <td>{{ order.awb }}</td>
+          <td><img [src]="getCourierLogo(order.courier)" alt="{{ order.courier }} logo"></td>
+          <td>{{ order.senderName }}</td>
+          <td>{{ order.senderAddress }}</td>
+          <td>{{ order.recipientName }}</td>
+          <td>{{ order.recipientAddress }}</td>
+          <td>{{ order.creationDate }}</td>
+          <td>{{ order.pickupDate }}</td>
+          <td>{{ order.iban }}</td>
+          <td>{{ order.orderNumber }}</td>
+          <td>{{ order.packageCount }}</td>
+          <td>{{ order.weight }}</td>
+          <td>{{ order.cashOnDelivery }} RON</td>
+          <td [ngClass]="getStatusClass(order.status)">{{ order.status }}</td>
+        </tr>
+        <tr *ngIf="order.showPackages" class="package-details-row">
+          <td colspan="16">
+            <table class="package-details-table">
+              <thead>
+              <tr>
+                <th>Numar Colet</th>
+                <th>Greutate</th>
+                <th>Dimensiuni</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let aPackage of order.packages">
+                <td>{{ aPackage.number }}</td>
+                <td>{{ aPackage.weight }}</td>
+                <td>{{ aPackage.dimensions }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination">
+    <button class="btn btn-pagination" (click)="prevPage()">« Previous</button>
+    <ng-container *ngFor="let page of pages">
+      <button class="btn btn-pagination" [ngClass]="{'active': page === currentPage}" (click)="goToPage(page)">{{ page }}</button>
+    </ng-container>
+    <button class="btn btn-pagination" (click)="nextPage()">Next »</button>
+  </div>
+</div>

@@ -23,11 +23,13 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
               "node_modules/highlight.js/styles/monokai-sublime.css",
               "node_modules/primeng/resources/themes/saga-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/primeicons/primeicons.css"
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.css"
             ],
             "scripts": [],
             "vendorChunk": true,
@@ -75,6 +77,7 @@
           },
           "configurations": {
             "production": {
+              "proxyConfig": "proxy.conf.json",
               "buildTarget": "okcurier-frontend:build:production"
             }
           }
@@ -97,6 +100,8 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -124,7 +129,7 @@
           }
         }
       }
-    }
+    },
   },
   "cli": {
     "analytics": false,

@@ -16,8 +16,9 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         'default-src': ["'self'"],
-        'connect-src': ["'self'", 'https://*.auth0.com', authConfig.apiUri, 'https://okcurier-backend-0f6dc5b97bfd.herokuapp.com'],
+        'connect-src': ["'self'", 'https://*.auth0.com', 'https://maps.googleapis.com', authConfig.apiUri, 'https://okcurier-backend-0f6dc5b97bfd.herokuapp.com'],
         'frame-src': ["'self'", 'https://*.auth0.com'],
+        'script-src': ["'self'", "'unsafe-inline'"], // Allow inline scripts
         'base-uri': ["'self'"],
         'block-all-mixed-content': [],
         'font-src': ["'self'", 'https:', 'data:'],

@@ -1,0 +1,34 @@
+<div class="package-form">
+  <h5>Colet: {{ index + 1 }}</h5>
+  <form [formGroup]="packageForm">
+    <div class="compact-form">
+      <div class="small-field p-field" [ngClass]="{'invalid': packageForm.get('length').invalid && packageForm.get('length').touched}">
+        <label for="length">Lungime</label>
+        <input id="length" pInputText type="number" min="0" formControlName="length" placeholder="0" />
+      </div>
+      <div class="small-field p-field" [ngClass]="{'invalid': packageForm.get('width').invalid && packageForm.get('width').touched}">
+        <label for="width">latime</label>
+        <input id="width" pInputText type="number" min="0" formControlName="width" placeholder="0" />
+      </div>
+      <div class="small-field p-field" [ngClass]="{'invalid': packageForm.get('height').invalid && packageForm.get('height').touched}">
+        <label for="height">inaltime</label>
+        <input id="height" pInputText type="number" min="0" formControlName="height" placeholder="0" />
+      </div>
+      <div class="small-field p-field" [ngClass]="{'invalid': packageForm.get('weight').invalid && packageForm.get('weight').touched}">
+        <label for="weight">kg</label>
+        <input id="weight" pInputText type="number" min="0" formControlName="weight" placeholder="0" />
+      </div>
+      <div class="small-field p-field">
+        <i class="fas fa-trash-alt remove-icon" (click)="removePackage()"></i>
+      </div>
+    </div>
+    <div class="p-field p-grid">
+      <div *ngIf="dimensionError" class="error p-col-12">
+        Coletul nu trebuie sa aiba L + l + h > 180cm!
+      </div>
+      <div *ngIf="weightError" class="error p-col-12">
+        Coletul nu trebuie sa aiba mai mult de 31kg!
+      </div>
+    </div>
+  </form>
+</div>

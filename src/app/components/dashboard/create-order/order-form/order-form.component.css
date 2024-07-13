@@ -1,0 +1,99 @@
+/* Ensure background color is applied */
+:host ::ng-deep .p-card {
+  background-color: rgb(63, 63, 70) !important;
+  color: whitesmoke !important; /* Ensure text color is white */
+  min-height: 700px;
+  max-width: 400px;
+  border-radius: var(--radius); /* Set the border radius */
+}
+
+:host ::ng-deep .p-card-content,
+:host ::ng-deep .p-card-body,
+:host ::ng-deep .p-card .p-card-header {
+  background-color: rgb(63, 63, 70) !important;
+  color: #FFFFFF !important; /* Ensure text color is white */
+  border-radius: var(--radius); /* Set the border radius */
+
+}
+
+.order-form h2 {
+  color: white;
+  margin-bottom: var(--spacing);
+}
+
+.p-field {
+  margin-bottom: var(--spacing);
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--ok-secondary-color);
+  border-radius: var(--radius);
+  background-color: whitesmoke;
+  color: black;
+}
+
+input::placeholder {
+  color: var(--ok-grey-color);
+}
+
+.p-dropdown {
+  width: 100% !important;
+}
+
+:host ::ng-deep .p-dropdown-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestions-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--ok-grey-color);
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: white;
+  color: black;
+  position: absolute;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+.suggestions-list li {
+  padding: 10px;
+  cursor: pointer;
+  transition: black 0.3s ease;
+}
+
+.suggestions-list li:hover {
+  background-color: var(--ok-grey-color);
+}
+
+.p-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing);
+}
+
+.p-col-6 {
+  flex: 1 1 calc(50% - var(--spacing));
+}
+
+.second-grid .p-col-3 {
+  flex: 1 1 calc(25% - var(--spacing));
+  margin-top: var(--spacing);
+}
+
+.p-col input, .p-col p-dropdown {
+  width: 100%;
+}
+
+.error {
+  color: red;
+  font-size: 0.875rem;
+}

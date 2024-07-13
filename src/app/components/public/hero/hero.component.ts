@@ -34,7 +34,7 @@ export class HeroComponent {
   activeField: 'location' | 'destination' | null = null;
   selectedLocation: string;
   selectedDestination: string;
-  selectedPackageType: string = 'Plic';
+  selectedPackageType: string = 'PLIC';
   weight: number;
   length: number;
   width: number;
@@ -78,7 +78,7 @@ export class HeroComponent {
   }
 
   onPackageTypeChange(event: any): void {
-    this.isPlic = event.value === 'Plic';
+    this.isPlic = event.value === 'PLIC';
   }
 
   getPackageTypeOptions(): { label: string, value: string }[] {

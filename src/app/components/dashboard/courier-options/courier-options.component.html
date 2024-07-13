@@ -1,0 +1,32 @@
+<div class="courier-options">
+  <h5>Alegeți una din ofertele de mai jos:</h5>
+  <div *ngFor="let courier of couriers"
+       class="courier-option"
+       [ngClass]="{'selected': courier.selected}"
+       (click)="selectCourier(courier)"
+       tabindex="0"
+       role="button"
+       [attr.aria-pressed]="courier.selected">
+    <div class="courier-details">
+      <img [src]="getCourierLogo(courier.courier)" alt="{{ courier.courier }} logo">
+      <span class="price">{{ courier.totalPrice.toFixed(2) }} RON<i class="fas fa-money-bill-wave"></i></span>
+    </div>
+    <div class="courier-info">
+      <span><b>Ridicare:</b>  11-07-2024<i class="fas fa-home"></i></span>
+      <span><b>Deadline:</b>  13-07-2024<i class="fas fa-truck"></i></span>
+      <span>17:00<i class="fas fa-clock"></i></span>
+      <div class="icon-group">
+        <span class="icon" title="Curierul accepta plata cu cardul"><i class="fas fa-credit-card"></i></span>
+        <span class="icon" title="Envelope"><i class="fas fa-envelope"></i></span>
+        <span class="icon" title="Calendar"><i class="fas fa-calendar"></i></span>
+        <span class="icon" title="File"><i class="fas fa-file-alt"></i></span>
+        <span class="icon" title="Shield"><i class="fas fa-shield-alt"></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn btn-primary" (click)="generateAWB()">Generează AWB</button>
+    <button class="btn btn-primary" (click)="orderCourier()">Comanda Curier</button>
+    <button class="btn btn-secondary" (click)="goBack()">Înapoi</button>
+  </div>
+</div>
