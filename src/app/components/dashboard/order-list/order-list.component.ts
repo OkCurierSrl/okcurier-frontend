@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {CalendarModule} from "primeng/calendar";
-import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
 
 interface Package {
   number: string;
