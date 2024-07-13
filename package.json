@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
-    "build": "ng build",
-    "prod-build": "ng build --configuration production",
+    "build": "node replace-env.js && ng build",
+    "prod-build": "node replace-env.js && ng build --configuration production",
     "test": "ng test",
     "test:ci": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI",
     "lint": "ng lint",
@@ -16,7 +16,7 @@
     "prod": "npm-run-all --parallel server:app server:api",
     "postbuild": "npm run copy:server",
     "copy:server": "copyfiles server.js auth_config.json dist/okcurieri-frontend",
-    "heroku-postbuild": "ng build --configuration production"
+    "heroku-postbuild": "node replace-env.js && ng build --configuration production"
   },
   "private": true,
   "dependencies": {
