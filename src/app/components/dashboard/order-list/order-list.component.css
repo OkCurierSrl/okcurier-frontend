@@ -69,7 +69,7 @@
 .order-list-table th,
 .order-list-table td {
   text-align: center;
-  border: 1px solid var(--ok-primary-color);
+  /*border: 1px solid var(--ok-primary-color);*/
   width: calc(100% / 16); /* Fixed width for 16 columns */
   word-wrap: break-word; /* Wrap text within cells */
   overflow-wrap: break-word; /* Wrap text within cells */
@@ -77,8 +77,8 @@
 }
 
 .order-list-table th {
-  background-color: var(--ok-grey-color);
-  color: var(--ok-primary-color-dark);
+  background-color: var(--ok-dark-color);
+  color: whitesmoke;
 }
 
 .order-list-table th input {
@@ -103,22 +103,21 @@
 /* Set specific width for Actiuni column */
 .order-list-table th:nth-child(1), /* Actiuni */
 .order-list-table td:nth-child(1) {
-  max-width: 120px; /* Adjust this value as necessary */
-  width: 120px;
+  width: 8%;
 }
 
-/* Set specific widths for Numar Colete and Greutate columns */
-.order-list-table th:nth-child(12), /* Numar Colete */
-.order-list-table td:nth-child(12) {
-  max-width: 20px; /* Set a smaller max-width */
-  width: 20px;
-}
+/*!* Set specific widths for Numar Colete and Greutate columns *!*/
+/*.order-list-table th:nth-child(12), !* Numar Colete *!*/
+/*.order-list-table td:nth-child(12) {*/
+/*  max-width: 20px; !* Set a smaller max-width *!*/
+/*  width: 20px;*/
+/*}*/
 
-.order-list-table th:nth-child(13), /* Greutate */
-.order-list-table td:nth-child(13) {
-  max-width: 20px; /* Set a smaller max-width */
-  width: 20px;
-}
+/*.order-list-table th:nth-child(13), !* Greutate *!*/
+/*.order-list-table td:nth-child(13) {*/
+/*  max-width: 20px; !* Set a smaller max-width *!*/
+/*  width: 20px;*/
+/*}*/
 
 
 .order-list-table img {

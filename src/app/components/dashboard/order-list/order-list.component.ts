@@ -41,7 +41,6 @@ interface Order {
     CalendarModule,
     NgIf,
     NgForOf,
-    BsDatepickerModule
   ],
   styleUrls: ['./order-list.component.css']
 })
@@ -52,7 +51,6 @@ export class OrderListComponent implements OnInit {
   currentPage: number = 1;
   searchTerm: string = '';
   filterProperty: string = 'all';
-  dateRange: Date[];
 
   filter: any = {
     awb: '',
@@ -71,12 +69,12 @@ export class OrderListComponent implements OnInit {
     cashOnDelivery: '',
     status: ''
   };
-  minimumRows: number = 20;
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.loadMockData();
+    // TODO load real data
     this.filterOrders();
   }
 
@@ -212,13 +210,6 @@ export class OrderListComponent implements OnInit {
       default: return '';
     }
   }
-
-  onDateRangeChange(value: Date[]): void {
-    this.dateRange = value;
-    this.filterOrders();
-  }
-
-
   filterOrders() {
     this.filteredOrders = this.orders.filter(order => {
       const matchesAwb = order.awb.includes(this.filter.awb);
@@ -256,7 +247,7 @@ export class OrderListComponent implements OnInit {
   }
 
   getPagesArray() {
-    const totalPages = Math.ceil(this.filteredOrders.length / 10);
+    const totalPages = Math.ceil(this.filteredOrders.length / 3);
     return Array(totalPages).fill(0).map((x, i) => i + 1);
   }
   viewOrder(order: Order): void {

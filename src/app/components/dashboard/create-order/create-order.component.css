@@ -1,12 +1,15 @@
 .container {
-  max-width: 100%;
-  margin: 0 auto;
+  max-width: 80%;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem; /* Add a small gap */
 }
 
 .form-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1rem; /* Add a small gap */
 }
 
 .form-row {
@@ -14,19 +17,18 @@
   width: 100%;
   justify-content: space-around;
   align-items: flex-start;
+  gap: 1rem; /* Reduce the space between columns */
+  margin-bottom: 0; /* Remove any bottom margin */
 }
 
 .form-column {
   flex: 1;
-  min-width: 300px;
-  margin: 0 10px;
 }
 
 .package-section {
   flex: 1;
   min-width: 300px;
-  margin: 0 10px;
-  /* The height will be set dynamically */
+  margin: 0 0.5rem; /* Reduce the horizontal margin */
 }
 
 .scrollable-content {
