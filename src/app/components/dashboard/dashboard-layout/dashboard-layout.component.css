@@ -1,0 +1,3 @@
+.main-content {
+  padding-top: var(--header-height); /* Add padding to avoid overlap */
+}

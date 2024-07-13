@@ -12,6 +12,7 @@ import {AuthService} from "@auth0/auth0-angular";
   styleUrl: './dashboard-navbar.component.css'
 })
 export class DashboardNavbarComponent {
+  showDropdown: boolean;
   constructor(
     public auth: AuthService,
     @Inject(DOCUMENT) private doc: Document

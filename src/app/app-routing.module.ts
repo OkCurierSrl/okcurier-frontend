@@ -14,29 +14,41 @@ import {OrderListComponent} from "./components/dashboard/order-list/order-list.c
 import {OrderFormComponent} from "./components/dashboard/create-order/order-form/order-form.component";
 
 export const routes: Routes = [
+
   {
-    path: 'profile',
-    component: ProfileComponent,
+    path: 'dashboard',
+    component: DashboardLayoutComponent,
     canActivate: [authGuardFn],
-  },
-  {
-    path: 'order',
-    component: CreateOrderComponent,
-    canActivate: [authGuardFn],
-  },
-  {
-    path: 'test',
-    component: OrderFormComponent,
-    canActivate: [authGuardFn],
-  },
-  {
-    path: 'courier-options',
-    component: CourierOptionsComponent,
-    canActivate: [authGuardFn],
-  },
-  { path: 'order-list',
-    component: OrderListComponent,
-    canActivate: [authGuardFn],
+    children: [
+      {
+        path: 'profile',
+        component: ProfileComponent,
+      },
+      {
+        path: 'order',
+        component: CreateOrderComponent,
+      },
+      {
+        path: 'courier-options',
+        component: CourierOptionsComponent,
+      },
+      {
+        path: 'order-list',
+        component: OrderListComponent,
+      },
+      {
+        path: 'requests',
+        component: OrderListComponent,
+      },
+      {
+        path: 'favorite-addresses',
+        component: OrderListComponent,
+      },
+      {
+        path: 'ticketing',
+        component: OrderListComponent,
+      }
+      ]
   },
 
   {
@@ -50,20 +62,10 @@ export const routes: Routes = [
       }]
   },
   {
-    path: 'dashboard',
-    component: DashboardLayoutComponent,
-    children: [
-      {
-        path: 'profil',
-        component: AdminPricesComponent,
-        canActivate: [authGuardFn],
-      }]
-  },
-  {
     path: '',
     component: MainLayoutComponent,
     children: [
       {path: '', component: HomeComponent}
-      ]
+    ]
   },
 ];
