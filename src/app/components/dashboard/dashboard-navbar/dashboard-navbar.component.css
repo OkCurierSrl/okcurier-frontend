@@ -15,6 +15,7 @@
 .brand {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .brand svg {
@@ -52,6 +53,7 @@
 .auth-buttons {
   display: flex;
   align-items: center;
+  color: whitesmoke;
 }
 
 .profile-dropdown {

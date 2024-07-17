@@ -2,13 +2,14 @@ body, html {
   margin: 0;
   padding: 0;
   height: 100%;
+  width: 100%;
   overflow: hidden;
   font-family: Arial, sans-serif;
 }
 
 .hero {
   position: relative;
-  width: 100%; /* Corrected from 100vh to 100% */
+  width: 2000px;
   height: 100vh;
   overflow: hidden;
   display: flex;
@@ -22,13 +23,14 @@ body, html {
   bottom: 0;
   min-width: 100%;
   min-height: 100%;
-  opacity: 70%;
-  background-color: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+  opacity: 80%;
 }
 
 .content {
   z-index: 1;
   width: 100%;
+  max-width: 2000px; /* Adjust as necessary */
   text-align: center;
   padding: 20px;
 }
@@ -51,33 +53,35 @@ body, html {
 
 .calculator {
   background-color: #1f2a44;
-  padding: 20px;
   border: 2px solid #e30613;
   border-radius: 8px;
-  max-width: 1000px;
-  margin: 0 auto;
+  padding: 50px;
+  max-width: 2000px; /* Adjusted max-width for wider calculator */
 }
 
 .shipping-form {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  gap: 20px;
 }
 
-.form-row {
-  display: flex;
-  width: 100%;
-  margin-bottom: 20px;
+.form-row.row-1 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 50px;
+}
+
+.form-row.row-2 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
 }
 
 .form-group {
-  flex: 1;
-  min-width: 200px;
-  margin: 0 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group label {
-  display: block;
   color: #fff;
   margin-bottom: 5px;
 }
@@ -103,7 +107,7 @@ body, html {
   cursor: pointer;
   width: 100%;
   max-width: 200px;
-  margin: 0 auto;
+  margin: 20px auto 0 auto;
 }
 
 .suggestions-list {

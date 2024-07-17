@@ -1,4 +1,4 @@
 .main-content {
   padding-top: var(--extra-header-height); /* Add padding to avoid overlap */
-  padding-bottom: var(--header-height); /* Add padding to avoid overlap */
+  background-color: var(--ok-dark-color);
 }
