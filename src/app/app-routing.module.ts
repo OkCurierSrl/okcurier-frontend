@@ -24,7 +24,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardLayoutComponent,
-    canActivate: [authGuardFn],
+    // canActivate: [authGuardFn],
     children: [
       {
         path: 'profile',
@@ -64,7 +64,7 @@ export const routes: Routes = [
       {
         path: 'prices',
         component: AdminPricesComponent,
-        canActivate: [authGuardFn],
+        // canActivate: [authGuardFn],
       }]
   },
   {
