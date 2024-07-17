@@ -4,7 +4,7 @@
     <form [formGroup]="orderForm">
       <div class="p-field" [ngClass]="{'invalid': orderForm.get('name').invalid && orderForm.get('name').touched}">
         <label for="name">Nume</label>
-        <input id="name" pInputText formControlName="name" placeholder="Adauga numele {{ title }}" />
+        <input id="name" pInputText formControlName="name" placeholder="Adauga numele" />
         <div *ngIf="orderForm.get('name').invalid && orderForm.get('name').touched" class="error">
           Numele este obligatoriu.
         </div>

@@ -1,0 +1,10 @@
+.order-list-table th,
+.order-list-table td {
+  width: 80px !important;
+}
+
+
+
+.order-list-container {
+  height: 200px !important;
+}

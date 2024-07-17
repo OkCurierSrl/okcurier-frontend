@@ -12,6 +12,9 @@ html, body {
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
+  background-color: var(--ok-dark-color);
+  color: whitesmoke;
+  flex-shrink: 0; /* Ensure the footer does not shrink */
 }
 
 /* Content should take all available space */
@@ -23,11 +26,14 @@ html, body {
 .footer-header {
   display: flex;
   align-items: center;
+  background-color: var(--ok-dark-color);
 }
 .footer-header img {
   height: 30px;
   margin-right: 10px;
+  background-color: var(--ok-dark-color);
 }
 .footer-content {
   text-align: center;
+  background-color: var(--ok-dark-color);
 }

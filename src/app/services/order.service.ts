@@ -3,7 +3,7 @@ import {OrderData} from "../components/dashboard/create-order/order.data";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {map} from "rxjs/operators";
+import {map, share} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,6 @@ export class OrderService {
   }
 
   getOrders(): Observable<any[]> {
-    // Replace with actual backend API call
     return this.http.get<any[]>(this.apiUrl + '/api/getOrders').pipe(
       map(data => {
         // Process data if necessary
@@ -31,4 +30,12 @@ export class OrderService {
     );
   }
 
+    saveAddress(data: any): Observable<any> {
+      let url = this.apiUrl + '/api/address/save';
+      return this.http.post<any>(url, data)
+    }
+
+  getAddresses() {
+    let url = this.apiUrl + '/api/addresses';
+    return this.http.get<any>(url)  }
 }

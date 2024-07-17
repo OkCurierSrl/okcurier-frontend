@@ -15,6 +15,7 @@ import {RequestMaterialsComponent} from "./components/public/request-materials/r
 import {RequestOfferComponent} from "./components/dashboard/request-offer/request-offer.component";
 import {HowToOrderComponent} from "./components/public/how-to-order/how-to-order.component";
 import {TicketComponent} from "./components/dashboard/ticket/ticket.component";
+import {SavedAddressesComponent} from "./components/dashboard/saved-addresses/saved-addresses.component";
 
 export const routes: Routes = [
 
@@ -45,7 +46,7 @@ export const routes: Routes = [
       },
       {
         path: 'favorite-addresses',
-        component: OrderListComponent,
+        component: SavedAddressesComponent,
       },
       {
         path: 'ticketing',

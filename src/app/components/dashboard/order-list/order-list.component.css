@@ -97,7 +97,8 @@
 }
 
 .order-list-table tr:hover td {
-  background-color: var(--ok-grey-colo-lightr);
+  background-color: var(--ok-dark-color);
+  color: whitesmoke;
 }
 
 /* Set specific width for Actiuni column */
