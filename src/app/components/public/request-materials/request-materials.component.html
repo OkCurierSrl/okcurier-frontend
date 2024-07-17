@@ -1,0 +1,46 @@
+<div class="request-form">
+  <h2>Solicita Materiale</h2>
+  <form [formGroup]="requestForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Nume</label>
+      <input id="name" formControlName="name" placeholder="Adauga numele" />
+      <div *ngIf="requestForm.get('name').invalid && requestForm.get('name').touched" class="error">
+        Numele este obligatoriu.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="address">Adresa</label>
+      <input id="address" formControlName="address" placeholder="Adauga adresa" />
+      <div *ngIf="requestForm.get('address').invalid && requestForm.get('address').touched" class="error">
+        Adresa este obligatorie.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Telefon</label>
+      <input id="phone" formControlName="phone" placeholder="Adauga numarul de telefon" />
+      <div *ngIf="requestForm.get('phone').invalid && requestForm.get('phone').touched" class="error">
+        Numarul de telefon trebuie sa fie valid.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="numEnvelopes">Numar plicuri AWB</label>
+      <input type=number id="numEnvelopes" formControlName="numEnvelopes" placeholder="Adauga numarul de plicuri AWB" />
+      <div *ngIf="requestForm.get('numEnvelopes').invalid && requestForm.get('numEnvelopes').touched" class="error">
+        Numarul de plicuri trebuie sa fie cel mult 100/numarul de trimiteri pe luna precedenta.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="numBags">Numar pungi AWB</label>
+      <input type=number id="numBags" formControlName="numBags" placeholder="Adauga numarul de pungi AWB" />
+      <div *ngIf="requestForm.get('numBags').invalid && requestForm.get('numBags').touched" class="error">
+        Numarul de pungi trebuie sa fie cel mult 100/numarul de trimiteri pe luna precedenta.
+      </div>
+    </div>
+
+    <button type="submit">Trimite</button>
+  </form>
+</div>

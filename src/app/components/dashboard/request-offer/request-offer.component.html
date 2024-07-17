@@ -1,0 +1,54 @@
+<div class="request-form">
+  <h2>Solicita Oferta</h2>
+  <form [formGroup]="requestForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="cui">CUI/CIF</label>
+      <input id="cui" formControlName="cui" placeholder="Cui-ul sau Cif-ul companiei tale" />
+      <div *ngIf="requestForm.get('cui').invalid && requestForm.get('cui').touched" class="error">
+        CUI/CIF este obligatoriu.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="contactPerson">Persoana De contact</label>
+      <input id="contactPerson" formControlName="contactPerson" placeholder="Numele reprezentantului companiei" />
+      <div *ngIf="requestForm.get('contactPerson').invalid && requestForm.get('contactPerson').touched" class="error">
+        Persoana De contact este obligatoriu.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="contactPhone">Telefon Contact</label>
+      <input id="contactPhone" formControlName="contactPhone" placeholder="Numarul de telefon" />
+      <div *ngIf="requestForm.get('contactPhone').invalid && requestForm.get('contactPhone').touched" class="error">
+        Numarul de telefon trebuie sa fie valid.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Adresa de e-mail</label>
+      <input id="email" formControlName="email" placeholder="Adresa de email" />
+      <div *ngIf="requestForm.get('email').invalid && requestForm.get('email').touched" class="error">
+        Adresa de e-mail este obligatoriu.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="packagesPerMonth">Numar colete pe luna</label>
+      <input id="packagesPerMonth" formControlName="packagesPerMonth" placeholder="Numarul estimat de colete trimis in fiecare luna" />
+      <div *ngIf="requestForm.get('packagesPerMonth').invalid && requestForm.get('packagesPerMonth').touched" class="error">
+        Numarul colete pe luna este obligatoriu.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="message">Mesaj</label>
+      <textarea id="message" formControlName="message" placeholder="Detalii aditionale despre cererea dumneavoastra"></textarea>
+      <div *ngIf="requestForm.get('message').invalid && requestForm.get('message').touched" class="error">
+        Mesajul este obligatoriu.
+      </div>
+    </div>
+
+    <button type="submit">Solicita Oferta</button>
+  </form>
+</div>

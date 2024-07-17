@@ -1,0 +1,46 @@
+.faq-page {
+  padding: 100px 20px; /* Adjust padding to your preference */
+  max-width: 800px;
+  margin: auto;
+}
+
+.faq-item {
+  margin-bottom: 2rem;
+}
+
+.faq-item h2 {
+  font-size: 1.5rem;
+  color: var(--ok-dark-color);
+}
+
+.faq-item p {
+  font-size: 1rem;
+  color: var(--ok-primary-color);
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav a {
+    margin: 0.5rem 0;
+  }
+
+  .auth-buttons {
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 1rem;
+  }
+
+  .profile-dropdown {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+}

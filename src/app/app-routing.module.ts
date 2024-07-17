@@ -7,11 +7,14 @@ import {authGuardFn} from '@auth0/auth0-angular';
 import {MainLayoutComponent} from "./components/public/main-layout/main-layout.component";
 import {AdminLayoutComponent} from "./components/admin/admin-layout/admin-layout.component";
 import {AdminPricesComponent} from "./pages/admin-prices/admin-prices.component";
-import {DashboardLayoutComponent} from "./components/dashboard/dashboard-layout/dashboard-layout.component";
 import {CreateOrderComponent} from "./components/dashboard/create-order/create-order.component";
 import {CourierOptionsComponent} from "./components/dashboard/courier-options/courier-options.component";
 import {OrderListComponent} from "./components/dashboard/order-list/order-list.component";
-import {OrderFormComponent} from "./components/dashboard/create-order/order-form/order-form.component";
+import {DashboardLayoutComponent} from "./components/dashboard/dashboard-layout/dashboard-layout.component";
+import {RequestMaterialsComponent} from "./components/public/request-materials/request-materials.component";
+import {RequestOfferComponent} from "./components/dashboard/request-offer/request-offer.component";
+import {HowToOrderComponent} from "./components/public/how-to-order/how-to-order.component";
+import {TicketComponent} from "./components/dashboard/ticket/ticket.component";
 
 export const routes: Routes = [
 
@@ -38,7 +41,7 @@ export const routes: Routes = [
       },
       {
         path: 'requests',
-        component: OrderListComponent,
+        component: RequestMaterialsComponent,
       },
       {
         path: 'favorite-addresses',
@@ -46,9 +49,9 @@ export const routes: Routes = [
       },
       {
         path: 'ticketing',
-        component: OrderListComponent,
+        component: TicketComponent,
       }
-      ]
+    ]
   },
 
   {
@@ -65,7 +68,10 @@ export const routes: Routes = [
     path: '',
     component: MainLayoutComponent,
     children: [
-      {path: '', component: HomeComponent}
+      {path: '', component: HomeComponent},
+      {path: 'oferta', component: RequestOfferComponent},
+      {path: 'order', component: CreateOrderComponent},
+      {path: 'info', component: HowToOrderComponent}
     ]
   },
 ];
