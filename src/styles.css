@@ -10,7 +10,7 @@
   --font-family: 'Poppins', sans-serif;
   --ok-grey-colo-lightr: rgb(196, 196, 208);
   --ok-grey-color: rgb(161 161 170);
-  --ok-dark-color: rgb(63 63 70);
+  --ok-dark-color: #1E293B;
   --spacing: 1rem;
   --header-height: 10rem;
   --extra-header-height: 15rem;
@@ -18,7 +18,7 @@
 }
 
 body {
-  font-family: var(--font-family), serif;
+  font-family: var(--font-family), sans-serif;
   margin: 0;
   padding: 0;
 }

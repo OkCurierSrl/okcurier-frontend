@@ -46,7 +46,6 @@
 
 
 .auth-buttons button {
-  background-color: var(--ok-primary-color);
   border: none;
   color: white;
   padding: 0.5rem 1rem;
@@ -54,6 +53,44 @@
   margin-right: var(--header-height);
   border-radius: var(--radius);
 }
+
+.dropbtn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--ok-dark-color);
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content .login {
+  background-color: white;
+  color: #000;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
+.dropdown-content .login:hover {
+  background-color: var(--ok-primary-color-dark);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  color: var(--ok-primary-color-dark); /* Optional: change icon color on hover */
+}
+
 
 @media (max-width: 768px) {
   .header {

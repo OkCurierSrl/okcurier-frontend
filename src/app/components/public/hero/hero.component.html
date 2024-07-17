@@ -1,72 +1,59 @@
-<div class="container">
-  <div class="services">
-    <div class="service-card" *ngFor="let service of services">
-      <img [src]="service.logo" alt="{{ service.name }}">
-      <p>de la {{ service.price }} RON</p>
+<section class="hero">
+  <video autoplay muted loop id="background-video">
+    <source src="assets/video.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+  <div class="content">
+    <div class="services">
+      <h5>Un curier de încredere pe care te poți baza pentru toate nevoile tale logistice.</h5>
+      <h1>Experimentează transportul fără griji cu serviciile noastre</h1>
+    </div>
+    <div class="calculator">
+      <form class="shipping-form">
+        <div class="form-row row-1">
+          <div class="form-group">
+            <label for="from">Localitate expeditie</label>
+            <input id="from" type="text" pInputText (input)="onCityInputChange($event, 'location')" [(ngModel)]="selectedLocation">
+            <ul *ngIf="activeField === 'location' && (citySuggestions | async)?.length" class="suggestions-list">
+              <li *ngFor="let suggestion of citySuggestions | async" (click)="selectSuggestion(suggestion)">
+                {{ suggestion.label }}
+              </li>
+            </ul>
+          </div>
+          <div class="form-group">
+            <label for="to">Localitate destinatie</label>
+            <input id="to" type="text" pInputText (input)="onCityInputChange($event, 'destination')" [(ngModel)]="selectedDestination">
+            <ul *ngIf="activeField === 'destination' && (citySuggestions | async)?.length" class="suggestions-list">
+              <li *ngFor="let suggestion of citySuggestions | async" (click)="selectSuggestion(suggestion)">
+                {{ suggestion.label }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="form-row row-2">
+          <div class="form-group dropdown">
+            <label for="type">Tip pachet</label>
+            <p-dropdown id="type" [options]="getPackageTypeOptions()" [(ngModel)]="selectedPackageType" placeholder="Plic" (onChange)="onPackageTypeChange($event)"></p-dropdown>
+          </div>
+          <div class="form-group">
+            <label for="weight">Greutate (kg)</label>
+            <input id="weight" type="text" pInputText [(ngModel)]="weight" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label for="length">Lungime (cm)</label>
+            <input id="length" type="text" pInputText [(ngModel)]="length" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label for="width">Latime (cm)</label>
+            <input id="width" type="text" pInputText [(ngModel)]="width" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label for="height">Inaltime (cm)</label>
+            <input id="height" type="text" pInputText [(ngModel)]="height" placeholder="0" />
+          </div>
+        </div>
+        <button type="submit" class="calculate-button">Calculează</button>
+      </form>
     </div>
   </div>
-  <div class="calculator">
-    <p-tabView>
-      <p-tabPanel header="Trimite in tara">
-        <div class="form">
-          <div class="field-row">
-            <div class="field">
-              <label for="from">Localitate expeditie</label>
-              <input id="from" type="text" pInputText (input)="onCityInputChange($event, 'location')" [(ngModel)]="selectedLocation">
-              <ul *ngIf="activeField === 'location' && (citySuggestions | async)?.length" class="suggestions-list">
-                <li *ngFor="let suggestion of citySuggestions | async" (click)="selectSuggestion(suggestion)">
-                  {{ suggestion.label }}
-                </li>
-              </ul>
-            </div>
-            <div class="field">
-              <label for="to">Localitate destinatie</label>
-              <input id="to" type="text" pInputText (input)="onCityInputChange($event, 'destination')" [(ngModel)]="selectedDestination">
-              <ul *ngIf="activeField === 'destination' && (citySuggestions | async)?.length" class="suggestions-list">
-                <li *ngFor="let suggestion of citySuggestions | async" (click)="selectSuggestion(suggestion)">
-                  {{ suggestion.label }}
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="field-row">
-            <div class="field dropdown">
-              <label for="type">Tip pachet</label>
-              <p-dropdown id="type" [options]="getPackageTypeOptions()" [(ngModel)]="selectedPackageType" placeholder="Plic" (onChange)="onPackageTypeChange($event)"></p-dropdown>
-            </div>
-            <div class="field">
-              <label for="weight">Greutate (kg)</label>
-              <input id="weight" type="text" pInputText [(ngModel)]="weight" placeholder="Greutate (kg)" [disabled]="isPlic">
-            </div>
-            <div class="field">
-              <label for="length">Lungime (cm)</label>
-              <input id="length" type="text" pInputText [(ngModel)]="length" placeholder="Lungime (cm)" [disabled]="isPlic">
-            </div>
-            <div class="field">
-              <label for="width">Latime (cm)</label>
-              <input id="width" type="text" pInputText [(ngModel)]="width" placeholder="Latime (cm)" [disabled]="isPlic">
-            </div>
-            <div class="field">
-              <label for="height">Inaltime (cm)</label>
-              <input id="height" type="text" pInputText [(ngModel)]="height" placeholder="Inaltime (cm)" [disabled]="isPlic">
-            </div>
-          </div>
-          <div class="field-row">
-            <button pButton type="button" label="Calculeaza tariful" class="p-button-success" (click)="calculateTariff()"></button>
-          </div>
-        </div>
-        <div *ngIf="prices">
-          <h3>Tarife:</h3>
-          <ul>
-            <li *ngFor="let price of prices">
-              {{ price.courier }}: {{ price.totalPrice }} RON
-            </li>
-          </ul>
-        </div>
-      </p-tabPanel>
-      <p-tabPanel header="Trimite in strainatate">
-        <!-- Similar form structure for international shipping -->
-      </p-tabPanel>
-    </p-tabView>
-  </div>
-</div>
+</section>

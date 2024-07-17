@@ -5,11 +5,18 @@
     </svg>
   </div>
   <div class="nav">
+    <a routerLink="/"><i class="fas fa-home"></i>Acasa</a>
     <a routerLink="/order"><i class="fas fa-shipping-fast"></i>Trimite</a>
-    <a routerLink="/info"><i class="fas fa-box"></i>Cum comand</a>
-    <a routerLink="/oferta"><i class="fas fa-bell"></i>Cere oferta</a>
+    <a routerLink="/order"><i class="fa-regular fa-eye"></i>Urmarire AWB</a>
+    <a routerLink="/oferta"><i class="fas fa-bell"></i>Solicita oferta</a>
+    <a routerLink="/info"><i class="fas fa-box"></i>Suport</a>
   </div>
   <div class="auth-buttons">
-      <button pButton type="button"  class="login" (click)="loginWithRedirect()">LOGIN</button>
+    <div class="dropdown">
+      <button class="dropbtn"><i class="fas fa-user"></i></button>
+      <div class="dropdown-content">
+        <button pButton type="button" class="login" (click)="loginWithRedirect()">LOGIN</button>
+      </div>
+    </div>
   </div>
 </div>

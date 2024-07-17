@@ -1,0 +1,205 @@
+/* ABOUT US SECTION */
+.about-us-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 20px;
+  background-color: #ffffff;
+}
+.allign-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+
+}
+
+.about-us-content {
+  text-align: left;
+  align-items: flex-start;
+
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+}
+
+.about-us-content h2 {
+  color: #e30613;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.about-us-content h3 {
+  color: #2b2b2b;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.about-us-content p {
+  color: #646464;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.about-us-logo {
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-us-logo img {
+  width: 300px;
+}
+
+.about-us-features {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 800px;
+  margin-top: 30px;
+}
+
+.feature-item {
+  background-color: #e30613;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: left;
+  flex: 1;
+  margin: 0 10px;
+  display: flex;
+  align-items: center; /* Vertically center the content */
+}
+
+.feature-item h4 {
+  font-size: 24px;
+  margin-bottom: 0; /* Remove bottom margin */
+  margin-right: 10px; /* Add space between number and dotted line */
+  flex-shrink: 0; /* Prevent the number from shrinking */
+}
+
+.feature-item p {
+  font-size: 18px;
+  margin: 0;
+  flex-grow: 1; /* Allow the text to take the remaining space */
+  display: flex;
+  align-items: center; /* Vertically center the text */
+}
+
+.feature-item p::before {
+  content: "";
+  flex-shrink: 0; /* Prevent the line from shrinking */
+  width: 1px;
+  height: 24px; /* Match the height of the number */
+  margin-right: 10px; /* Add space between the line and text */
+  border-left: 1px dotted #ffffff; /* Dotted line */
+}
+
+
+
+/* HOW IT WORKS SECTION */
+
+.how-it-works-section {
+  background-color: #1F2A44;
+  color: #FFFFFF;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.how-it-works-header {
+  max-width: 1000px;
+  margin: 0 auto 50px auto;
+  text-align: left;
+}
+
+.how-it-works-header h2 {
+  color: #E30613;
+  font-size: 24px;
+  margin-bottom: 10px;
+  margin-right: 0;
+}
+
+.how-it-works-header h3 {
+  color: #FFFFFF;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.how-it-works-header p {
+  color: #D4D4D4;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.how-it-works-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.grid-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.step-image {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 8px;
+}
+
+.step-details {
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.step-details h4 {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: var(--ok-dark-color);
+}
+.step-details-background {
+  background-color: #ffffff;
+  pointer-events: none; /* Makes the button unclickable */
+  cursor: default; /* Prevents cursor change */
+  align-items: center; /* Vertically centers text */
+  justify-content: center; /* Horizontally centers text */
+  height: 30px; /* Adjust as needed */
+  width: 80px; /* Adjust as needed */
+  color: #333; /* Adjust as needed */
+  border: none; /* Removes border */
+  border-radius: 20px; /* Adjust as needed */
+  text-align: center; /* Centers text */
+  padding-top: 7px;
+  margin-bottom: 20px;
+}
+
+.step-icon {
+  margin-bottom: 10px;
+}
+
+.step-icon img {
+  width: 100px;
+  height: auto;
+}
+
+.step-details p {
+  color: #D4D4D4;
+  font-size: 16px;
+  margin: 0;
+}
+
+.dashed-line {
+  grid-column: span 2;
+  border-top: 2px dashed #D4D4D4;
+  margin: 20px 0;
+}
+

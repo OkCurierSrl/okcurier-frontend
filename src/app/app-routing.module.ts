@@ -16,6 +16,8 @@ import {RequestOfferComponent} from "./components/dashboard/request-offer/reques
 import {HowToOrderComponent} from "./components/public/how-to-order/how-to-order.component";
 import {TicketComponent} from "./components/dashboard/ticket/ticket.component";
 import {SavedAddressesComponent} from "./components/dashboard/saved-addresses/saved-addresses.component";
+import {LandingPageComponent} from "./pages/landing-page/landing-page.component";
+import {HeroComponent} from "./components/public/hero/hero.component";
 
 export const routes: Routes = [
 
@@ -69,7 +71,8 @@ export const routes: Routes = [
     path: '',
     component: MainLayoutComponent,
     children: [
-      {path: '', component: HomeComponent},
+      {path: 'test', component: HeroComponent},
+      {path: '', component: LandingPageComponent},
       {path: 'oferta', component: RequestOfferComponent},
       {path: 'order', component: CreateOrderComponent},
       {path: 'info', component: HowToOrderComponent}
