@@ -1,59 +1,48 @@
-<section class="hero">
-  <video autoplay muted loop id="background-video">
-    <source src="assets/video.mp4" type="video/mp4">
-    Your browser does not support HTML5 video.
-  </video>
-  <div class="content">
-    <div class="services">
-      <h5>Un curier de încredere pe care te poți baza pentru toate nevoile tale logistice.</h5>
-      <h1>Experimentează transportul fără griji cu serviciile noastre</h1>
-    </div>
-    <div class="calculator">
-      <form class="shipping-form">
-        <div class="form-row row-1">
-          <div class="form-group">
-            <label for="from">Localitate expeditie</label>
-            <input id="from" type="text" pInputText (input)="onCityInputChange($event, 'location')" [(ngModel)]="selectedLocation">
-            <ul *ngIf="activeField === 'location' && (citySuggestions | async)?.length" class="suggestions-list">
-              <li *ngFor="let suggestion of citySuggestions | async" (click)="selectSuggestion(suggestion)">
-                {{ suggestion.label }}
-              </li>
-            </ul>
-          </div>
-          <div class="form-group">
-            <label for="to">Localitate destinatie</label>
-            <input id="to" type="text" pInputText (input)="onCityInputChange($event, 'destination')" [(ngModel)]="selectedDestination">
-            <ul *ngIf="activeField === 'destination' && (citySuggestions | async)?.length" class="suggestions-list">
-              <li *ngFor="let suggestion of citySuggestions | async" (click)="selectSuggestion(suggestion)">
-                {{ suggestion.label }}
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="form-row row-2">
-          <div class="form-group dropdown">
-            <label for="type">Tip pachet</label>
-            <p-dropdown id="type" [options]="getPackageTypeOptions()" [(ngModel)]="selectedPackageType" placeholder="Plic" (onChange)="onPackageTypeChange($event)"></p-dropdown>
-          </div>
-          <div class="form-group">
-            <label for="weight">Greutate (kg)</label>
-            <input id="weight" type="text" pInputText [(ngModel)]="weight" placeholder="0" />
-          </div>
-          <div class="form-group">
-            <label for="length">Lungime (cm)</label>
-            <input id="length" type="text" pInputText [(ngModel)]="length" placeholder="0" />
-          </div>
-          <div class="form-group">
-            <label for="width">Latime (cm)</label>
-            <input id="width" type="text" pInputText [(ngModel)]="width" placeholder="0" />
-          </div>
-          <div class="form-group">
-            <label for="height">Inaltime (cm)</label>
-            <input id="height" type="text" pInputText [(ngModel)]="height" placeholder="0" />
-          </div>
-        </div>
-        <button type="submit" class="calculate-button">Calculează</button>
-      </form>
+<video autoplay muted loop id="background-video">
+  <source src="assets/video.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+<div class="shipping-calculator">
+  <div class="top-banner">
+    <div class="headline">
+      <p>Un curier de încredere pe care te poți baza pentru toate nevoile tale logistice.</p>
+      <h1>Experimentează<br> transportul fără griji<br> cu Serviciile Noastre</h1>
     </div>
   </div>
-</section>
+  <div class="calculator-form">
+    <div class="form-fields">
+      <div class="field">
+        <label for="localitate-expeditie">Localitate expeditie</label>
+        <input type="text" id="localitate-expeditie" placeholder="Ex: Cluj-Napoca">
+      </div>
+      <div class="field">
+        <label for="localitate-destinatie">Localitate destinatie</label>
+        <input type="text" id="localitate-destinatie" placeholder="Ex: Bucuresti">
+      </div>
+      <div class="field-2">
+        <label for="tip-pachet">Tipul pachetului</label>
+        <select id="tip-pachet">
+          <option value="plic">Plic</option>
+          <option value="colet">Colet</option>
+        </select>
+      </div>
+      <div class="field-2">
+        <label for="greutate">Greutate (kg)</label>
+        <input type="text" id="greutate" placeholder="Greutate (kg)">
+      </div>
+      <div class="field-2">
+        <label for="lungime">Lungime (cm)</label>
+        <input type="text" id="lungime" placeholder="Lungime (cm)">
+      </div>
+      <div class="field-2">
+        <label for="latime">Latime (cm)</label>
+        <input type="text" id="latime" placeholder="Latime (cm)">
+      </div>
+      <div class="field-2">
+        <label for="inaltime">Inaltime (cm)</label>
+        <input type="text" id="inaltime" placeholder="Inaltime (cm)">
+      </div>
+    </div>
+    <button class="calculate-btn">CALCULEAZA</button>
+  </div>
+</div>
