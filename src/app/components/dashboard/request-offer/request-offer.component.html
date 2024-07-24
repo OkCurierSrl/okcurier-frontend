@@ -2,7 +2,7 @@
   <h2>Solicita Oferta</h2>
   <form [formGroup]="requestForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <label for="cui">CUI/CIF</label>
+      <label for="cui">CUI / Denumire societate</label>
       <input id="cui" formControlName="cui" placeholder="Cui-ul sau Cif-ul companiei tale" />
       <div *ngIf="requestForm.get('cui').invalid && requestForm.get('cui').touched" class="error">
         CUI/CIF este obligatoriu.

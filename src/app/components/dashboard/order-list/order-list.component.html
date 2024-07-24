@@ -8,7 +8,6 @@
     <table class="order-list-table">
       <thead>
       <tr>
-        <th>Actiuni</th>
         <th>Numar AWB</th>
         <th>Curier</th>
         <th>Nume Expeditor</th>
@@ -23,9 +22,9 @@
         <th>Greutate</th>
         <th>Ramburs</th>
         <th>Status</th>
+        <th>Actiuni</th>
       </tr>
       <tr>
-        <th>Download/View/Print</th>
         <th><input type="text" [(ngModel)]="filter.awb" (input)="filterOrders()"></th>
         <th><input type="text" [(ngModel)]="filter.courier" (input)="filterOrders()"></th>
         <th><input type="text" [(ngModel)]="filter.senderName" (input)="filterOrders()"></th>
@@ -44,18 +43,13 @@
         <th><input type="text" [(ngModel)]="filter.weight" (input)="filterOrders()"></th>
         <th><input type="text" [(ngModel)]="filter.cashOnDelivery" (input)="filterOrders()"></th>
         <th><input type="text" [(ngModel)]="filter.status" (input)="filterOrders()"></th>
+        <th>Download/View/Print</th>
+
       </tr>
       </thead>
       <tbody>
       <ng-container *ngFor="let order of filteredOrders">
         <tr>
-          <td class="actions">
-            <div class="action-buttons">
-              <button class="btn btn-action" (click)="downloadOrder(order)"><i class="fas fa-download"></i></button>
-              <button class="btn btn-action" (click)="viewOrder(order)"><i class="fas fa-eye"></i></button>
-              <button class="btn btn-action" (click)="printOrder(order)"><i class="fas fa-print"></i></button>
-            </div>
-          </td>
           <td>{{ order.awb }}</td>
           <td><img [src]="getCourierLogo(order.courier)" alt="{{ order.courier }} logo"></td>
           <td>{{ order.senderName }}</td>
@@ -70,6 +64,13 @@
           <td>{{ order.weight }}</td>
           <td>{{ order.cashOnDelivery }} RON</td>
           <td [ngClass]="getStatusClass(order.status)">{{ order.status }}</td>
+          <td class="actions">
+            <div class="action-buttons">
+              <button class="btn btn-action" (click)="downloadOrder(order)"><i class="fas fa-download"></i></button>
+              <button class="btn btn-action" (click)="viewOrder(order)"><i class="fas fa-eye"></i></button>
+              <button class="btn btn-action" (click)="printOrder(order)"><i class="fas fa-print"></i></button>
+            </div>
+          </td>
         </tr>
         <tr *ngIf="order.showPackages" class="package-details-row">
           <td colspan="16">

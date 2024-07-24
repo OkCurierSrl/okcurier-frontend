@@ -4,7 +4,7 @@
   --ok-primary-color-dark: rgb(234, 40, 40);
   --ok-primary-color-light: #f64f4f;
   --ok-secondary-color: #9b9797;
-  --ok-secondary-color-light: #c9c1c1;
+  --ok-secondary-color-light: #050505;
   --ok-accent-color: #20be44;
   --ok-accent-color-light: #80d092;
   --font-family: 'Poppins', sans-serif;
@@ -13,6 +13,7 @@
   --ok-dark-color: #1E293B;
   --spacing: 1rem;
   --header-height: 10rem;
+  --header-height-mobile: 6rem;
   --extra-header-height: 15rem;
   --radius: 10px
 }

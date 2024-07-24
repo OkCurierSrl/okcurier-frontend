@@ -30,6 +30,9 @@ export class RequestOfferComponent implements OnInit {
   initForm(): void {
     this.requestForm = this.fb.group({
       cif: ['', Validators.required],
+      cui: ['', Validators.required],
+      packagesPerMonth: ['', Validators.required],
+      message: ['', Validators.required],
       contactPerson: ['', Validators.required],
       contactPhone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],

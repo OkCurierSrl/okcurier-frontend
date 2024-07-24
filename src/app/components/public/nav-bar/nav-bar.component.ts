@@ -35,6 +35,7 @@ export class NavBarComponent {
   isCollapsed = true;
   faUser = faUser;
   faPowerOff = faPowerOff;
+  isNavOpen: boolean = false;
 
   constructor(
     public auth: AuthService,
@@ -47,5 +48,10 @@ export class NavBarComponent {
 
   logout() {
     this.auth.logout({ logoutParams: { returnTo: this.doc.location.origin } });
+  }
+
+  toggleNav(): void {
+    this.isNavOpen = !this.isNavOpen;
+    console.log('nav open ' + this.isNavOpen);
   }
 }

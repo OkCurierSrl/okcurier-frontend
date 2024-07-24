@@ -8,7 +8,7 @@
   box-shadow: var(--ok-dark-color);
   width: 100%;
   min-height: 1000px;
-  font-size: 1rem;
+  font-size: 0.875rem;
 }
 
 /* Center the table within its container */
@@ -90,6 +90,7 @@
 
 .order-list-table td {
   background-color: var(--ok-grey-color);
+  border: 1px solid black;
 }
 
 .order-list-table tr:nth-child(even) td {
@@ -102,24 +103,25 @@
 }
 
 /* Set specific width for Actiuni column */
-.order-list-table th:nth-child(1), /* Actiuni */
-.order-list-table td:nth-child(1) {
-  width: 8%;
+.order-list-table th:last-child, /* Actiuni */
+.order-list-table td:last-child {
+  width: 11%;
 }
 
-/*!* Set specific widths for Numar Colete and Greutate columns *!*/
-/*.order-list-table th:nth-child(12), !* Numar Colete *!*/
-/*.order-list-table td:nth-child(12) {*/
-/*  max-width: 20px; !* Set a smaller max-width *!*/
-/*  width: 20px;*/
-/*}*/
+.order-list-table th:nth-child(12), /* Actiuni */
+.order-list-table td:nth-child(12) {
+  width: 4.5%;
+}
 
-/*.order-list-table th:nth-child(13), !* Greutate *!*/
-/*.order-list-table td:nth-child(13) {*/
-/*  max-width: 20px; !* Set a smaller max-width *!*/
-/*  width: 20px;*/
-/*}*/
+.order-list-table th:nth-child(11), /* Actiuni */
+.order-list-table td:nth-child(11) {
+  width: 4.5%;
+}
 
+.order-list-table th:nth-child(9), /* Actiuni */
+.order-list-table td:nth-child(9) {
+  width: 7%;
+}
 
 .order-list-table img {
   width: 70px;
@@ -140,7 +142,7 @@
   font-size: 0.5rem;
 }
 .btn-action {
-  background-color: var(--ok-accent-color);
+  background-color: var(--ok-primary-color);
   border: none;
   border-radius: 5px;
   padding: 0.5rem;
@@ -161,7 +163,7 @@
 
 
 .btn-action:hover {
-  background-color: #218838;
+  background-color: var(--ok-primary-color-dark);
 }
 
 
@@ -182,7 +184,7 @@
 }
 
 .btn-action {
-  background-color: var(--ok-accent-color);
+  background-color: var(--ok-primary-color);
   border: none;
   border-radius: 5px;
   padding: 0.5rem;
@@ -203,7 +205,7 @@
 }
 
 .btn-action:hover {
-  background-color: #218838;
+  background-color: var(--ok-primary-color-dark);
 }
 
 .status-awb-generat {

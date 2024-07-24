@@ -78,7 +78,7 @@ export class OrderListComponent implements OnInit {
   }
 
   loadMockData(): void {
-    this.orders = [
+    const baseOrders = [
       {
         awb: '8089868547',
         courier: 'dpd',
@@ -184,6 +184,14 @@ export class OrderListComponent implements OnInit {
         ]
       }
     ];
+
+    this.orders = [];
+    for (let i = 0; i < 4; i++) {
+      this.orders = this.orders.concat(baseOrders.map(order => ({
+        ...order,
+        awb: `${order.awb}-${i}` // Adjust the AWB to ensure uniqueness
+      })));
+    }
   }
 
   getCourierLogo(courier: string): string {
