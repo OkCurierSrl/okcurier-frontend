@@ -44,6 +44,9 @@
               <app-package-form [index]="i" [packageForm]="courierPackage.form"
                                 (remove)="removePackage(i)"
                                 (weightChange)="onWeightChange()"
+                                (lengthChange)="onLengthChange()"
+                                (widthChange)="onwWidthChange()"
+                                (heightChange)="onHeightChange()"
                                 (validityChange)="onPackageValidityChange(i, $event)">
               </app-package-form>
             </div>
@@ -51,10 +54,8 @@
           <div class="extra-services">
             <h5>Servicii Extra</h5>
             <div *ngFor="let service of filteredExtraServices" class="extra-service-item">
-              <i [ngClass]="{'fas fa-check-square': selectedServices[service.value], 'far fa-square': !selectedServices[service.value]}"
-                 (click)="toggleService(service.value)">
-              </i>
-              <label (click)="toggleService(service.value)">{{service.label}}</label>
+              <input type="checkbox" id="{{service.value}}" [checked]="selectedServices[service.value]" (change)="toggleService(service.value)">
+              <label for="{{service.value}}">{{service.label}}</label>
               <div *ngIf="service.value === 'asigurare' && selectedServices[service.value]" class="extra-input">
                 <input type="number" min="0" [(ngModel)]="asigurare" placeholder="Valoare asigurată" class="styled-input"/>
               </div>
@@ -63,6 +64,7 @@
               </div>
             </div>
           </div>
+
         </div>
         <app-package-overview id="packageOverview" [packages]="courierPackages"></app-package-overview>
       </div>

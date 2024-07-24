@@ -89,8 +89,11 @@ export class OrderFormComponent implements OnInit {
       block: [''],
       staircase: [''],
       floor: [''],
-      apartment: ['']
+      apartment: [''],
+
     });
+
+
   }
 
   loadCounties(): void {

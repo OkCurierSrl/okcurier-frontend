@@ -21,7 +21,18 @@ export class PackageOverviewComponent implements OnChanges {
   }
 
   calculateOverview(): void {
-    this.totalPackages = this.packages.length;
-    this.totalWeight = this.packages.reduce((acc, pkg) => acc + (pkg.form.value.weight || 0), 0);
+    console.log('tesr')
+    this.totalWeight = this.packages.reduce((acc, pkg) => {
+      const length = pkg.form.value.length || 0;
+      const width = pkg.form.value.width || 0;
+      const height = pkg.form.value.height || 0;
+      const realWeight = pkg.form.value.weight || 0;
+
+      const dimensionalWeight = (length * width * height) / 5000;
+      const effectiveWeight = Math.max(realWeight, dimensionalWeight);
+      console.log('dimensionalWeight', dimensionalWeight);
+      console.log('effectiveWeight', realWeight);
+      return acc + effectiveWeight;
+    }, 0);
   }
 }

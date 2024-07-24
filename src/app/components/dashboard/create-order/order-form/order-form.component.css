@@ -25,6 +25,7 @@
   margin-bottom: var(--spacing);
 }
 
+
 input {
   width: 100%;
   padding: 0.5rem;
@@ -39,9 +40,24 @@ input::placeholder {
   color: var(--ok-grey-color);
 }
 
-.p-dropdown {
-  width: 100% !important;
+select {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--ok-secondary-color);
+  border-radius: var(--radius);
+  background-color: whitesmoke;
+  color: black;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
+
+select::placeholder {
+  color: var(--ok-grey-color);
+}
+
+
 
 :host ::ng-deep .p-dropdown-label {
   white-space: nowrap;

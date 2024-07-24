@@ -118,8 +118,24 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   onWeightChange(): void {
-    setTimeout(() => this.calculateOverview(), 0);
+    setTimeout(() => this.calculateOverview(), 1);
   }
+
+  onLengthChange() {
+    setTimeout(() => this.calculateOverview(), 1);
+
+  }
+
+  onwWidthChange() {
+    setTimeout(() => this.calculateOverview(), 1);
+
+  }
+
+  onHeightChange() {
+    setTimeout(() => this.calculateOverview(), 1);
+
+  }
+
 
   removePackage(index: number): void {
     this.courierPackages.splice(index, 1);
@@ -145,12 +161,12 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   checkFormsValidity(): void {
-    console.log('Expeditor form valid:', this.expeditorFormValid);
-    console.log('Destinatar form valid:', this.destinatarFormValid);
-    console.log('Package count:', this.courierPackages.length > 0);
+    // console.log('Expeditor form valid:', this.expeditorFormValid);
+    // console.log('Destinatar form valid:', this.destinatarFormValid);
+    // console.log('Package count:', this.courierPackages.length > 0);
 
     this.courierPackages.forEach((pkg, idx) => {
-      console.log(`Package ${idx + 1} valid:`, pkg.valid);
+      // console.log(`Package ${idx + 1} valid:`, pkg.valid);
     });
   }
 
@@ -211,4 +227,5 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       this.courierPackages = []
     }
   }
+
 }

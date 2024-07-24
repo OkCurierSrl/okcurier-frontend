@@ -28,11 +28,17 @@
 
       <div class="p-grid dropdowns">
         <div class="p-col-6">
-          <p-dropdown [options]="counties" autoWidth="false" formControlName="county" optionLabel="name" autoWidth="false" [style]="{'width':'100%'}" (onChange)="onCountyChange($event)" placeholder="Judet"></p-dropdown>
+          <select formControlName="county" (change)="onCountyChange($event)">
+            <option *ngFor="let county of counties" [value]="county.name">{{ county.name }}</option>
+            <option value="" disabled selected>Judet</option>
+          </select>
         </div>
 
         <div class="p-col-6">
-          <p-dropdown [options]="cities" autoWidth="false" formControlName="city" optionLabel="name"  autoWidth="false" [style]="{'width':'100%'}" placeholder="Localitate"></p-dropdown>
+          <select formControlName="city">
+            <option value="" disabled selected>Localitate</option>
+            <option *ngFor="let city of cities" [value]="city.name">{{ city.name }}</option>
+          </select>
         </div>
       </div>
 

@@ -84,28 +84,25 @@
 }
 
 .extra-services {
-  margin-bottom: 1rem;
+  margin-bottom: 5rem;
+}
+
+.extra-service-item label {
+  cursor: pointer;
+  font-size: 1rem;
 }
 
 .extra-service-item {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
 }
 
-.extra-service-item i {
-  font-size: 1.0rem;
+.extra-service-item input[type="checkbox"] {
   margin-right: 10px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  color: whitesmoke;
-  background-color: whitesmoke;
+  margin-bottom: 0.5rem;
 }
 
-.extra-service-item label {
-  cursor: pointer;
-  font-size: .875rem;
-}
+
 
 .extra-input {
   display: flex;
@@ -156,7 +153,6 @@ button.p-mt-2 {
 .submit-button {
   width: 100%;
   padding: 1rem;
-  font-size: 1.2rem;
   background-color: var(--ok-primary-color);
   color: whitesmoke;
   border: none;
@@ -189,7 +185,7 @@ button.p-mt-2 {
   width: 100%;
   margin: 1rem;
   padding: 1rem 2rem;
-  font-size: 1.2rem;
+  font-size: 2rem;
   font-weight: bold;
   color: #fff;
   background-color: var(--ok-primary-color);

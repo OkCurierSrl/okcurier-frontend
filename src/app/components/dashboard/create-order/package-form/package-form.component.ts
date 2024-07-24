@@ -23,6 +23,9 @@ export class PackageFormComponent implements OnInit {
   @Output() validityChange = new EventEmitter<boolean>();
   @Output() remove = new EventEmitter<number>();
   @Output() weightChange = new EventEmitter<void>();
+  @Output() lengthChange = new EventEmitter<void>();
+  @Output() widthChange = new EventEmitter<void>();
+  @Output() heightChange = new EventEmitter<void>();
 
   dimensionError: boolean = false;
   weightError: boolean = false;
@@ -36,6 +39,15 @@ export class PackageFormComponent implements OnInit {
     this.checkValidity();
     this.packageForm.get('weight').valueChanges.subscribe(() => {
       this.weightChange.emit();
+    })
+    ;this.packageForm.get('length').valueChanges.subscribe(() => {
+      this.lengthChange.emit();
+    });
+    this.packageForm.get('width').valueChanges.subscribe(() => {
+      this.widthChange.emit();
+    });
+    this.packageForm.get('height').valueChanges.subscribe(() => {
+      this.heightChange.emit();
     });
 
   }

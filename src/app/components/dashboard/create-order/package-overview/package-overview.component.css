@@ -11,7 +11,7 @@
 .package-overview .overview-header {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 0.1rem;
+  margin: 2rem;
 }
 
 .package-overview .count,
