@@ -53,7 +53,6 @@ export class NavBarComponent {
 
   loginWithRedirect() {
     let redirectUri = environment.auth.authorizationParams.redirect_uri;
-    console.log(`Redirecting to ${redirectUri}`);
     this.auth.loginWithRedirect({
       authorizationParams: {
         redirect_uri: redirectUri
