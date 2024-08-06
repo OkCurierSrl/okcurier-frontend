@@ -72,12 +72,10 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "okcurier-frontend:build",
-            "proxyConfig": "proxy.conf.json"
+            "buildTarget": "okcurier-frontend:build"
           },
           "configurations": {
             "production": {
-              "proxyConfig": "proxy.conf.json",
               "buildTarget": "okcurier-frontend:build:production"
             }
           }

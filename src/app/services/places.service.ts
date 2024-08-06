@@ -1,50 +1,49 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Observable, of} from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlacesService {
-  private apiKey = 'AIzaSyCO77ldStnRCjfZ3EThONj8F8X6d3EVWvI';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
   getCitySuggestions(input: string): Observable<any[]> {
-    const url = `/api/place/autocomplete/json?input=${encodeURIComponent(input)}&types=(cities)&components=country:ro&key=${this.apiKey}`;
+    const url = this.baseUrl + `/api/place/autocomplete?input=${encodeURIComponent(input)}`;
     return this.http.get(url).pipe(map((res: any) => res.predictions));
   }
 
   getAddressSuggestions(input: string): Observable<any[]> {
-    const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&types=address&components=country:ro&key=${this.apiKey}`;
+    const url = this.baseUrl + `/api/place/autocomplete?input=${encodeURIComponent(input)}`;
     return this.http.get(url).pipe(map((res: any) => res.predictions));
   }
 
   getStreetNumberSuggestions(input: string, street: string): Observable<any[]> {
-    const url = `/api/place/autocomplete/json?input=${encodeURIComponent(street)} ${encodeURIComponent(input)}&types=address&components=country:ro&key=${this.apiKey}`;
+    const url = this.baseUrl + `/api/place/autocomplete?input=${encodeURIComponent(street)} ${encodeURIComponent(input)}`;
     return this.http.get(url).pipe(map((res: any) => res.predictions));
   }
 
   getAddressDetails(placeId: string): Observable<any> {
-    const url = `/api/place/details/json?placeid=${placeId}&key=${this.apiKey}`;
+    const url = this.baseUrl + `/api/place/details?placeid=${placeId}`;
     return this.http.get(url).pipe(map((res: any) => res.result));
   }
 
   validateCity(city: string): Observable<boolean> {
-    const url = `/api/place/autocomplete/json?input=${encodeURIComponent(city)}&types=(cities)&components=country:ro&key=${this.apiKey}`;
+    const url = this.baseUrl + `/api/place/validate/city?city=${encodeURIComponent(city)}`;
     return this.http.get(url).pipe(map((res: any) => res.predictions.length > 0));
   }
 
   validatePostalCode(postalCode: string, city: string): Observable<boolean> {
-    const url = `/api/place/autocomplete/json?input=${encodeURIComponent(postalCode)} ${encodeURIComponent(city)}&types=address&components=country:ro&key=${this.apiKey}`;
+    const url = this.baseUrl + `/api/place/validate/postalcode?postalCode=${encodeURIComponent(postalCode)}&city=${encodeURIComponent(city)}`;
     return this.http.get(url).pipe(map((res: any) => res.predictions.length > 0));
   }
 
   getCities(county: string): Observable<any[]> {
-    const input = `county ${county}`;
-    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(input)}&types=locality&components=country:ro&key=${this.apiKey}`;
+    const url = this.baseUrl + `/api/place/cities?county=${encodeURIComponent(county)}`;
     return this.http.get(url).pipe(map((res: any) => res.results.map((result: any) => ({ name: result.name }))));
   }
-
 }
