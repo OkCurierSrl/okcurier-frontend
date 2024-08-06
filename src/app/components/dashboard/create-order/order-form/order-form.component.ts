@@ -6,6 +6,8 @@ import { NgClass, NgForOf, NgIf } from "@angular/common";
 import { ChipsModule } from "primeng/chips";
 import { ButtonDirective } from "primeng/button";
 import { PlacesService } from "../../../../services/places.service";
+import {Address} from "../order.data";
+import {OrderService} from "../../../../services/order.service";
 
 /**
  * Represents the Order Form Component.
@@ -41,37 +43,39 @@ export class OrderFormComponent implements OnInit {
   numberSuggestions: any[] = [];
   counties: any[] = [];
   cities: any[] = [];
+  favoriteAddressSuggestions: Address[] = [];
+  favoriteAddressSuggestionsShortNames: String[] = [];
+  private isSavedAddress: boolean = false;
 
-  constructor(private fb: FormBuilder, private placesService: PlacesService) {}
+
+  constructor(private fb: FormBuilder, private placesService: PlacesService, private orderService: OrderService) {}
 
   ngOnInit(): void {
     this.initForm();
     this.loadCounties();
+    this.loadFavoriteAddresses();
     this.orderForm.statusChanges.subscribe(status => {
       this.formValidityChange.emit(this.orderForm.valid);
-      this.logFormValidity();
-
     });
 
     // Watch the streetInput field and validate it
     this.orderForm.get('streetInput').valueChanges.subscribe(value => {
-      if (value && !this.isSuggestionValid(value)) {
+      let suggestionValid = this.isSuggestionValid(value);
+      console.log('Suggestion valid: ', suggestionValid);
+      if (value && !suggestionValid) {
         this.orderForm.get('street').setValue('');
         this.orderForm.get('street').setErrors({ invalid: true });
       } else if (value) {
         this.orderForm.get('street').setErrors(null);
       }
     });
-
   }
 
-  // todo delete
-  logFormValidity(): void {
-    Object.keys(this.orderForm.controls).forEach(key => {
-      const control = this.orderForm.get(key);
-      console.log(`${key} valid:`, control.valid);
+  loadFavoriteAddresses(): void {
+    this.orderService.getAddresses().subscribe(addresses => {
+      this.favoriteAddressSuggestions = addresses;
+      this.favoriteAddressSuggestionsShortNames = addresses.map(e => e.shortName);
     });
-    console.log(`Form valid: ${this.orderForm.valid}`);
   }
 
 
@@ -90,10 +94,8 @@ export class OrderFormComponent implements OnInit {
       staircase: [''],
       floor: [''],
       apartment: [''],
-
+      favoriteAddress: [''] // Add a control for favorite address
     });
-
-
   }
 
   loadCounties(): void {
@@ -170,7 +172,7 @@ export class OrderFormComponent implements OnInit {
 
   selectAddress(suggestion: any, streetInputField: HTMLInputElement) {
     this.orderForm.patchValue({
-      street: suggestion.rawDescription, // Hidden field for validated street
+      street: suggestion.description, // Hidden field for validated street
       streetInput: suggestion.description // Displayed input field
     });
     streetInputField.value = suggestion.description;
@@ -178,7 +180,9 @@ export class OrderFormComponent implements OnInit {
   }
 
   isSuggestionValid(input: string): boolean {
-    return this.addressSuggestions.some(suggestion => suggestion.description === input);
+    console.log('value : ', input);
+    console.log('suggestions : ', this.addressSuggestions);
+    return this.addressSuggestions.some(suggestion => suggestion.description === input) || this.isSavedAddress;
   }
 
   extractStreetName(description: string): string {
@@ -186,7 +190,6 @@ export class OrderFormComponent implements OnInit {
     const parts = description.split(',');
     return parts[0] || description;
   }
-
 
   onNumberInput(event: any): void {
     const input = event.target.value;
@@ -212,5 +215,48 @@ export class OrderFormComponent implements OnInit {
       this.postalCodeInput.nativeElement.focus(); // Focus on postal code input
     });
     this.numberSuggestions = [];
+  }
+
+  onFavoriteChange(event: Event): void {
+    const elem = event.target as HTMLSelectElement
+    const shortName = elem.value.split(': ').pop();  // This will get the part after ": "
+    console.log(shortName);
+    console.log(this.favoriteAddressSuggestions);
+    this.favoriteAddressSuggestions.forEach(favoriteAddressSuggestion => {
+      if (favoriteAddressSuggestion.shortName == shortName) {
+        this.selectFavoriteAddress(favoriteAddressSuggestion);
+      }
+    });
+  }
+
+  selectFavoriteAddress(suggestion: Address): void {
+    console.log(suggestion)
+    const selectedCounty = this.counties.find(c => c.name === suggestion.county);
+    this.isSavedAddress = true;
+    this.orderForm.patchValue({
+      name: suggestion.name,
+      phone1: suggestion.phone1,
+      phone2: suggestion.phone2 || '',
+      county: selectedCounty ? selectedCounty.name : '', // Use the county name if it matches
+      city: suggestion.city || '', // Ensure this is correctly mapped
+      street: suggestion.street || '', // Assuming street is a string
+      streetInput: suggestion.street || '', // Assuming you want to show the street in the input field as well
+      number: suggestion.number,
+      postalCode: suggestion.postalCode,
+      block: suggestion.block || '',
+      staircase: suggestion.staircase || '',
+      floor: suggestion.floor || '',
+      apartment: suggestion.apartment || '',
+    });
+
+    // Mark all controls as touched and dirty
+    Object.keys(this.orderForm.controls).forEach(field => {
+      const control = this.orderForm.get(field);
+      control.markAsTouched({ onlySelf: true });
+      control.markAsDirty({ onlySelf: true });
+    });
+
+    // Trigger re-validation
+    this.orderForm.updateValueAndValidity();
   }
 }

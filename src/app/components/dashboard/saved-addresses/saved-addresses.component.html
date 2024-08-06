@@ -1,7 +1,16 @@
 <div class="container">
   <div class="form-wrapper flex-container">
     <div class="form-column" id="expeditorFormColumn">
+
+
+
       <app-order-form #expeditorForm title="Adresa noua" (formValidityChange)="onExpeditorFormValidityChange($event)"></app-order-form>
+
+      <div>
+        <label for="shortName">Short Name</label>
+        <input id="shortName" [(ngModel)]="shortName" placeholder="Adauga un nume scurt pentru adresa" />
+      </div>
+
       <button pButton type="button" (click)="onSubmit()" [disabled]="!isFormValid()" class="arrow-button">
         <img src="assets/logo.png" alt="OK Curier Logo" class="button-logo">
         <span class="button-text">Salveaza</span>

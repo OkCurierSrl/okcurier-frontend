@@ -1,22 +1,76 @@
 <div class="container mt-5" *ngIf="auth.user$ | async as user">
-  <div
-    class="row align-items-center profile-header mb-5 text-center text-md-left"
-  >
-    <div class="col-md-2">
-      <img
-        [src]="user.picture"
-        class="rounded-circle img-fluid profile-picture mb-3 mb-md-0"
-      />
-    </div>
-    <div class="col-md">
-      <h2>{{ user.name }}</h2>
-      <p class="lead text-muted">{{ user.email }}</p>
+  <div class="card profile-card">
+    <div class="card-body">
+      <div class="row align-items-center profile-header">
+        <div class="col-md-3 text-center">
+          <img
+            [src]="user.picture"
+            class="rounded-circle img-fluid profile-picture mb-3"
+            alt="Poza de profil"
+          />
+          <button class="btn btn-primary mt-3" (click)="editMode = !editMode">
+            {{ editMode ? 'Anulează' : 'Editează Profil' }}
+          </button>
+        </div>
+        <div class="col-md-9">
+          <h2>{{ user.name }}</h2>
+          <p class="lead text-muted">{{ user.email }}</p>
+          <p *ngIf="user.nickname"><strong>username:</strong> {{ user.nickname }}</p>
+          <p *ngIf="user.updated_at"><strong>Ultima actualizare:</strong> {{ user.updated_at | date }}</p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="row" *ngIf="profileJson">
-    <pre
-      class="rounded"
-    ><code class="json" [highlight]="profileJson"></code></pre>
+  <div class="card mt-4">
+    <div class="card-body">
+      <h4>Detalii Profil</h4>
+      <form *ngIf="editMode" (ngSubmit)="saveProfile()">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="businessName">Nume Firmă</label>
+              <input id="businessName" [(ngModel)]="profileData.businessName" name="businessName" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="cui">CUI</label>
+              <input id="cui" [(ngModel)]="profileData.cui" name="cui" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="phoneNumber">Număr de Telefon</label>
+              <input id="phoneNumber" [(ngModel)]="profileData.phoneNumber" name="phoneNumber" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="iban">IBAN</label>
+              <input id="iban" [(ngModel)]="profileData.iban" name="iban" class="form-control" />
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-3">
+          <button type="submit" class="btn btn-success">Salvează</button>
+        </div>
+      </form>
+
+      <div *ngIf="!editMode">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Nume Firmă:</strong> {{ profileData.businessName || 'N/A' }}</p>
+            <p><strong>CUI:</strong> {{ profileData.cui || 'N/A' }}</p>
+            <p><strong>Număr de Telefon:</strong> {{ profileData.phoneNumber || 'N/A' }}</p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>IBAN:</strong> {{ profileData.iban || 'N/A' }}</p>
+            <p><strong>Statut:</strong> Client cu contract</p>
+            <p><strong>Statut:</strong> Client cu contract</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-3">
+        <button class="btn btn-danger" (click)="logout()">Deconectează-te</button>
+      </div>
+    </div>
   </div>
 </div>

@@ -19,6 +19,7 @@ import {PackageOverviewComponent} from "./package-overview/package-overview.comp
 import {PriceCalculationService} from "../../../services/price-calculation.service";
 import {Router} from "@angular/router";
 import {OrderData} from "./order.data";
+import {AuthService} from "@auth0/auth0-angular";
 
 
 @Component({
@@ -50,13 +51,19 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   asigurare: number | null = 0;
   rambursCont: number | null = 0;
   isPlicSelected: boolean;
+  private isLoggedIn: boolean;
 
 
   constructor(private fb: FormBuilder,
               private renderer: Renderer2,
               private el: ElementRef,
               private priceCalculationService: PriceCalculationService,
-              private router: Router) {}
+              private auth: AuthService,
+              private router: Router) {
+    this.auth.isAuthenticated$.subscribe((loggedIn, ) => {
+        this.isLoggedIn = loggedIn;
+    });
+  }
 
   ngOnInit(): void {
     this.addPackage(); // Initialize with one package
@@ -164,10 +171,10 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     // console.log('Expeditor form valid:', this.expeditorFormValid);
     // console.log('Destinatar form valid:', this.destinatarFormValid);
     // console.log('Package count:', this.courierPackages.length > 0);
-
-    this.courierPackages.forEach((pkg, idx) => {
-      // console.log(`Package ${idx + 1} valid:`, pkg.valid);
-    });
+    //
+    // this.courierPackages.forEach((pkg, idx) => {
+    //   console.log(`Package ${idx + 1} valid:`, pkg.valid);
+    // });
   }
 
   isFormValid(): boolean {
@@ -206,16 +213,20 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       this.priceCalculationService.getPrices(orderData).subscribe(
         (response) => {
           console.log('Order submitted successfully', response);
-          this.router.navigate(['/courier-options'], { queryParams: { couriers: JSON.stringify(response) } });
-          // Handle the successful response here
-        },
-        (error) => {
-          console.error('Error submitting order', error);
-          // Handle the error here
-        }
-      );
-    } else {
-      console.log('Form is invalid. Cannot submit.');
+          let url: string;
+          if (this.isLoggedIn) {
+            url = '/dashboard/courier-options';
+          } else {
+            url = '/courier-options';
+          }
+          this.router.navigate([url],
+            {
+              queryParams: {
+                couriers: JSON.stringify(response),
+                orderData: JSON.stringify(orderData)
+              }
+            });
+        });
     }
   }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {OrderData} from "../components/dashboard/create-order/order.data";
+import {Address, OrderData} from "../components/dashboard/create-order/order.data";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
@@ -37,5 +37,10 @@ export class OrderService {
 
   getAddresses() {
     let url = this.apiUrl + '/api/addresses';
-    return this.http.get<any>(url)  }
+    return this.http.get<Address[]>(url)  }
+
+  deleteAddress(shortName: string): Observable<any> {
+    let url = this.apiUrl + '/api/address/' + shortName;
+    return this.http.delete<void>(url)
+  }
 }

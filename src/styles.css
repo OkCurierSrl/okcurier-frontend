@@ -1,10 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
   --ok-primary-color: rgb(239 68 68);
-  --ok-primary-color-dark: rgb(234, 40, 40);
+  --ok-primary-color-dark: rgb(166, 26, 26);
   --ok-primary-color-light: #f64f4f;
   --ok-secondary-color: #9b9797;
-  --ok-secondary-color-light: #050505;
+  --ok-secondary-color-light: #b6b2b2;
   --ok-accent-color: #20be44;
   --ok-accent-color-light: #80d092;
   --font-family: 'Poppins', sans-serif;

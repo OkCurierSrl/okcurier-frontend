@@ -17,8 +17,29 @@ export class TableComponent {
 
 
   constructor(private orderService: OrderService) {
+    this.loadAddresses();
+  }
+
+  private loadAddresses() {
     this.orderService.getAddresses().subscribe((addresses: Address[]) => {
       this.filteredOrders = addresses;
     });
   }
+
+  refreshTable(): void {
+    this.loadAddresses();  // Re-fetch the addresses when called
+  }
+  removeAddress(order: any): void {
+    if (confirm('Are you sure you want to delete this address?')) {
+      this.orderService.deleteAddress(order.shortName).subscribe(() => {
+        // Remove the address from the local array
+        this.filteredOrders = this.filteredOrders.filter(item => item.shortName !== order.shortName);
+      }, error => {
+        console.error('Error deleting address:', error);
+      });
+    }
+  }
+
+
+
 }

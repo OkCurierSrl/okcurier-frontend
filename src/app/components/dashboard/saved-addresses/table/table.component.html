@@ -6,6 +6,7 @@
     <table class="order-list-table">
       <thead>
       <tr>
+        <th>ID</th>
         <th>Nume</th>
         <th>Numar de telefon 1</th>
         <th>Numar de telefon 2</th>
@@ -18,11 +19,13 @@
         <th>Scara</th>
         <th>Etaj</th>
         <th>Ap</th>
+        <th>Actiuni</th> <!-- New column for actions -->
       </tr>
       </thead>
       <tbody>
       <ng-container *ngFor="let order of filteredOrders">
         <tr>
+          <td>{{ order.shortName }}</td>
           <td>{{ order.name }}</td>
           <td>{{ order.phone1 }}</td>
           <td>{{ order.phone2 }}</td>
@@ -35,6 +38,11 @@
           <td>{{ order.staircase }}</td>
           <td>{{ order.floor }}</td>
           <td>{{ order.apartment }}</td>
+          <td>
+            <button (click)="removeAddress(order)">
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
+          </td> <!-- Remove button column -->
         </tr>
       </ng-container>
       </tbody>

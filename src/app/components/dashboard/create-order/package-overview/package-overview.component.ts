@@ -21,7 +21,6 @@ export class PackageOverviewComponent implements OnChanges {
   }
 
   calculateOverview(): void {
-    console.log('tesr')
     this.totalWeight = this.packages.reduce((acc, pkg) => {
       const length = pkg.form.value.length || 0;
       const width = pkg.form.value.width || 0;
@@ -30,8 +29,6 @@ export class PackageOverviewComponent implements OnChanges {
 
       const dimensionalWeight = (length * width * height) / 5000;
       const effectiveWeight = Math.max(realWeight, dimensionalWeight);
-      console.log('dimensionalWeight', dimensionalWeight);
-      console.log('effectiveWeight', realWeight);
       return acc + effectiveWeight;
     }, 0);
   }

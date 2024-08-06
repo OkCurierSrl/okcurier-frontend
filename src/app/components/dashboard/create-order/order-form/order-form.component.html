@@ -2,6 +2,14 @@
   <p-card>
     <h4>{{ title }}</h4>
     <form [formGroup]="orderForm">
+      <div class="p-col-6">
+        <select
+          formControlName="favoriteAddress" (change)="onFavoriteChange($event)">
+          <option value="" disabled selected>Adresa favorita</option>
+          <option *ngFor="let address of favoriteAddressSuggestionsShortNames" [ngValue]="address">{{ address }}</option>
+        </select>
+      </div>
+
       <div class="p-field" [ngClass]="{'invalid': orderForm.get('name').invalid && orderForm.get('name').touched}">
         <label for="name">Nume</label>
         <input id="name" pInputText formControlName="name" placeholder="Adauga numele" />

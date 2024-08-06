@@ -1,4 +1,5 @@
 export interface Address {
+    shortName: string;
     name: string;
     phone1: string;
     phone2?: string;

@@ -9,7 +9,7 @@ import {
   NgbDropdownMenu,
   NgbDropdownToggle,
 } from '@ng-bootstrap/ng-bootstrap';
-import {RouterLink, RouterModule} from '@angular/router';
+import {Router, RouterLink, RouterModule} from '@angular/router';
 import {ButtonModule} from "primeng/button";
 import {MenubarModule} from "primeng/menubar";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -39,8 +39,16 @@ export class NavBarComponent {
 
   constructor(
     public auth: AuthService,
-    @Inject(DOCUMENT) private doc: Document
-  ) {}
+    @Inject(DOCUMENT) private doc: Document,
+    private router: Router
+  ) {
+    this.auth.isAuthenticated$.subscribe((loggedIn, ) => {
+      if (loggedIn) {
+        this.router.navigate(['/dashboard/order']);
+      }
+    });
+
+  }
 
   loginWithRedirect() {
     this.auth.loginWithRedirect();

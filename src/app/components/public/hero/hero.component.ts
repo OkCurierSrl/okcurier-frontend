@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { PlacesService } from '../../../services/places.service';
@@ -11,6 +11,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonDirective } from 'primeng/button';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { PriceCalculationService } from '../../../services/price-calculation.service';
+import {Router} from "@angular/router";
+import {OrderData} from "../../dashboard/create-order/order.data";
 
 @Component({
   selector: 'app-hero',
@@ -34,24 +36,18 @@ export class HeroComponent {
   activeField: 'location' | 'destination' | null = null;
   selectedLocation: string;
   selectedDestination: string;
-  selectedPackageType: string = 'PLIC';
+  selectedPackageType: string;
   weight: number;
   length: number;
   width: number;
   height: number;
-  isPlic: boolean = true;
   prices: any[];
-  packageTypes = ["PLIC", "COLET"]; // CAPS IMPORTANT TO BE THE SAME AS SPRING ENUMS
 
-  services = [
-    { logo: 'assets/dpd.png', name: 'DPD', price: '10.10' },
-    { logo: 'assets/dpd.png', name: 'Cargus', price: '10.99' },
-    { logo: 'assets/fan.png', name: 'Fan', price: '12.25' },
-    { logo: 'assets/sameday.png', name: 'Sameday', price: '14.29' },
-    { logo: 'assets/gls.png', name: 'GLS', price: '14.99' }
-  ];
+  constructor(private placesService: PlacesService, private http: HttpClient, private priceCalculationService: PriceCalculationService, private router: Router) {
+    this.selectedPackageType = 'plic';
+  }
 
-  constructor(private placesService: PlacesService, private http: HttpClient, private priceCalculation: PriceCalculationService) {}
+
 
   onCityInputChange(event: Event, field: 'location' | 'destination'): void {
     const target = event.target as HTMLInputElement;
@@ -61,10 +57,13 @@ export class HeroComponent {
     this.citySuggestions = this.placesService.getCitySuggestions(value).pipe(
       debounceTime(300),
       distinctUntilChanged(),
-      map(predictions => predictions.map(prediction => ({
-        label: prediction.description,
-        value: prediction.description
-      })))
+      map(predictions => predictions.map(prediction => {
+        let label = prediction.description.split(',')[0].trim();
+        return ({
+          label: label,
+          value: label
+        });
+      }))
     );
   }
 
@@ -77,25 +76,29 @@ export class HeroComponent {
     this.activeField = null;
   }
 
-  onPackageTypeChange(event: any): void {
-    this.isPlic = event.value === 'PLIC';
-  }
-
-  getPackageTypeOptions(): { label: string, value: string }[] {
-    return this.packageTypes.map(type => ({ label: type, value: type }));
-  }
-
   calculateTariff(): void {
-    const request = {
-      type: this.selectedPackageType,
-      weight: this.weight,
-      length: this.length,
-      width: this.width,
-      height: this.height
+    const orderData: OrderData = {
+      destinatar: undefined,
+      expeditor: undefined,
+      extraServices: {},
+      isPlicSelected: this.selectedPackageType == 'plic',
+      packages: [{
+        length: this.length,
+        width: this.width,
+        height: this.height,
+        weight: this.weight
+      }]
     };
 
-    this.priceCalculation.calculatePrice(request).subscribe(data => {
-      this.prices = data;
+    console.log(orderData);
+    this.priceCalculationService.getPrices(orderData).subscribe(
+      response => {
+        console.log(response);
+        this.router.navigate(['/courier-options'],
+          { queryParams: {
+            couriers: JSON.stringify(response),
+              orderData: JSON.stringify(orderData)
+          }});
     });
   }
 }

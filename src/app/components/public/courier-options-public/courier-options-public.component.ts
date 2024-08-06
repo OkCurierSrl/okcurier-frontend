@@ -2,13 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {OrderService} from "../../../services/order.service";
-import {OrderData} from "../create-order/order.data";
 import {AuthService} from "@auth0/auth0-angular";
 import {CourierOption} from "./courier.option";
+import {OrderData} from "../../dashboard/create-order/order.data";
 
 @Component({
   selector: 'app-courier-options',
-  templateUrl: './courier-options.component.html',
+  templateUrl: './courier-options-public.component.html',
   standalone: true,
   imports: [
     NgClass,
@@ -16,22 +16,20 @@ import {CourierOption} from "./courier.option";
     NgOptimizedImage,
     NgIf
   ],
-  styleUrls: ['./courier-options.component.css']
+  styleUrls: ['./courier-options-public.component.css']
 })
-export class CourierOptionsComponent implements OnInit {
+export class CourierOptionsPublicComponent implements OnInit {
   couriers: CourierOption[] = [];
-  pickupDate = '10-07-2024';
-  deadlineDate = '12-07-2024';
   private orderData: OrderData;
 
-  constructor(private route: ActivatedRoute, private auth: AuthService, private router: Router, private order: OrderService) {}
+  constructor(private route: ActivatedRoute, private auth: AuthService, private router: Router, private order: OrderService) {
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       if (params['couriers']) {
         this.couriers = JSON.parse(params['couriers']);
       }
-
       if (params['orderData']) {
         this.orderData = JSON.parse(params['orderData']);
         console.log(this.orderData + ' Order Data');
@@ -46,28 +44,35 @@ export class CourierOptionsComponent implements OnInit {
 
   getCourierLogo(courier: string): string {
     switch (courier.toLowerCase()) {
-      case 'dpd': return 'assets/dpd-logo.png';
-      case 'cargus': return 'assets/cargus-logo.png';
-      case 'sameday': return 'assets/sameday-logo.png';
-      case 'gls': return 'assets/gls-logo.png';
-      case 'fan': return 'assets/fan-logo.png';
-      default: return '';
+      case 'dpd':
+        return 'assets/dpd-logo.png';
+      case 'cargus':
+        return 'assets/cargus-logo.png';
+      case 'sameday':
+        return 'assets/sameday-logo.png';
+      case 'gls':
+        return 'assets/gls-logo.png';
+      case 'fan':
+        return 'assets/fan-logo.png';
+      default:
+        return '';
+    }
+  }
+  orderCourier(): void {
+    const selectedCourier = this.couriers.find(courier => courier.selected);
+    if (selectedCourier) {
+      this.router.navigate(['/netopia'], {
+        state: {
+          selectedCourier: selectedCourier,
+          orderData: this.orderData
+        }
+      }); // Redirect to Netopia with the selected courier and orderData
+    } else {
+      console.log('No courier selected');
     }
   }
 
-  generateAWB(): void {
-    this.order.generateAwb(this.orderData)
-    this.router.navigate(['/dashboard/order-list']); // Redirect to order list
-    console.log('Generating AWB for selected courier...');
-  }
-
-  orderCourier(): void {
-        this.order.orderCourier(this.orderData);
-        this.router.navigate(['/dashboard/order-list']); // Redirect to order list
-        console.log('Ordering courier...');
-  }
-
   goBack(): void {
-    this.router.navigate(['/dashboard/order']);
+    this.router.navigate(['/order']);
   }
 }

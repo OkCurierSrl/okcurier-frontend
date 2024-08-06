@@ -18,13 +18,17 @@ import {TicketComponent} from "./components/dashboard/ticket/ticket.component";
 import {SavedAddressesComponent} from "./components/dashboard/saved-addresses/saved-addresses.component";
 import {LandingPageComponent} from "./pages/landing-page/landing-page.component";
 import {HeroComponent} from "./components/public/hero/hero.component";
+import {NetopiaComponent} from "./components/public/netopia-payment/netopia-payment.component";
+import {
+  CourierOptionsPublicComponent
+} from "./components/public/courier-options-public/courier-options-public.component";
 
 export const routes: Routes = [
 
   {
     path: 'dashboard',
     component: DashboardLayoutComponent,
-    // canActivate: [authGuardFn],
+    canActivate: [authGuardFn],
     children: [
       {
         path: 'profile',
@@ -64,7 +68,7 @@ export const routes: Routes = [
       {
         path: 'prices',
         component: AdminPricesComponent,
-        // canActivate: [authGuardFn],
+        canActivate: [authGuardFn],
       }]
   },
   {
@@ -72,9 +76,11 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       {path: 'test', component: HeroComponent},
+      {path: 'netopia', component: NetopiaComponent},
       {path: '', component: LandingPageComponent},
       {path: 'oferta', component: RequestOfferComponent},
       {path: 'order', component: CreateOrderComponent},
+      {path: 'courier-options', component: CourierOptionsPublicComponent},
       {path: 'info', component: HowToOrderComponent}
     ]
   },
