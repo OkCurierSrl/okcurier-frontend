@@ -28,7 +28,6 @@ export const environment = {
     allowedList: [`${apiUri}/*`],
   },
   apiUrl: 'http://localhost:8080'
-
 };
 
 /*

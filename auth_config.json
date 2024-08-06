@@ -1,11 +1,10 @@
 {
   "domain": "okcurier-staging.eu.auth0.com",
-  "clientId": "AbybAkzIS7jaPkT4Fv4AjLR93xUsxQG5",
+  "clientId": "1hb3H0yukuvKuLrIbisl1IImg9idloW0",
   "authorizationParams": {
     "audience": "https://okcurier-staging.eu.auth0.com/api/v2/"
   },
   "apiUri": "https://okcurier-backend-0f6dc5b97bfd.herokuapp.com",
   "appUri": "https://okcurier-frontend-d66f2ea5edab.herokuapp.com",
   "errorPath": "/error"
-
 }

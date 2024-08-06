@@ -13,7 +13,7 @@ export const environment = {
   auth: {
     domain,
     clientId,
-    ...(audience && audience !== "https://okcurier-staging.eu.auth0.com/api/v2/" ? { audience } : null),
+    audience: audience || "https://okcurier-staging.eu.auth0.com/api/v2/",
     redirectUri: window.location.origin,
     errorPath,
   },
