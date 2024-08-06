@@ -24,3 +24,7 @@ ng serve
 # Start application (locally)
 > ng serve
 nvm l
+
+
+# See remote enviroment variables
+> heroku config --app okcurier-frontend

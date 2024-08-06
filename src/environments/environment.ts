@@ -20,7 +20,7 @@ export const environment = {
     clientId,
     authorizationParams: {
       ...(audience && audience !== 'https://okcurier-staging.eu.auth0.com/api/v2/' ? {audience} : null),
-      redirect_uri: window.location.origin,
+      redirect_uri: 'http://localhost:4200/dashboard/order',
     },
     errorPath,
   },
