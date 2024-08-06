@@ -3,6 +3,7 @@ import {CommonModule, DOCUMENT} from '@angular/common';
 import {ButtonDirective} from "primeng/button";
 import {RouterLink} from "@angular/router";
 import {AuthService} from "@auth0/auth0-angular";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-admin-navbar',
@@ -19,7 +20,13 @@ export class AdminNavbarComponent {
   ) {}
 
   loginWithRedirect() {
-    this.auth.loginWithRedirect();
+    let redirectUri = environment.auth.authorizationParams.redirect_uri;
+    console.log(`Redirecting to ${redirectUri}`);
+    this.auth.loginWithRedirect({
+      authorizationParams: {
+        redirect_uri: redirectUri
+      }
+    });
   }
 
   logout() {

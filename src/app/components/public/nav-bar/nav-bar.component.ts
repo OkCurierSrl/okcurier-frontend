@@ -13,6 +13,7 @@ import {Router, RouterLink, RouterModule} from '@angular/router';
 import {ButtonModule} from "primeng/button";
 import {MenubarModule} from "primeng/menubar";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-nav-bar',
@@ -51,9 +52,14 @@ export class NavBarComponent {
   }
 
   loginWithRedirect() {
-    this.auth.loginWithRedirect();
+    let redirectUri = environment.auth.authorizationParams.redirect_uri;
+    console.log(`Redirecting to ${redirectUri}`);
+    this.auth.loginWithRedirect({
+      authorizationParams: {
+        redirect_uri: redirectUri
+      }
+    });
   }
-
   logout() {
     this.auth.logout({ logoutParams: { returnTo: this.doc.location.origin } });
   }
