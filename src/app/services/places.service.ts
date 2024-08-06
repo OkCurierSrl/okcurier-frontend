@@ -17,7 +17,7 @@ export class PlacesService {
   }
 
   getAddressSuggestions(input: string): Observable<any[]> {
-    const url = `/api/place/autocomplete/json?input=${encodeURIComponent(input)}&types=address&components=country:ro&key=${this.apiKey}`;
+    const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&types=address&components=country:ro&key=${this.apiKey}`;
     return this.http.get(url).pipe(map((res: any) => res.predictions));
   }
 
