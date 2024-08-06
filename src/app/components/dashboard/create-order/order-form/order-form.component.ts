@@ -1,13 +1,16 @@
-import {Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter} from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { CardModule } from "primeng/card";
-import {DropdownChangeEvent, DropdownModule} from "primeng/dropdown";
-import { NgClass, NgForOf, NgIf } from "@angular/common";
-import { ChipsModule } from "primeng/chips";
-import { ButtonDirective } from "primeng/button";
-import { PlacesService } from "../../../../services/places.service";
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {CardModule} from "primeng/card";
+import {DropdownModule} from "primeng/dropdown";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {ChipsModule} from "primeng/chips";
+import {ButtonDirective} from "primeng/button";
+import {PlacesService} from "../../../../services/places.service";
 import {Address} from "../order.data";
 import {OrderService} from "../../../../services/order.service";
+import {StateCodeProjection} from "./state-code.projection";
+import {map} from "rxjs/operators";
+
 
 /**
  * Represents the Order Form Component.
@@ -45,7 +48,7 @@ export class OrderFormComponent implements OnInit {
   cities: any[] = [];
   favoriteAddressSuggestions: Address[] = [];
   favoriteAddressSuggestionsShortNames: String[] = [];
-  private isSavedAddress: boolean = false;
+  protected isSavedAddress: boolean = false;
 
 
   constructor(private fb: FormBuilder, private placesService: PlacesService, private orderService: OrderService) {}
@@ -85,7 +88,7 @@ export class OrderFormComponent implements OnInit {
       phone1: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       phone2: ['', [Validators.pattern(/^[0-9]{10}$/)]],
       county: ['', Validators.required],
-      city: [''],
+      city: ['', Validators.required],
       street: ['', Validators.required],
       streetInput: ['', Validators.required], // Input field for user typing
       number: ['', Validators.required],
@@ -99,60 +102,32 @@ export class OrderFormComponent implements OnInit {
   }
 
   loadCounties(): void {
-    this.counties = [
-      { name: "Alba" },
-      { name: "Arad" },
-      { name: "Argeș" },
-      { name: "Bacău" },
-      { name: "Bihor" },
-      { name: "Bistrița-Năsăud" },
-      { name: "Botoșani" },
-      { name: "Brașov" },
-      { name: "Brăila" },
-      { name: "Buzău" },
-      { name: "Caraș-Severin" },
-      { name: "Călărași" },
-      { name: "Cluj" },
-      { name: "Constanța" },
-      { name: "Covasna" },
-      { name: "Dâmbovița" },
-      { name: "Dolj" },
-      { name: "Galați" },
-      { name: "Giurgiu" },
-      { name: "Gorj" },
-      { name: "Harghita" },
-      { name: "Hunedoara" },
-      { name: "Ialomița" },
-      { name: "Iași" },
-      { name: "Ilfov" },
-      { name: "Maramureș" },
-      { name: "Mehedinți" },
-      { name: "Mureș" },
-      { name: "Neamț" },
-      { name: "Olt" },
-      { name: "Prahova" },
-      { name: "Satu Mare" },
-      { name: "Sălaj" },
-      { name: "Sibiu" },
-      { name: "Suceava" },
-      { name: "Teleorman" },
-      { name: "Timiș" },
-      { name: "Tulcea" },
-      { name: "Vaslui" },
-      { name: "Vâlcea" },
-      { name: "Vrancea" },
-      { name: "București" }
-    ];
+    this.placesService.getCounties().pipe(
+      map((counties: StateCodeProjection[]) =>
+        counties.map(county => {
+          const transformedStateName = county.stateName.replace('County', '').trim();
+          return {
+            ...county,
+            stateName: transformedStateName
+          };
+        })
+      )
+    ).subscribe((counties: StateCodeProjection[]) => {
+      this.counties = counties;
+    });
   }
 
   onCountyChange(event: any): void {
-    // const county = event.value.name;
-    // this.placesService.getCities(county).subscribe(data => {
-    //   this.cities = data;
-    //   this.orderForm.get('city').reset(); // Reset city when county changes
-    // }, error => {
-    //   console.error('Error loading cities: ', error);
-    // });
+    this.isSavedAddress = false;
+    const aux = event.target as HTMLSelectElement;
+    const county = aux.value
+    console.log('Judetul s-a schimbat in ' + county);
+    this.placesService.getCities(county).subscribe(data => {
+      this.cities = data;
+      console.log(this.cities)
+    }, error => {
+      console.error('Error loading cities: ', error);
+    });
   }
 
   onAddressInput(event: any): void {
@@ -230,15 +205,13 @@ export class OrderFormComponent implements OnInit {
   }
 
   selectFavoriteAddress(suggestion: Address): void {
-    console.log(suggestion)
-    const selectedCounty = this.counties.find(c => c.name === suggestion.county);
     this.isSavedAddress = true;
     this.orderForm.patchValue({
       name: suggestion.name,
       phone1: suggestion.phone1,
       phone2: suggestion.phone2 || '',
-      county: selectedCounty ? selectedCounty.name : '', // Use the county name if it matches
-      city: suggestion.city || '', // Ensure this is correctly mapped
+      county: suggestion.county, // Use the county name if it matches
+      city: suggestion.city, // Ensure this is correctly mapped
       street: suggestion.street || '', // Assuming street is a string
       streetInput: suggestion.street || '', // Assuming you want to show the street in the input field as well
       number: suggestion.number,

@@ -22,7 +22,10 @@ export class CourierOptionsPublicComponent implements OnInit {
   couriers: CourierOption[] = [];
   private orderData: OrderData;
 
-  constructor(private route: ActivatedRoute, private auth: AuthService, private router: Router, private order: OrderService) {
+  constructor(private route: ActivatedRoute,
+              private auth: AuthService,
+              private router: Router,
+              private orderService: OrderService) {
   }
 
   ngOnInit(): void {
@@ -58,8 +61,18 @@ export class CourierOptionsPublicComponent implements OnInit {
         return '';
     }
   }
+
   orderCourier(): void {
     const selectedCourier = this.couriers.find(courier => courier.selected);
+      this.orderService.orderCourier(this.orderData, selectedCourier.courier).subscribe(
+          (response) => {
+              console.log('Order Placed successfully', response);
+          },
+          (error) => {
+              console.error('Error placing the order', error);
+          }
+      );
+
     if (selectedCourier) {
       this.router.navigate(['/netopia'], {
         state: {

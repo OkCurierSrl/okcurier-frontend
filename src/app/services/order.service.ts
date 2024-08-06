@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Address, OrderData} from "../components/dashboard/create-order/order.data";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
@@ -9,16 +9,17 @@ import {map, share} from "rxjs/operators";
   providedIn: 'root'
 })
 export class OrderService {
-  private apiUrl =  environment.apiUrl;
+  private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
-
-  generateAwb(orderData: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl + '/api/generateAwb', orderData);
+  constructor(private http: HttpClient) {
   }
 
-  orderCourier(orderData: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl + '/api/orderCourier', orderData);
+  generateAwb(orderData: OrderData, courier: string): Observable<any> {
+    return this.http.post<any>(this.apiUrl + '/api/order+ courier', orderData);
+  }
+
+  orderCourier(orderData: OrderData, courier: string): Observable<any> {
+    return this.http.post<any>(this.apiUrl + '/api/courier/place-order?courierCompany=' + courier, orderData);
   }
 
   getOrders(): Observable<any[]> {
@@ -30,14 +31,15 @@ export class OrderService {
     );
   }
 
-    saveAddress(data: any): Observable<any> {
-      let url = this.apiUrl + '/api/address/save';
-      return this.http.post<any>(url, data)
-    }
+  saveAddress(data: any): Observable<any> {
+    let url = this.apiUrl + '/api/address/save';
+    return this.http.post<any>(url, data)
+  }
 
   getAddresses() {
     let url = this.apiUrl + '/api/addresses';
-    return this.http.get<Address[]>(url)  }
+    return this.http.get<Address[]>(url)
+  }
 
   deleteAddress(shortName: string): Observable<any> {
     let url = this.apiUrl + '/api/address/' + shortName;

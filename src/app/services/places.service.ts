@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from "../../environments/environment";
+import {StateCodeProjection} from "../components/dashboard/create-order/order-form/state-code.projection";
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +44,13 @@ export class PlacesService {
   }
 
   getCities(county: string): Observable<any[]> {
-    const url = this.baseUrl + `/api/place/cities?county=${encodeURIComponent(county)}`;
-    return this.http.get(url).pipe(map((res: any) => res.results.map((result: any) => ({ name: result.name }))));
+    const url = `${this.baseUrl}/api/place/cities?countyCode=${encodeURIComponent(county)}`;
+    return this.http.get<any[]>(url);
+  }
+
+  // Method to fetch all counties
+  getCounties(): Observable<StateCodeProjection[]> {
+    const url = `${this.baseUrl}/api/place/counties`;
+    return this.http.get<StateCodeProjection[]>(url);
   }
 }

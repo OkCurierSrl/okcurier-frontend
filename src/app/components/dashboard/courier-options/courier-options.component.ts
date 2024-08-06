@@ -20,11 +20,9 @@ import {CourierOption} from "./courier.option";
 })
 export class CourierOptionsComponent implements OnInit {
   couriers: CourierOption[] = [];
-  pickupDate = '10-07-2024';
-  deadlineDate = '12-07-2024';
   private orderData: OrderData;
 
-  constructor(private route: ActivatedRoute, private auth: AuthService, private router: Router, private order: OrderService) {}
+  constructor(private route: ActivatedRoute, private auth: AuthService, private router: Router, private orderService: OrderService) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -56,14 +54,16 @@ export class CourierOptionsComponent implements OnInit {
   }
 
   generateAWB(): void {
-    this.order.generateAwb(this.orderData)
-    this.router.navigate(['/dashboard/order-list']); // Redirect to order list
+    const selectedCourier = this.couriers.find(courier => courier.selected);
+    this.orderService.generateAwb(this.orderData, selectedCourier.courier)
+    this.router.navigate(['/dashboard/order-list']); // Redirect to orderService list
     console.log('Generating AWB for selected courier...');
   }
 
   orderCourier(): void {
-        this.order.orderCourier(this.orderData);
-        this.router.navigate(['/dashboard/order-list']); // Redirect to order list
+    const selectedCourier = this.couriers.find(courier => courier.selected);
+        this.orderService.orderCourier(this.orderData, selectedCourier.courier);
+        this.router.navigate(['/dashboard/order-list']); // Redirect to orderService list
         console.log('Ordering courier...');
   }
 
