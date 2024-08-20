@@ -19,7 +19,7 @@ export class OrderService {
   }
 
   orderCourier(orderData: OrderData, courier: string): Observable<any> {
-    return this.http.post<any>(this.apiUrl + '/api/courier/place-order?courierCompany=' + courier, orderData);
+    return this.http.post<any>(this.apiUrl + '/api/okcourier/place-order?courierCompany=' + courier, orderData);
   }
 
   getOrders(): Observable<any[]> {
