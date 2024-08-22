@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
+import {AuthService, User} from '@auth0/auth0-angular';
 import { HighlightModule } from 'ngx-highlightjs';
 import {FormsModule} from "@angular/forms";
 import {AsyncPipe, DatePipe, NgIf, NgOptimizedImage} from "@angular/common";
+import {HttpClient} from "@angular/common/http";
+import {auth} from "express-oauth2-jwt-bearer";
 
 @Component({
   selector: 'app-profile',
@@ -25,7 +27,7 @@ export class ProfileComponent implements OnInit {
     locale: ''
   };
 
-  constructor(public auth: AuthService) {}
+  constructor(public auth: AuthService, private http: HttpClient  ) {}
 
   ngOnInit() {
     this.auth.user$.subscribe(
@@ -48,5 +50,26 @@ export class ProfileComponent implements OnInit {
 
   logout() {
     this.auth.logout({ logoutParams: {returnTo: document.location.origin }});
+  }
+
+  test() {
+      this.auth.getAccessTokenSilently().subscribe(
+        token => {
+          console.log(token);
+          this.http.get<User>(`http://localhost:8080/api/test/user-info`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          }).subscribe(
+            (data: User) => console.log(data),
+            err => console.error(err)
+          );
+        },
+        err => {
+          console.error('Failed to get token', err);
+        }
+      );
   }
 }

@@ -2,8 +2,9 @@ import {Injectable} from '@angular/core';
 import {Address, OrderData} from "../components/dashboard/create-order/order.data";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
-import {HttpClient} from "@angular/common/http";
-import {map, share} from "rxjs/operators";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {map, share, switchMap} from "rxjs/operators";
+import {AuthService} from "@auth0/auth0-angular";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import {map, share} from "rxjs/operators";
 export class OrderService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private auth: AuthService) {
   }
 
   generateAwb(orderData: OrderData, courier: string): Observable<any> {
@@ -31,15 +32,35 @@ export class OrderService {
     );
   }
 
-  saveAddress(data: any): Observable<any> {
-    let url = this.apiUrl + '/api/address/save';
-    return this.http.post<any>(url, data)
+  private addAuthHeader(): Observable<HttpHeaders> {
+    return this.auth.getAccessTokenSilently().pipe(
+      switchMap(token => {
+        const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`
+        });
+        return [headers];
+      })
+    );
   }
 
-  getAddresses() {
-    let url = this.apiUrl + '/api/addresses';
-    return this.http.get<Address[]>(url)
+  saveAddress(data: any): Observable<any> {
+    const url = `${this.apiUrl}/api/address/save`;
+
+    return this.addAuthHeader().pipe(
+      switchMap(headers => this.http.post<any>(url, data, { headers }))
+    );
   }
+
+  getAddresses(): Observable<Address[]> {
+    const url = `${this.apiUrl}/api/addresses`;
+
+    return this.addAuthHeader().pipe(
+      switchMap(headers => this.http.get<Address[]>(url, { headers }))
+    );
+  }
+
 
   deleteAddress(shortName: string): Observable<any> {
     let url = this.apiUrl + '/api/address/' + shortName;

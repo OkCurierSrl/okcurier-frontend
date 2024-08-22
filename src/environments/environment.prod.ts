@@ -15,7 +15,7 @@ export const environment = {
     clientId,
     authorizationParams: {
       ...(audience && audience !== 'https://okcurier-staging.eu.auth0.com/api/v2/' ? {audience} : null),
-      redirect_uri: 'https://okcurier-frontend-d66f2ea5edab.herokuapp.com/dashboard/order',
+      redirect_uri: 'https://okcurier-frontend-d66f2ea5edab.herokuapp.com/',
     },
     errorPath,
   },

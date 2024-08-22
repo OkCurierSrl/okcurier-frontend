@@ -140,29 +140,117 @@
   background-color: var(--ok-primary-color-dark);
 }
 
+.login-icon {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: whitesmoke;
+}
+
+/* Sliding Menu Styles */
+.menu {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  z-index: 1100; /* Ensure it is above the header */
+}
+
+.menu a {
+  padding: 8px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.menu a:hover {
+  color: #f1f1f1;
+}
+
+.menu .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+  background: transparent;
+  border: none;
+  color: white;
+}
+
+.menu.open {
+  width: 80%;
+}
+
+/* Responsive layout */
 @media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: center;
+  .brand svg {
+    margin-left: var(--header-height-mobile);
   }
-
   .nav {
+    display: none;
     flex-direction: column;
-    align-items: center;
+    width: 100%;
   }
 
-  .nav a {
-    margin: 0.5rem 0;
+  .header {
+    height: var(--header-height-mobile);
+  }
+  .hamburger {
+    display: block;
+  }
+
+  .nav.open {
+    display: flex;
   }
 
   .auth-buttons {
-    flex-direction: column;
-    align-items: flex-end;
-    margin-top: 1rem;
-  }
-
-  .profile-dropdown {
-    margin-right: 0;
-    margin-bottom: 1rem;
+    order: 1;
   }
 }
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: whitesmoke;
+  font-size: 1.5rem;
+}
+
+/*@media (max-width: 768px) {*/
+/*  .header {*/
+/*    flex-direction: column;*/
+/*    align-items: center;*/
+/*  }*/
+
+/*  .nav {*/
+/*    flex-direction: column;*/
+/*    align-items: center;*/
+/*  }*/
+
+/*  .nav a {*/
+/*    margin: 0.5rem 0;*/
+/*  }*/
+
+/*  .auth-buttons {*/
+/*    flex-direction: column;*/
+/*    align-items: flex-end;*/
+/*    margin-top: 1rem;*/
+/*  }*/
+
+/*  .profile-dropdown {*/
+/*    margin-right: 0;*/
+/*    margin-bottom: 1rem;*/
+/*  }*/
+/*}*/
+
+

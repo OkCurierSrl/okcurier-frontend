@@ -76,3 +76,14 @@ ul {
 .footer-bottom p {
   margin: 0;
 }
+
+.footer ul li a {
+  color: inherit; /* Inherits the color of the parent element */
+  text-decoration: none; /* Removes the underline */
+}
+
+.footer ul li a:hover {
+  color: var(--ok-primary-color); /* Changes color on hover */
+  text-decoration: underline; /* Adds underline on hover */
+}
+

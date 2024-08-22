@@ -1,0 +1,11 @@
+.main-content {
+  padding-top: var(--extra-header-height); /* Add padding to avoid overlap */
+  background-color: var(--ok-dark-color);
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: var(--header-height-mobile); /* Add padding to avoid overlap */
+    background-color: var(--ok-dark-color);
+  }
+}

@@ -114,6 +114,7 @@ export class OrderFormComponent implements OnInit {
       )
     ).subscribe((counties: StateCodeProjection[]) => {
       this.counties = counties;
+      console.log("Couties = " +  this.counties)
     });
   }
 
@@ -125,7 +126,7 @@ export class OrderFormComponent implements OnInit {
     this.placesService.getCities(county).subscribe(data => {
       this.cities = data;
       console.log(this.cities)
-    }, error => {
+    }, error => {``
       console.error('Error loading cities: ', error);
     });
   }

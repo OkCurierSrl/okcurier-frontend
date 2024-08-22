@@ -6,7 +6,7 @@ import {ProfileComponent} from './pages/profile/profile.component';
 import {authGuardFn} from '@auth0/auth0-angular';
 import {MainLayoutComponent} from "./components/public/main-layout/main-layout.component";
 import {AdminLayoutComponent} from "./components/admin/admin-layout/admin-layout.component";
-import {AdminPricesComponent} from "./pages/admin-prices/admin-prices.component";
+import {AdminPricesComponent} from "./components/admin/admin-prices/admin-prices.component";
 import {CreateOrderComponent} from "./components/dashboard/create-order/create-order.component";
 import {CourierOptionsComponent} from "./components/dashboard/courier-options/courier-options.component";
 import {OrderListComponent} from "./components/dashboard/order-list/order-list.component";
@@ -22,6 +22,7 @@ import {NetopiaComponent} from "./components/public/netopia-payment/netopia-paym
 import {
   CourierOptionsPublicComponent
 } from "./components/public/courier-options-public/courier-options-public.component";
+import {RoleGuard} from "./components/role-guard/role-guard.component";
 
 export const routes: Routes = [
 
@@ -64,12 +65,43 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayoutComponent,
+    canActivate: [authGuardFn, RoleGuard],
+    data: {roles: ['ADMIN']}, // Specify the roles required for this route
     children: [
       {
         path: 'prices',
         component: AdminPricesComponent,
         canActivate: [authGuardFn],
-      }]
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+      },
+      {
+        path: 'order',
+        component: CreateOrderComponent,
+      },
+      {
+        path: 'courier-options',
+        component: CourierOptionsComponent,
+      },
+      {
+        path: 'order-list',
+        component: OrderListComponent,
+      },
+      {
+        path: 'requests',
+        component: RequestMaterialsComponent,
+      },
+      {
+        path: 'favorite-addresses',
+        component: SavedAddressesComponent,
+      },
+      {
+        path: 'ticketing',
+        component: TicketComponent,
+      }
+    ]
   },
   {
     path: '',

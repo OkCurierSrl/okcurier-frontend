@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {ServicePricing, ServicePricingService} from "../../services/service-pricing.service";
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ServicePricing, ServicePricingService} from "../../../services/service-pricing.service";
 import {NgForOf, NgIf, TitleCasePipe} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 
@@ -33,18 +33,12 @@ export class AdminPricesComponent implements OnInit {
   selectedCourier: string | null = null;
   modified: boolean = false;
 
-  constructor(private servicePricingService: ServicePricingService) {}
+  constructor(private servicePricingService: ServicePricingService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.loadServicePricing();
+    this.selectedCourier = this.couriers[0].name;
+    this.fetchPricesForCourier(this.couriers[0].name);
   }
-
-  loadServicePricing(): void {
-    this.servicePricingService.getAllServicePricing().subscribe(data => {
-      this.services = data;
-    });
-  }
-
   selectCourier(courier: string): void {
     this.selectedCourier = courier;
     this.fetchPricesForCourier(courier);
@@ -53,7 +47,9 @@ export class AdminPricesComponent implements OnInit {
   fetchPricesForCourier(courier: string): void {
     // Simulate fetching prices for the selected courier
     this.servicePricingService.getAllServicePricing().subscribe(data => {
-      this.services = data.filter(service => service.courierCompany.name === courier);
+      this.services = data.filter(service => service.courierCompany.nameEnum === courier);
+      this.cdr.detectChanges(); // Force Angular to update the UI
+
     });
   }
 
@@ -68,7 +64,6 @@ export class AdminPricesComponent implements OnInit {
   }
 
   modifyPrices(): void {
-    console.log('Prices modified', this.services);
     this.modified = true;
     this.services.forEach(service => {
       this.servicePricingService.saveServicePricing(service).subscribe();

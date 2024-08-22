@@ -6,7 +6,7 @@ import {AuthService} from "@auth0/auth0-angular";
 import {switchMap} from "rxjs/operators";
 
 interface Courier {
-  name: string;
+  nameEnum: string;
   logo: string;
 }
 

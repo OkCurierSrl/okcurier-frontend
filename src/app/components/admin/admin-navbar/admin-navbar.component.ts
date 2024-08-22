@@ -4,15 +4,22 @@ import {ButtonDirective} from "primeng/button";
 import {RouterLink} from "@angular/router";
 import {AuthService} from "@auth0/auth0-angular";
 import {environment} from "../../../../environments/environment";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import { faUser, faPowerOff } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-admin-navbar',
   standalone: true,
-    imports: [CommonModule, ButtonDirective, RouterLink],
+    imports: [CommonModule, ButtonDirective, RouterLink, FontAwesomeModule],
   templateUrl: './admin-navbar.component.html',
-  styleUrl: './admin-navbar.component.css'
+  styleUrl: '../../dashboard/dashboard-navbar/dashboard-navbar.component.css'
 })
 export class AdminNavbarComponent {
+  isCollapsed = true;
+  faUser = faUser;
+  faPowerOff = faPowerOff;
+  isNavOpen: boolean = false;
+  showDropdown: boolean;
 
   constructor(
     public auth: AuthService,
@@ -31,6 +38,11 @@ export class AdminNavbarComponent {
 
   logout() {
     this.auth.logout({ logoutParams: { returnTo: this.doc.location.origin } });
+  }
+
+  toggleNav(): void {
+    this.isNavOpen = !this.isNavOpen;
+    console.log('nav open ' + this.isNavOpen);
   }
 
 

@@ -4,7 +4,7 @@
   "authorizationParams": {
     "audience": "https://okcurier-staging.eu.auth0.com/api/v2/"
   },
-  "apiUri": "https://okcurier-backend-0f6dc5b97bfd.herokuapp.com",
+  "apiUri": "http://localhost:8080/",
   "appUri": "https://okcurier-frontend-d66f2ea5edab.herokuapp.com",
   "errorPath": "/error"
 }
