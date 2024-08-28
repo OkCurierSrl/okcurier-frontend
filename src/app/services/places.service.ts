@@ -23,8 +23,8 @@ export class PlacesService {
     return this.http.get(url).pipe(map((res: any) => res.predictions));
   }
 
-  getStreetNumberSuggestions(input: string, street: string): Observable<any[]> {
-    const url = this.baseUrl + `/api/place/autocomplete?input=${encodeURIComponent(street)} ${encodeURIComponent(input)}`;
+  getStreetNumberSuggestions(input: string, street: string, city: any): Observable<any[]> {
+    const url = this.baseUrl + `/api/place/autocomplete?input=${encodeURIComponent(street)} ${encodeURIComponent(input)} ${encodeURIComponent(city)}`;
     return this.http.get(url).pipe(map((res: any) => res.predictions));
   }
 

@@ -114,7 +114,6 @@ export class OrderFormComponent implements OnInit {
       )
     ).subscribe((counties: StateCodeProjection[]) => {
       this.counties = counties;
-      console.log("Couties = " +  this.counties)
     });
   }
 
@@ -122,7 +121,6 @@ export class OrderFormComponent implements OnInit {
     this.isSavedAddress = false;
     const aux = event.target as HTMLSelectElement;
     const county = aux.value
-    console.log('Judetul s-a schimbat in ' + county);
     this.placesService.getCities(county).subscribe(data => {
       this.cities = data;
       console.log(this.cities)
@@ -168,36 +166,36 @@ export class OrderFormComponent implements OnInit {
   }
 
   onNumberInput(event: any): void {
-    const input = event.target.value;
-    const street = this.orderForm.get('street').value;
-    if (input && street) {
-      this.placesService.getStreetNumberSuggestions(input, street).subscribe(suggestions => {
-        this.numberSuggestions = suggestions;
-      });
-    } else {
-      this.numberSuggestions = [];
-    }
+    // const input = event.target.value;
+    // const street = this.orderForm.get('street').value;
+    // const city = this.orderForm.get('city').value;
+    // if (input && street) {
+    //   this.placesService.getStreetNumberSuggestions(input, street, city).subscribe(suggestions => {
+    //     this.numberSuggestions = suggestions;
+    //   });
+    // } else {
+    //   this.numberSuggestions = [];
+    // }
   }
 
   selectNumber(number: any): void {
-    this.placesService.getAddressDetails(number.place_id).subscribe(details => {
-      const postalCode = details.address_components.find(ac => ac.types.includes('postal_code')).long_name;
-      const state = details.address_components.find(ac => ac.types.includes('administrative_area_level_1')).long_name;
-      this.orderForm.patchValue({
-        number: number.description.split(',')[0],
-        postalCode,
-        state
-      });
-      this.postalCodeInput.nativeElement.focus(); // Focus on postal code input
-    });
-    this.numberSuggestions = [];
+    // this.placesService.getAddressDetails(number.place_id).subscribe(details => {
+    //   const postalCode = details.address_components.find(ac => ac.types.includes('postal_code')).long_name;
+    //   const state = details.address_components.find(ac => ac.types.includes('administrative_area_level_1')).long_name;
+    //   this.orderForm.patchValue({
+    //     number: number.description.split(',')[0],
+    //     postalCode,
+    //     state
+    //   });
+    //   console.log("numarul este" + number);
+    //   this.postalCodeInput.nativeElement.focus(); // Focus on postal code input
+    // });
+    // this.numberSuggestions = [];
   }
 
   onFavoriteChange(event: Event): void {
     const elem = event.target as HTMLSelectElement
     const shortName = elem.value.split(': ').pop();  // This will get the part after ": "
-    console.log(shortName);
-    console.log(this.favoriteAddressSuggestions);
     this.favoriteAddressSuggestions.forEach(favoriteAddressSuggestion => {
       if (favoriteAddressSuggestion.shortName == shortName) {
         this.selectFavoriteAddress(favoriteAddressSuggestion);

@@ -55,16 +55,43 @@ export class CourierOptionsComponent implements OnInit {
 
   generateAWB(): void {
     const selectedCourier = this.couriers.find(courier => courier.selected);
-    this.orderService.generateAwb(this.orderData, selectedCourier.courier)
-    this.router.navigate(['/dashboard/order-list']); // Redirect to orderService list
-    console.log('Generating AWB for selected courier...');
+    if (!selectedCourier) {
+      console.error('No courier selected');
+      return;
+    }
+    this.orderService.generateAwb(this.orderData, selectedCourier.courier).subscribe({
+      next: (response) => {
+        console.log('AWB generated successfully:', response);
+        this.router.navigate(['/dashboard/order-list']); // Redirect to order list
+      },
+      error: (error) => {
+        console.error('Error generating AWB:', error);
+      },
+      complete: () => {
+        console.log('AWB generation completed');
+      }
+    });
   }
 
   orderCourier(): void {
     const selectedCourier = this.couriers.find(courier => courier.selected);
-        this.orderService.orderCourier(this.orderData, selectedCourier.courier);
-        this.router.navigate(['/dashboard/order-list']); // Redirect to orderService list
-        console.log('Ordering courier...');
+    if (!selectedCourier) {
+      console.error('No courier selected');
+      return;
+    }
+    this.orderService.orderCourier(this.orderData, selectedCourier.courier).subscribe({
+      next: (response) => {
+        console.log(this.orderData);
+        console.log('Courier ordered successfully:', response);
+        this.router.navigate(['/dashboard/order-list']); // Redirect to order list
+      },
+      error: (error) => {
+        console.error('Error ordering courier:', error);
+      },
+      complete: () => {
+        console.log('Courier ordering completed');
+      }
+    });
   }
 
   goBack(): void {

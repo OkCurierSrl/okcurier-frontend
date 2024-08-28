@@ -72,7 +72,7 @@
       <div class="p-grid">
         <div class="p-col-6" [ngClass]="{'invalid': orderForm.get('number').invalid && orderForm.get('number').touched}">
           <label for="number">Numarul</label>
-          <input id="number" #numberInput pInputText formControlName="number" (input)="onNumberInput($event)" placeholder="numarul" />
+          <input type="number" id="number" #numberInput pInputText formControlName="number" (input)="onNumberInput($event)" placeholder="numarul" />
           <ul *ngIf="numberSuggestions.length" class="suggestions-list">
             <li *ngFor="let suggestion of numberSuggestions" (click)="selectNumber(suggestion)">
               {{ suggestion.description }}
