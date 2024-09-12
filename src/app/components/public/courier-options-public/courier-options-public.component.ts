@@ -64,7 +64,7 @@ export class CourierOptionsPublicComponent implements OnInit {
 
   orderCourier(): void {
     const selectedCourier = this.couriers.find(courier => courier.selected);
-      this.orderService.orderCourier(this.orderData, selectedCourier.courier).subscribe(
+      this.orderService.pickupOrder(this.orderData, selectedCourier.courier).subscribe(
           (response) => {
               console.log('Order Placed successfully', response);
           },

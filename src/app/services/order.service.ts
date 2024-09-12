@@ -14,16 +14,15 @@ export class OrderService {
 
   constructor(private http: HttpClient, private auth: AuthService) {
   }
-
-  generateAwb(data: OrderData, courier: string): Observable<any> {
-    let url = this.apiUrl + '/api/order+ courier';
+  placeOrder(data: OrderData, courier: string): Observable<any> {
+    let url = this.apiUrl + '/api/okcurier/place-order?courierCompany=' + courier;
     return this.addAuthHeader().pipe(
       switchMap(headers => this.http.post<any>(url, data, { headers }))
     );
   }
 
-  orderCourier(data: OrderData, courier: string): Observable<any> {
-    let url = this.apiUrl + '/api/okcurier/place-order?courierCompany=' + courier;
+  pickupOrder(data: OrderData, courier: string): Observable<any> {
+    let url = this.apiUrl + '/api/okcurier/pickup-order?courierCompany=' + courier;
     return this.addAuthHeader().pipe(
       switchMap(headers => this.http.post<any>(url, data, { headers }))
     );

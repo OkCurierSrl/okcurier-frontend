@@ -59,7 +59,7 @@ export class CourierOptionsComponent implements OnInit {
       console.error('No courier selected');
       return;
     }
-    this.orderService.generateAwb(this.orderData, selectedCourier.courier).subscribe({
+    this.orderService.placeOrder(this.orderData, selectedCourier.courier).subscribe({
       next: (response) => {
         console.log('AWB generated successfully:', response);
         this.router.navigate(['/dashboard/order-list']); // Redirect to order list
@@ -79,7 +79,7 @@ export class CourierOptionsComponent implements OnInit {
       console.error('No courier selected');
       return;
     }
-    this.orderService.orderCourier(this.orderData, selectedCourier.courier).subscribe({
+    this.orderService.pickupOrder(this.orderData, selectedCourier.courier).subscribe({
       next: (response) => {
         console.log(this.orderData);
         console.log('Courier ordered successfully:', response);
