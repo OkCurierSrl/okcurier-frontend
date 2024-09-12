@@ -187,10 +187,6 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       const destinatarData = this.destinatarFormComponent.orderForm.getRawValue();
       const packagesData = this.courierPackages.map(pkg => pkg.form.getRawValue());
 
-      // Convert county objects to strings
-      expeditorData.county = expeditorData.county.name;
-      destinatarData.county = destinatarData.county.name;
-
       const orderData: OrderData = {
         expeditor: expeditorData,
         destinatar: destinatarData,
