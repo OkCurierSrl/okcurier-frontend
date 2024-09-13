@@ -1,0 +1,42 @@
+<div class="order-list-container">
+  <h2>Lista Useri</h2>
+  <div class="order-list-actions">
+    <!-- Add search or filter actions here if needed -->
+  </div>
+  <div class="table-responsive">
+    <table class="order-list-table">
+      <thead>
+      <tr>
+        <th>Nume</th>
+        <th>Email</th>
+        <th>Rol</th>
+        <th>Ultima Logare</th>
+        <th>Acțiuni</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngFor="let client of clients">
+        <tr>
+          <td>{{ client.name }}</td>
+          <td>{{ client.email }}</td>
+          <td>{{ client.roles?.length ? client.roles[client.roles.length - 1].name : 'None' }}</td>
+          <td>{{ client.last_login | date: 'short' }}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn-action" title="Suspendă Acces" (click)="suspendAccess(client)">
+                <i class="fas fa-ban"></i>
+              </button>
+              <button class="btn-action" title="Șterge Client" (click)="deleteClient(client)">
+                <i class="fas fa-trash"></i>
+              </button>
+              <button class="btn-action" title="Modifica discounturi" (click)="redirectToClientView(client)">
+                <i class="fas fa-edit"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

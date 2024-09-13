@@ -1,0 +1,111 @@
+<div class="client-view-container">
+  <h2>{{ clientName }}</h2>
+
+  <!-- Tabs Navigation -->
+  <div class="tabs">
+    <button [class.active]="activeTab === 'info'" (click)="setActiveTab('info')">Client Info</button>
+    <button [class.active]="activeTab === 'discounts'" (click)="setActiveTab('discounts')">Discounts</button>
+  </div>
+
+  <!-- Client Info Tab -->
+  <div *ngIf="activeTab === 'info'" class="tab-content">
+    <h3 class="section-title">General Information</h3>
+    <table class="client-info-table">
+      <tr>
+        <th>Email</th>
+        <td>{{ client.email }}</td>
+      </tr>
+      <tr>
+        <th>Name</th>
+        <td>{{ client.name }}</td>
+      </tr>
+      <tr>
+        <th>Family Name</th>
+        <td>{{ client.family_name }}</td>
+      </tr>
+      <tr>
+        <th>Given Name</th>
+        <td>{{ client.given_name }}</td>
+      </tr>
+      <tr>
+        <th>Nickname</th>
+        <td>{{ client.nickname }}</td>
+      </tr>
+      <tr>
+        <th>Email Verified</th>
+        <td>{{ client.email_verified ? 'Yes' : 'No' }}</td>
+      </tr>
+      <tr>
+        <th>Created At</th>
+        <td>{{ client.created_at }}</td>
+      </tr>
+      <tr>
+        <th>Last Login</th>
+        <td>{{ client.last_login }}</td>
+      </tr>
+      <tr>
+        <th>Last IP</th>
+        <td>{{ client.last_ip }}</td>
+      </tr>
+      <tr>
+        <th>Logins Count</th>
+        <td>{{ client.logins_count }}</td>
+      </tr>
+    </table>
+
+    <h3 class="section-title">Billing Information</h3>
+    <table class="client-info-table">
+      <tr>
+        <th>Company Name</th>
+        <td>{{ client.billing_info.company_name }}</td>
+      </tr>
+      <tr>
+        <th>Contract Number</th>
+        <td>{{ client.billing_info.contract_number }}</td>
+      </tr>
+      <tr>
+        <th>IBAN</th>
+        <td>{{ client.billing_info.iban }}</td>
+      </tr>
+      <tr>
+        <th>CUI</th>
+        <td>{{ client.billing_info.cui }}</td>
+      </tr>
+      <tr>
+        <th>Registration Number</th>
+        <td>{{ client.billing_info.registration_number }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Discounts Tab -->
+  <div *ngIf="activeTab === 'discounts'" class="tab-content">
+    <div class="discount-table">
+      <table>
+        <thead>
+        <tr>
+          <th>Service</th>
+          <th>Discount (%)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let discount of discounts">
+          <td>{{ discount.service }}</td>
+          <td>
+            <input
+              type="number"
+              [(ngModel)]="discount.amountPercentage"
+              (change)="markAsModified()"
+              min="0"
+              max="100"
+              step="0.01"
+            />
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="save-button" (click)="saveDiscounts()">Save Discounts</button>
+    <div *ngIf="modified" class="alert">Discounts modified successfully!</div>
+  </div>
+</div>

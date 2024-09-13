@@ -12,8 +12,8 @@ import {AuthService} from "@auth0/auth0-angular";
 export class OrderService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient, private auth: AuthService) {
-  }
+  constructor(private http: HttpClient, private auth: AuthService) {}
+
   placeOrder(data: OrderData, courier: string): Observable<any> {
     let url = this.apiUrl + '/api/okcurier/place-order?courierCompany=' + courier;
     return this.addAuthHeader().pipe(

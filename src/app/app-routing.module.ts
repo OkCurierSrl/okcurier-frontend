@@ -23,6 +23,8 @@ import {
   CourierOptionsPublicComponent
 } from "./components/public/courier-options-public/courier-options-public.component";
 import {RoleGuard} from "./components/role-guard/role-guard.component";
+import {ClientsComponent} from "./components/admin/clients-component/clients.component";
+import {ClientViewComponent} from "./components/admin/client-view/client-view.component";
 
 export const routes: Routes = [
 
@@ -100,6 +102,13 @@ export const routes: Routes = [
       {
         path: 'ticketing',
         component: TicketComponent,
+      },
+      {
+        path: 'clients',
+        component: ClientsComponent
+      },
+      { path: 'client-view',
+        component: ClientViewComponent
       }
     ]
   },

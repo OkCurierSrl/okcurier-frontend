@@ -14,6 +14,7 @@ import {ButtonModule} from "primeng/button";
 import {MenubarModule} from "primeng/menubar";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {environment} from "../../../../environments/environment";
+import {RoleService} from "../../../services/role-service.service";
 
 @Component({
   selector: 'app-nav-bar',
@@ -40,12 +41,18 @@ export class NavBarComponent {
 
   constructor(
     public auth: AuthService,
+    private roleService: RoleService,
     @Inject(DOCUMENT) private doc: Document,
     private router: Router
   ) {
     this.auth.isAuthenticated$.subscribe((loggedIn, ) => {
       if (loggedIn) {
-        this.router.navigate(['/dashboard/order']);
+        if (roleService.hasRequiredRole(['ADMIN'])) {
+          this.router.navigate(['/admin']);
+        }
+        else {
+          this.router.navigate(['/dashboard/order'])
+        }
       }
     });
 
