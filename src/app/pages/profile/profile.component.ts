@@ -5,6 +5,9 @@ import {FormsModule} from "@angular/forms";
 import {AsyncPipe, DatePipe, NgIf, NgOptimizedImage} from "@angular/common";
 import {HttpClient} from "@angular/common/http";
 import {auth} from "express-oauth2-jwt-bearer";
+import {Client} from "../../model/client";
+import {ClientService} from "../../services/client.service";
+import {BillingInfo} from "../../model/billingInfo";
 
 @Component({
   selector: 'app-profile',
@@ -16,38 +19,65 @@ import {auth} from "express-oauth2-jwt-bearer";
 export class ProfileComponent implements OnInit {
   profileJson: string = null;
   editMode: boolean = false;
+  client: Client
+  private email: string;
 
-  // Placeholder pentru datele profilului, inclusiv câmpurile personalizate
-  profileData = {
-    businessName: '',
-    cui: '',
-    phoneNumber: '',
-    iban: '',
-    statut: '',
-    locale: ''
-  };
-
-  constructor(public auth: AuthService, private http: HttpClient  ) {}
+  constructor(public auth: AuthService,
+              private clientService: ClientService,
+              private http: HttpClient) {}
 
   ngOnInit() {
     this.auth.user$.subscribe(
       (profile) => {
+        this.email = profile.email;
         this.profileJson = JSON.stringify(profile, null, 2);
-        this.profileData = {
-          ...this.profileData,
-          statut: profile.timezone || '',
-          locale: profile.locale || ''
-        };
+        this.clientService.getClientByEmail(profile.email).subscribe(
+          (client: Client) => {
+            this.client = client;
+            if (!this.client.billing_info) {
+              console.log("NUINTRA AICI")
+              this.client.billing_info = {
+                company_name: "",
+                contract_number: "",
+                cui: "",
+                discounts: [],
+                email: "",
+                iban: "",
+                id: 0,
+                phone_number: "",
+                registration_number: ""
+              }
+            }
+
+          },
+          error => {
+            console.error('Error fetching client data', error);
+          }
+        );
+
       }
     );
   }
 
   saveProfile() {
-    // Logica pentru a salva datele profilului actualizate (de ex., trimitere la backend)
-    console.log('Profil salvat:', this.profileData);
-    this.editMode = false;
-  }
+    if (!this.client || !this.client.billing_info) {
+      console.error('No client or billing information available to save.');
+      return;
+    }
+    console.log(this.client.billing_info)
+    const updatedBillingInfo = this.client.billing_info; // This object is updated automatically via [(ngModel)]
 
+    // Save the updated billing info using the ClientService
+    this.clientService.modifyBillingInfo(this.email, updatedBillingInfo).subscribe(
+      () => {
+        console.log('Billing information saved successfully.');
+        this.editMode = false; // Exit edit mode after saving
+      },
+      (error) => {
+        console.error('Error saving billing information', error);
+      }
+    );
+  }
   logout() {
     this.auth.logout({ logoutParams: {returnTo: document.location.origin }});
   }

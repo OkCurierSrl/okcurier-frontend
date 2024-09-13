@@ -30,6 +30,11 @@ export class ClientService {
       {discounts})
   }
 
+  modifyBillingInfo(email: string, billingInfo: BillingInfo): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/api/client/modify-billingInfo?email=${email}`,
+      {billingInfo})
+  }
+
 
   private addAuthHeader(): Observable<HttpHeaders> {
     return this.auth.getAccessTokenSilently().pipe(

@@ -8,21 +8,23 @@
             class="rounded-circle img-fluid profile-picture mb-3"
             alt="Poza de profil"
           />
-          <button class="btn btn-primary mt-3" (click)="test()">
-            {{ editMode ? 'Anulează' : 'Editează Profil' }}
-          </button>
         </div>
         <div class="col-md-9">
           <h2>{{ user.name }}</h2>
           <p class="lead text-muted">{{ user.email }}</p>
           <p *ngIf="user.nickname"><strong>username:</strong> {{ user.nickname }}</p>
           <p *ngIf="user.updated_at"><strong>Ultima actualizare:</strong> {{ user.updated_at | date }}</p>
+          <p *ngIf="client.billing_info?.contract_number"><strong>Contract:</strong> {{ client.billing_info?.contract_number || 'N/A' }}</p>
+          <p *ngIf="client.roles"><strong>Rol:</strong> {{ client.roles?.pop()?.name || 'N/A' }}</p>
         </div>
       </div>
     </div>
   </div>
 
   <div class="card mt-4">
+    <button class="btn btn-primary mt-3" (click)="editMode = !editMode">
+      {{ editMode ? 'Anulează' : 'Editează Profil' }}
+    </button>
     <div class="card-body">
       <h4>Detalii Profil</h4>
       <form *ngIf="editMode" (ngSubmit)="saveProfile()">
@@ -30,21 +32,25 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="businessName">Nume Firmă</label>
-              <input id="businessName" [(ngModel)]="profileData.businessName" name="businessName" class="form-control" />
+              <input id="businessName" [(ngModel)]="client.billing_info.company_name" name="businessName" class="form-control" />
             </div>
             <div class="form-group">
               <label for="cui">CUI</label>
-              <input id="cui" [(ngModel)]="profileData.cui" name="cui" class="form-control" />
+              <input id="cui" [(ngModel)]="client.billing_info.cui" name="cui" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="registrationNumber">Numar de inregistrare(J)</label>
+              <input id="registrationNumber" [(ngModel)]="client.billing_info.registration_number" name="registrationNumber" class="form-control" />
             </div>
             <div class="form-group">
               <label for="phoneNumber">Număr de Telefon</label>
-              <input id="phoneNumber" [(ngModel)]="profileData.phoneNumber" name="phoneNumber" class="form-control" />
+              <input id="phoneNumber" [(ngModel)]="client.billing_info.phone_number" name="phoneNumber" class="form-control" />
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="iban">IBAN</label>
-              <input id="iban" [(ngModel)]="profileData.iban" name="iban" class="form-control" />
+              <input id="iban" [(ngModel)]="client.billing_info.iban" name="iban" class="form-control" />
             </div>
           </div>
         </div>
@@ -56,14 +62,13 @@
       <div *ngIf="!editMode">
         <div class="row">
           <div class="col-md-6">
-            <p><strong>Nume Firmă:</strong> {{ profileData.businessName || 'N/A' }}</p>
-            <p><strong>CUI:</strong> {{ profileData.cui || 'N/A' }}</p>
-            <p><strong>Număr de Telefon:</strong> {{ profileData.phoneNumber || 'N/A' }}</p>
+            <p><strong>Nume Firmă:</strong> {{ client.billing_info.company_name }}</p>
+            <p><strong>CUI:</strong> {{ client.billing_info.cui }}</p>
+            <p><strong>Numar de inregistrare (J):</strong> {{ client.billing_info.registration_number }}</p>
           </div>
           <div class="col-md-6">
-            <p><strong>IBAN:</strong> {{ profileData.iban || 'N/A' }}</p>
-            <p><strong>Statut:</strong> Client cu contract</p>
-            <p><strong>Statut:</strong> Client cu contract</p>
+            <p><strong>Număr de Telefon:</strong> {{ client.billing_info.phone_number }}</p>
+            <p><strong>IBAN:</strong> {{ client.billing_info.iban }}</p>
           </div>
         </div>
       </div>
