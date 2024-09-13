@@ -31,8 +31,11 @@ export class ClientService {
   }
 
   modifyBillingInfo(email: string, billingInfo: BillingInfo): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/api/client/modify-billingInfo?email=${email}`,
-      {billingInfo})
+    return this.http.put<void>(
+      `${this.apiUrl}/api/client/modify-billingInfo?email=${email}`,
+      billingInfo,
+      { responseType: 'text' as 'json' } // Specify responseType to handle plain text
+    );
   }
 
 

@@ -34,27 +34,23 @@ export class ProfileComponent implements OnInit {
         this.clientService.getClientByEmail(profile.email).subscribe(
           (client: Client) => {
             this.client = client;
+            // Initialize billing_info if it's undefined
             if (!this.client.billing_info) {
-              console.log("NUINTRA AICI")
               this.client.billing_info = {
-                company_name: "",
-                contract_number: "",
-                cui: "",
-                discounts: [],
-                email: "",
-                iban: "",
-                id: 0,
-                phone_number: "",
-                registration_number: ""
-              }
+                discounts: [], email: "", id: 0,
+                company_name: '',
+                cui: '',
+                registration_number: '',
+                phone_number: '',
+                iban: '',
+                contract_number: ''
+              };
             }
-
           },
           error => {
             console.error('Error fetching client data', error);
           }
         );
-
       }
     );
   }
