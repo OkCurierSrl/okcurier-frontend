@@ -63,9 +63,11 @@ body {
   text-decoration: none;
 }
 
-.auth-buttons {
+.auth-buttons .login-icon{
   display: flex;
   align-items: center;
+  color: whitesmoke;
+  background-color: var(--ok-primary-color-dark);
 }
 
 

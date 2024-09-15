@@ -5,6 +5,11 @@
   gap: 1rem; /* Add a small gap */
 }
 
+h3 {
+  color: whitesmoke;
+  font-size: 2rem;
+  font-weight: 800;
+}
 .form-wrapper {
   display: flex;
   flex-direction: column;

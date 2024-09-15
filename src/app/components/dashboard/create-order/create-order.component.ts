@@ -74,10 +74,9 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.clientService.isProfileCompleted().subscribe(
       (isProfileCompleted: boolean) => {
-        console.log("profilul eyste " + isProfileCompleted);
         this.isProfileComplete = isProfileCompleted;
         if (!this.isProfileComplete) {
-          this.showPopup();
+          this.greyOutThePageAndDisplayInfoInDiv();
         }
       },
       error => {
@@ -254,8 +253,56 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private showPopup() {
-      alert("Your profile is incomplete. Please complete it before creating an order.");
-      this.router.navigate(['dashboard/profile']); // Redirect to profile page if needed
+  private greyOutThePageAndDisplayInfoInDiv() {
+    // Create the overlay
+    const overlay = this.renderer.createElement('div');
+    this.renderer.setStyle(overlay, 'position', 'fixed');
+    this.renderer.setStyle(overlay, 'top', '0');
+    this.renderer.setStyle(overlay, 'left', '0');
+    this.renderer.setStyle(overlay, 'width', '100%');
+    this.renderer.setStyle(overlay, 'height', '100%');
+    this.renderer.setStyle(overlay, 'backgroundColor', 'rgba(0, 0, 0, 0.5)');
+    this.renderer.setStyle(overlay, 'zIndex', '1000');
+    this.renderer.setStyle(overlay, 'display', 'flex');
+    this.renderer.setStyle(overlay, 'alignItems', 'center');
+    this.renderer.setStyle(overlay, 'justifyContent', 'center');
+
+    // Create the info message box
+    const infoDiv = this.renderer.createElement('div');
+    this.renderer.setStyle(infoDiv, 'backgroundColor', '#fff');
+    this.renderer.setStyle(infoDiv, 'padding', '20px');
+    this.renderer.setStyle(infoDiv, 'borderRadius', '8px');
+    this.renderer.setStyle(infoDiv, 'textAlign', 'center');
+    this.renderer.setStyle(infoDiv, 'boxShadow', '0px 4px 10px rgba(0, 0, 0, 0.2)');
+
+    const infoText = this.renderer.createText('Please complete your profile to send packages.');
+    this.renderer.appendChild(infoDiv, infoText);
+
+    // Create a button to go to the profile page
+    const button = this.renderer.createElement('button');
+    this.renderer.setStyle(button, 'marginTop', '10px');
+    this.renderer.setStyle(button, 'padding', '10px 20px');
+    this.renderer.setStyle(button, 'border', 'none');
+    this.renderer.setStyle(button, 'backgroundColor', '#007bff');
+    this.renderer.setStyle(button, 'color', '#fff');
+    this.renderer.setStyle(button, 'borderRadius', '4px');
+    this.renderer.setStyle(button, 'cursor', 'pointer');
+    const buttonText = this.renderer.createText('Go to Profile');
+    this.renderer.appendChild(button, buttonText);
+
+    // Add click event listener to the button to navigate and remove the overlay
+    this.renderer.listen(button, 'click', () => {
+      this.router.navigate(['/dashboard/profile']).then(() => {
+        // Remove the overlay after navigating
+        this.renderer.removeChild(document.body, overlay);
+      });
+    });
+
+    // Append the button and info message to the overlay
+    this.renderer.appendChild(infoDiv, button);
+    this.renderer.appendChild(overlay, infoDiv);
+
+    // Append the overlay to the body
+    this.renderer.appendChild(document.body, overlay);
   }
 }

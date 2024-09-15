@@ -45,17 +45,20 @@ export class NavBarComponent {
     @Inject(DOCUMENT) private doc: Document,
     private router: Router
   ) {
-    this.auth.isAuthenticated$.subscribe((loggedIn, ) => {
+    this.auth.isAuthenticated$.subscribe((loggedIn) => {
       if (loggedIn) {
-        if (roleService.hasRequiredRole(['ADMIN'])) {
-          this.router.navigate(['/admin']);
-        }
-        else {
-          this.router.navigate(['/dashboard/order'])
-        }
+        // Subscribe to the Observable returned by hasRequiredRole to get the actual boolean value
+        this.roleService.hasRequiredRole(['ADMIN']).subscribe((hasRole) => {
+          if (hasRole) {
+            console.log("Trying to go to admin");
+            this.router.navigate(['/admin']);
+          } else {
+            console.log("Trying to go to dashboard");
+            this.router.navigate(['/dashboard']);
+          }
+        });
       }
     });
-
   }
 
   loginWithRedirect() {
@@ -66,6 +69,7 @@ export class NavBarComponent {
       }
     });
   }
+
   logout() {
     this.auth.logout({ logoutParams: { returnTo: this.doc.location.origin } });
   }

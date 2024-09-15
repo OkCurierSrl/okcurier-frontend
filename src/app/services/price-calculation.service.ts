@@ -16,13 +16,9 @@ w
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
-  calculatePrice(request: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl + '/api/calculate', request);
-  }
-
   getPrices(orderData: OrderData): Observable<CourierOption> {
     return this.addAuthHeader().pipe(
-      switchMap(headers => this.http.post<CourierOption>(this.apiUrl + '/api/orders', orderData)
+      switchMap(headers => this.http.post<CourierOption>(this.apiUrl + '/api/orders', orderData,{headers})
       ));
   }
 
@@ -34,6 +30,7 @@ w
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`
         });
+        console.log('token = '  + token)
         return [headers];
       })
     );

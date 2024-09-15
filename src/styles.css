@@ -12,9 +12,9 @@
   --ok-grey-color: rgb(161 161 170);
   --ok-dark-color: #1E293B;
   --spacing: 1rem;
-  --header-height: 10rem;
+  --header-height: 8rem;
   --header-height-mobile: 6rem;
-  --extra-header-height: 15rem;
+  --extra-header-height: 9rem;
   --radius: 10px
 }
 

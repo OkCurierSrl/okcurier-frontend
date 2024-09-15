@@ -34,6 +34,12 @@ export const routes: Routes = [
     canActivate: [authGuardFn],
     children: [
       {
+        path: '',
+        redirectTo: 'order',
+        pathMatch: 'full' // Ensures redirect occurs only on exact 'admin' path
+      },
+
+      {
         path: 'profile',
         component: ProfileComponent,
       },
@@ -70,6 +76,11 @@ export const routes: Routes = [
     canActivate: [authGuardFn, RoleGuard],
     data: {roles: ['ADMIN']}, // Specify the roles required for this route
     children: [
+      {
+        path: '',
+        redirectTo: 'order',
+        pathMatch: 'full' // Ensures redirect occurs only on exact 'admin' path
+      },
       {
         path: 'prices',
         component: AdminPricesComponent,
