@@ -1,5 +1,22 @@
 <div class="order-list-container">
   <h2>Lista Useri</h2>
+
+  <!-- Invitation Section -->
+  <div class="invite-client-container">
+    <h3>Invită un nou client</h3>
+    <form (ngSubmit)="inviteClient()" #inviteForm="ngForm" class="invite-form">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" [(ngModel)]="newClientEmail" required class="form-control" placeholder="Introduceți email-ul">
+      </div>
+      <div class="form-group">
+        <label for="contractNumber">Număr contract:</label>
+        <input type="text" id="contractNumber" name="contractNumber" [(ngModel)]="newClientContractNumber" required class="form-control" placeholder="Introduceți numărul de contract">
+      </div>
+      <button type="submit" [disabled]="inviteForm.invalid" class="btn btn-primary">Invită Client</button>
+    </form>
+  </div>
+
   <div class="order-list-actions">
     <!-- Add search or filter actions here if needed -->
   </div>

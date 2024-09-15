@@ -30,7 +30,7 @@ export class ClientService {
     return this.http.put<void>(
       `${this.apiUrl}/api/client/modify-discounts?email=${email}`,
       discounts,
-      { responseType: 'text' as 'json' } // Specify responseType to handle plain text
+      {responseType: 'text' as 'json'} // Specify responseType to handle plain text
     );
   }
 
@@ -38,7 +38,14 @@ export class ClientService {
     return this.http.put<void>(
       `${this.apiUrl}/api/client/modify-billingInfo?email=${email}`,
       billingInfo,
-      { responseType: 'text' as 'json' } // Specify responseType to handle plain text
+      {responseType: 'text' as 'json'} // Specify responseType to handle plain text
+    );
+  }
+
+  inviteClient(newClientEmail: string, newClientContractNumber: string) {
+    return this.http.get<void>(
+      `${this.apiUrl}/api/client/send-invitation?email=${newClientEmail}&contractNumber=${newClientContractNumber}`,
+      {responseType: 'text' as 'json'} // Specify responseType to handle plain text
     );
   }
 
@@ -63,8 +70,8 @@ export class ClientService {
   }
 
   isProfileCompleted(): Observable<boolean> {
-      return this.addAuthHeader().pipe(
-        switchMap(headers => this.http.get<boolean>(`${this.apiUrl}/api/private/client/completed-profile`, {headers}))
-      );
+    return this.addAuthHeader().pipe(
+      switchMap(headers => this.http.get<boolean>(`${this.apiUrl}/api/private/client/completed-profile`, {headers}))
+    );
   }
 }
