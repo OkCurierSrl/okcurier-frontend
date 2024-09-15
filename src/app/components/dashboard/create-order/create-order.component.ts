@@ -20,6 +20,8 @@ import {PriceCalculationService} from "../../../services/price-calculation.servi
 import {Router} from "@angular/router";
 import {OrderData} from "./order.data";
 import {AuthService} from "@auth0/auth0-angular";
+import {Client} from "../../../model/client";
+import {ClientService} from "../../../services/client.service";
 
 
 @Component({
@@ -52,6 +54,9 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   rambursCont: number | null = 0;
   isPlicSelected: boolean;
   private isLoggedIn: boolean;
+  client: Client;
+  isProfileComplete: boolean = true;
+  private email: string;
 
 
   constructor(private fb: FormBuilder,
@@ -59,6 +64,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
               private el: ElementRef,
               private priceCalculationService: PriceCalculationService,
               private auth: AuthService,
+              private clientService: ClientService,
               private router: Router) {
     this.auth.isAuthenticated$.subscribe((loggedIn, ) => {
         this.isLoggedIn = loggedIn;
@@ -66,6 +72,19 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.clientService.isProfileCompleted().subscribe(
+      (isProfileCompleted: boolean) => {
+        console.log("profilul eyste " + isProfileCompleted);
+        this.isProfileComplete = isProfileCompleted;
+        if (!this.isProfileComplete) {
+          this.showPopup();
+        }
+      },
+      error => {
+        console.error('Error fetching client data', error);
+      }
+    );
+
     this.addPackage(); // Initialize with one package
   }
 
@@ -235,4 +254,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     }
   }
 
+  private showPopup() {
+      alert("Your profile is incomplete. Please complete it before creating an order.");
+      this.router.navigate(['dashboard/profile']); // Redirect to profile page if needed
+  }
 }

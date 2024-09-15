@@ -14,8 +14,6 @@
           <p class="lead text-muted">{{ user.email }}</p>
           <p *ngIf="user.nickname"><strong>username:</strong> {{ user.nickname }}</p>
           <p *ngIf="user.updated_at"><strong>Ultima actualizare:</strong> {{ user.updated_at | date }}</p>
-          <p *ngIf="client.billing_info.contract_number"><strong>Contract:</strong> {{ client.billing_info.contract_number || 'N/A' }}</p>
-          <p *ngIf="client.roles"><strong>Rol:</strong> {{ client.roles.pop()?.name || 'N/A' }}</p>
         </div>
       </div>
     </div>
@@ -34,12 +32,12 @@
               <label for="businessName">Nume Firmă</label>
               <input
                 id="businessName"
-                [(ngModel)]="client.billing_info.company_name"
+                [(ngModel)]="client?.billing_info.company_name"
                 name="businessName"
                 class="form-control"
               />
               <i
-                *ngIf="!client.billing_info.company_name || client.billing_info.company_name === 'None'"
+                *ngIf="!client?.billing_info.company_name || client?.billing_info.company_name === 'None'"
                 class="fas fa-exclamation-circle text-danger"
                 title="Informatii obligatorii pentru trimiterea de colete"
                 style="margin-left: 5px; cursor: pointer;"
@@ -49,12 +47,12 @@
               <label for="cui">CUI</label>
               <input
                 id="cui"
-                [(ngModel)]="client.billing_info.cui"
+                [(ngModel)]="client?.billing_info.cui"
                 name="cui"
                 class="form-control"
               />
               <i
-                *ngIf="!client.billing_info.cui || client.billing_info.cui === 'None'"
+                *ngIf="!client?.billing_info.cui || client?.billing_info.cui === 'None'"
                 class="fas fa-exclamation-circle text-danger"
                 title="Informatii obligatorii pentru trimiterea de colete"
                 style="margin-left: 5px; cursor: pointer;"
@@ -64,12 +62,12 @@
               <label for="registrationNumber">Numar de inregistrare(J)</label>
               <input
                 id="registrationNumber"
-                [(ngModel)]="client.billing_info.registration_number"
+                [(ngModel)]="client?.billing_info.registration_number"
                 name="registrationNumber"
                 class="form-control"
               />
               <i
-                *ngIf="!client.billing_info.registration_number || client.billing_info.registration_number === 'None'"
+                *ngIf="!client?.billing_info.registration_number || client?.billing_info.registration_number === 'None'"
                 class="fas fa-exclamation-circle text-danger"
                 title="Informatii obligatorii pentru trimiterea de colete"
                 style="margin-left: 5px; cursor: pointer;"
@@ -79,12 +77,12 @@
               <label for="phoneNumber">Număr de Telefon</label>
               <input
                 id="phoneNumber"
-                [(ngModel)]="client.billing_info.phone_number"
+                [(ngModel)]="client?.billing_info.phone_number"
                 name="phoneNumber"
                 class="form-control"
               />
               <i
-                *ngIf="!client.billing_info.phone_number || client.billing_info.phone_number === 'None'"
+                *ngIf="!client?.billing_info.phone_number || client?.billing_info.phone_number === 'None'"
                 class="fas fa-exclamation-circle text-danger"
                 title="Informatii obligatorii pentru trimiterea de colete"
                 style="margin-left: 5px; cursor: pointer;"
@@ -96,12 +94,12 @@
               <label for="iban">IBAN</label>
               <input
                 id="iban"
-                [(ngModel)]="client.billing_info.iban"
+                [(ngModel)]="client?.billing_info.iban"
                 name="iban"
                 class="form-control"
               />
               <i
-                *ngIf="!client.billing_info.iban || client.billing_info.iban === 'None'"
+                *ngIf="!client?.billing_info.iban || client?.billing_info.iban === 'None'"
                 class="fas fa-exclamation-circle text-danger"
                 title="Informatii obligatorii pentru trimiterea de colete"
                 style="margin-left: 5px; cursor: pointer;"
@@ -118,27 +116,27 @@
         <div class="row">
           <div class="col-md-6">
             <p>
-              <strong>Nume Firmă:</strong> {{ client.billing_info.company_name }}
+              <strong>Nume Firmă:</strong> {{ client?.billing_info?.company_name }}
               <i
-                *ngIf="!client.billing_info.company_name || client.billing_info.company_name === 'None'"
+                *ngIf="!client?.billing_info.company_name || client?.billing_info.company_name === 'None'"
                 class="fas fa-exclamation-circle text-danger"
                 title="Informatii obligatorii pentru trimiterea de colete"
                 style="margin-left: 5px; cursor: pointer;"
               ></i>
             </p>
             <p>
-              <strong>CUI:</strong> {{ client.billing_info.cui }}
+              <strong>CUI:</strong> {{ client?.billing_info.cui }}
               <i
-                *ngIf="!client.billing_info.cui || client.billing_info.cui === 'None'"
+                *ngIf="!client?.billing_info.cui || client?.billing_info.cui === 'None'"
                 class="fas fa-exclamation-circle text-danger"
                 title="Informatii obligatorii pentru trimiterea de colete"
                 style="margin-left: 5px; cursor: pointer;"
               ></i>
             </p>
             <p>
-              <strong>Numar de inregistrare (J):</strong> {{ client.billing_info.registration_number }}
+              <strong>Numar de inregistrare (J):</strong> {{ client?.billing_info.registration_number }}
               <i
-                *ngIf="!client.billing_info.registration_number || client.billing_info.registration_number === 'None'"
+                *ngIf="!client?.billing_info.registration_number || client?.billing_info.registration_number === 'None'"
                 class="fas fa-exclamation-circle text-danger"
                 title="Informatii obligatorii pentru trimiterea de colete"
                 style="margin-left: 5px; cursor: pointer;"
@@ -147,23 +145,26 @@
           </div>
           <div class="col-md-6">
             <p>
-              <strong>Număr de Telefon:</strong> {{ client.billing_info.phone_number }}
+              <strong>Număr de Telefon:</strong> {{ client?.billing_info.phone_number }}
               <i
-                *ngIf="!client.billing_info.phone_number || client.billing_info.phone_number === 'None'"
+                *ngIf="!client?.billing_info.phone_number || client?.billing_info.phone_number === 'None'"
                 class="fas fa-exclamation-circle text-danger"
                 title="Informatii obligatorii pentru trimiterea de colete"
                 style="margin-left: 5px; cursor: pointer;"
               ></i>
             </p>
             <p>
-              <strong>IBAN:</strong> {{ client.billing_info.iban }}
+              <strong>IBAN:</strong> {{ client?.billing_info.iban }}
               <i
-                *ngIf="!client.billing_info.iban || client.billing_info.iban === 'None'"
+                *ngIf="!client?.billing_info.iban || client?.billing_info.iban === 'None'"
                 class="fas fa-exclamation-circle text-danger"
                 title="Informatii obligatorii pentru trimiterea de colete"
                 style="margin-left: 5px; cursor: pointer;"
               ></i>
             </p>
+
+            <p><strong>Rol:</strong> {{ client?.roles?.slice(-1)[0]?.name || 'N/A' }}</p>
+            <p><strong>Contract:</strong> {{ client?.billing_info.contract_number }}</p>
           </div>
         </div>
       </div>

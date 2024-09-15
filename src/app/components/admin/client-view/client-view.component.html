@@ -13,43 +13,43 @@
     <table class="client-info-table">
       <tr>
         <th>Email</th>
-        <td>{{ client.email }}</td>
+        <td>{{ client?.email }}</td>
       </tr>
       <tr>
         <th>Name</th>
-        <td>{{ client.name }}</td>
+        <td>{{ client?.name }}</td>
       </tr>
       <tr>
         <th>Family Name</th>
-        <td>{{ client.family_name }}</td>
+        <td>{{ client?.family_name }}</td>
       </tr>
       <tr>
         <th>Given Name</th>
-        <td>{{ client.given_name }}</td>
+        <td>{{ client?.given_name }}</td>
       </tr>
       <tr>
         <th>Nickname</th>
-        <td>{{ client.nickname }}</td>
+        <td>{{ client?.nickname }}</td>
       </tr>
       <tr>
         <th>Email Verified</th>
-        <td>{{ client.email_verified ? 'Yes' : 'No' }}</td>
+        <td>{{ client?.email_verified ? 'Yes' : 'No' }}</td>
       </tr>
       <tr>
         <th>Created At</th>
-        <td>{{ client.created_at }}</td>
+        <td>{{ client?.created_at }}</td>
       </tr>
       <tr>
         <th>Last Login</th>
-        <td>{{ client.last_login }}</td>
+        <td>{{ client?.last_login }}</td>
       </tr>
       <tr>
         <th>Last IP</th>
-        <td>{{ client.last_ip }}</td>
+        <td>{{ client?.last_ip }}</td>
       </tr>
       <tr>
         <th>Logins Count</th>
-        <td>{{ client.logins_count }}</td>
+        <td>{{ client?.logins_count }}</td>
       </tr>
     </table>
 
@@ -57,31 +57,40 @@
     <table class="client-info-table">
       <tr>
         <th>Company Name</th>
-        <td>{{ client.billing_info.company_name }}</td>
+        <td>{{ client?.billing_info.company_name }}</td>
       </tr>
       <tr>
         <th>Contract Number</th>
-        <td>{{ client.billing_info.contract_number }}</td>
+        <td>{{ client?.billing_info.contract_number }}</td>
       </tr>
       <tr>
         <th>IBAN</th>
-        <td>{{ client.billing_info.iban }}</td>
+        <td>{{ client?.billing_info.iban }}</td>
       </tr>
       <tr>
         <th>CUI</th>
-        <td>{{ client.billing_info.cui }}</td>
+        <td>{{ client?.billing_info.cui }}</td>
       </tr>
       <tr>
         <th>Registration Number</th>
-        <td>{{ client.billing_info.registration_number }}</td>
+        <td>{{ client?.billing_info.registration_number }}</td>
       </tr>
     </table>
   </div>
 
   <!-- Discounts Tab -->
   <div *ngIf="activeTab === 'discounts'" class="tab-content">
+    <!-- Courier Selection -->
+    <div class="courier-selection">
+      <div class="service-card" *ngFor="let courier of couriers"
+           [class.selected]="courier.name === selectedCourier"
+           (click)="selectCourier(courier.name)">
+        <img [src]="courier.logo" alt="{{ courier.name }}">
+      </div>
+    </div>
+
     <div class="discount-table">
-      <table>
+      <table class="prices-table">
         <thead>
         <tr>
           <th>Service</th>
@@ -89,13 +98,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let discount of discounts">
-          <td>{{ discount.service }}</td>
+        <tr *ngFor="let entry of discount.servicesEnumDoubleMap | keyvalue; trackBy: trackByKey">
+          <td>{{ getServiceDisplayName(entry.key) }}</td>
           <td>
             <input
+              [class.modified]="modified"
               type="number"
-              [(ngModel)]="discount.amountPercentage"
-              (change)="markAsModified()"
+              [ngModel]="entry.value"
+              (ngModelChange)="markAsModified(entry.key, $event)"
               min="0"
               max="100"
               step="0.01"
@@ -105,7 +115,7 @@
         </tbody>
       </table>
     </div>
-    <button class="save-button" (click)="saveDiscounts()">Save Discounts</button>
-    <div *ngIf="modified" class="alert">Discounts modified successfully!</div>
+    <button class="modify-button" (click)="saveDiscounts()" [disabled]="!modified">Save Discounts</button>
+    <div *ngIf="alertBoolean" class="alert">Prices modified successfully!</div>
   </div>
 </div>

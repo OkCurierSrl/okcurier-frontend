@@ -20,7 +20,7 @@ export class RoleGuard implements CanActivate {
         if (hasRole) {
           return true;
         } else {
-          console.log("User does not have the required role");
+          console.log("User does not have the required role", );
           this.router.navigate(['']); // Redirect if the user lacks the role
           return false;
         }

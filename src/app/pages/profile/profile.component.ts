@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {AuthService, User} from '@auth0/auth0-angular';
 import { HighlightModule } from 'ngx-highlightjs';
 import {FormsModule} from "@angular/forms";
@@ -37,7 +37,8 @@ export class ProfileComponent implements OnInit {
             // Initialize billing_info if it's undefined
             if (!this.client.billing_info) {
               this.client.billing_info = {
-                discounts: [], email: "", id: 0,
+                discounts: null,
+                email: "", id: 0,
                 company_name: '',
                 cui: '',
                 registration_number: '',
@@ -54,6 +55,7 @@ export class ProfileComponent implements OnInit {
       }
     );
   }
+
 
   saveProfile() {
     if (!this.client || !this.client.billing_info) {

@@ -25,9 +25,13 @@ export class ClientService {
       switchMap(headers => this.http.get<Client[]>(`${this.apiUrl}/api/test/get-users`, {headers}))
     );
   }
-  modifyDiscounts(email: string, discounts: Discount[]): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/api/client/modify-discounts?email=${email}`,
-      {discounts})
+
+  modifyDiscounts(email: string, discounts: Discount): Observable<void> {
+    return this.http.put<void>(
+      `${this.apiUrl}/api/client/modify-discounts?email=${email}`,
+      discounts,
+      { responseType: 'text' as 'json' } // Specify responseType to handle plain text
+    );
   }
 
   modifyBillingInfo(email: string, billingInfo: BillingInfo): Observable<void> {
@@ -56,5 +60,11 @@ export class ClientService {
     return this.addAuthHeader().pipe(
       switchMap(headers => this.http.get<Client>(`${this.apiUrl}/api/client?email=` + email, {headers}))
     );
+  }
+
+  isProfileCompleted(): Observable<boolean> {
+      return this.addAuthHeader().pipe(
+        switchMap(headers => this.http.get<boolean>(`${this.apiUrl}/api/private/client/completed-profile`, {headers}))
+      );
   }
 }
