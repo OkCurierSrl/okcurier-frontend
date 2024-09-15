@@ -79,25 +79,4 @@ export class ProfileComponent implements OnInit {
   logout() {
     this.auth.logout({ logoutParams: {returnTo: document.location.origin }});
   }
-
-  test() {
-      this.auth.getAccessTokenSilently().subscribe(
-        token => {
-          console.log(token);
-          this.http.get<User>(`http://localhost:8080/api/test/user-info`, {
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-              'Authorization': `Bearer ${token}`
-            }
-          }).subscribe(
-            (data: User) => console.log(data),
-            err => console.error(err)
-          );
-        },
-        err => {
-          console.error('Failed to get token', err);
-        }
-      );
-  }
 }

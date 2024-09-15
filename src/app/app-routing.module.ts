@@ -127,7 +127,6 @@ export const routes: Routes = [
     path: '',
     component: MainLayoutComponent,
     children: [
-      {path: 'test', component: HeroComponent},
       {path: 'netopia', component: NetopiaComponent},
       {path: '', component: LandingPageComponent},
       {path: 'oferta', component: RequestOfferComponent},

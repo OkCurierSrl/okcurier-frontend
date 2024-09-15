@@ -4,6 +4,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
+import {environment} from "../../environments/environment";
 
 export interface UserRole {
   id: string;
@@ -24,13 +25,14 @@ export interface User {
 })
 export class RoleService {
 
-  constructor(private auth: AuthService, private http: HttpClient) {}
+  baseUrl = environment.apiUrl;
 
+  constructor(private auth: AuthService, private http: HttpClient) {}
   // Fetch user roles
   getUserRoles(): Observable<string[]> {
     return this.auth.getAccessTokenSilently().pipe(
       switchMap(token => {
-        const url = `http://localhost:8080/api/test/user-info`; // Replace with the appropriate URL
+        const url = this.baseUrl  + `/api/test/user-info`; // Replace with the appropriate URL
         return this.http.get<User>(url, {
           headers: {
             'Content-Type': 'application/json',
