@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {OrderService} from "../../../services/order.service";
-import {OrderData} from "../create-order/order.data";
 import {AuthService} from "@auth0/auth0-angular";
-import {CourierOption} from "./courier.option";
+import {CourierOption} from "../../../model/courier.option";
+import {OrderData} from "../../../model/order-data";
 
 @Component({
   selector: 'app-courier-options',

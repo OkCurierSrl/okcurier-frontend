@@ -6,10 +6,10 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {ChipsModule} from "primeng/chips";
 import {ButtonDirective} from "primeng/button";
 import {PlacesService} from "../../../../services/places.service";
-import {Address} from "../order.data";
 import {OrderService} from "../../../../services/order.service";
-import {StateCodeProjection} from "./state-code.projection";
+import {StateCodeProjection} from "../../../../model/state-code.projection";
 import {map} from "rxjs/operators";
+import {Address} from "../../../../model/address";
 
 
 /**

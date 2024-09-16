@@ -12,7 +12,7 @@ import { ButtonDirective } from 'primeng/button';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { PriceCalculationService } from '../../../services/price-calculation.service';
 import {Router} from "@angular/router";
-import {OrderData} from "../../dashboard/create-order/order.data";
+import {OrderData} from "../../../model/order-data";
 
 @Component({
   selector: 'app-hero',

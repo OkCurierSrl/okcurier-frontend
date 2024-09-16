@@ -18,10 +18,10 @@ import {PackageFormComponent} from "./package-form/package-form.component";
 import {PackageOverviewComponent} from "./package-overview/package-overview.component";
 import {PriceCalculationService} from "../../../services/price-calculation.service";
 import {Router} from "@angular/router";
-import {OrderData} from "./order.data";
 import {AuthService} from "@auth0/auth0-angular";
 import {Client} from "../../../model/client";
 import {ClientService} from "../../../services/client.service";
+import {OrderData} from "../../../model/order-data";
 
 
 @Component({

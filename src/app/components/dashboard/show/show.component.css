@@ -1,0 +1,117 @@
+/* show.component.scss */
+.order-details {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: var(--ok-grey-color-dark);
+  color: whitesmoke;
+  border-radius: 8px;
+
+  .header {
+    background-color: var(--ok-grey-color-dark);
+    padding: 10px;
+    box-shadow: 0 0 5px var(--ok-primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .svg-class {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .status-icons-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: var(--spacing);
+  }
+
+  .status-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    .status-text {
+      margin-top: 6px;
+      font-size: 14px;
+      color: #d1d1d1;
+      &.active {
+        color: #ff4d4f;
+      }
+    }
+
+    .status-date {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #b0b0b0;
+    }
+
+    .text-red-500 {
+      color: var(--ok-primary-color);
+    }
+  }
+
+  .details-section {
+    display: flex;
+    flex-direction: row; /* Changed to column layout */
+    gap: 16px;
+    margin-top: 16px;
+
+    .expeditor, .destinatar {
+      width: 50%; /* Adjusted width for side-by-side display */
+      background-color: var(--ok-grey-color-dark);
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px var(--ok-primary-color);
+
+      h3 {
+        font-size: 20px;
+        margin-bottom: 8px;
+        color: #f0f0f5;
+      }
+
+      p {
+        margin: 4px 2px;
+        font-size: 16px;
+        color: #c0c0d0;
+
+        span {
+          font-weight: bold;
+          color: #eaeaea;
+        }
+      }
+    }
+  }
+
+  .shipment-details {
+    background-color: var(--ok-grey-color-dark);
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px var(--ok-primary-color);
+    display: flex;
+    flex-direction: column; /* Changed to column layout */
+    gap: 16px;
+    margin-top: 16px;
+
+    h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: #f0f0f5;
+    }
+
+    p {
+      margin: 4px 2px;
+      font-size: 16px;
+      color: #c0c0d0;
+
+      span {
+        font-weight: bold;
+        color: #eaeaea;
+      }
+    }
+  }
+}

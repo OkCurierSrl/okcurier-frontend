@@ -6,7 +6,7 @@ import {Discount} from "../../../model/discount";
 import {ClientService} from "../../../services/client.service";
 import {Client} from "../../../model/client";
 import {OkCurierServicesDisplayMap, OkCurierServicesEnum} from "../../../model/okCurierServicesEnum";
-import {Courier} from "../admin-prices/courier"; // Define an interface matching the backend Discount class
+import {Courier} from "../../../model/courier"; // Define an interface matching the backend Discount class
 
 @Component({
   selector: 'app-client-view',

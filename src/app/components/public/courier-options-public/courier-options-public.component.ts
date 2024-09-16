@@ -3,8 +3,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {OrderService} from "../../../services/order.service";
 import {AuthService} from "@auth0/auth0-angular";
-import {CourierOption} from "./courier.option";
-import {OrderData} from "../../dashboard/create-order/order.data";
+import {CourierOption} from "../../../model/courier.option";
+import {OrderData} from "../../../model/order-data";
 
 @Component({
   selector: 'app-courier-options',

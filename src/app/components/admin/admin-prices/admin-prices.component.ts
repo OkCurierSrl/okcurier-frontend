@@ -1,8 +1,9 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {ServicePricing, ServicePricingService} from "../../../services/service-pricing.service";
+import {ServicePricingService} from "../../../services/service-pricing.service";
 import {NgForOf, NgIf, TitleCasePipe} from "@angular/common";
 import {FormsModule} from "@angular/forms";
-import {Courier} from "./courier";
+import {Courier} from "../../../model/courier";
+import {ServicePricing} from "../../../model/service.pricing";
 
 @Component({
   selector: 'app-admin-prices',

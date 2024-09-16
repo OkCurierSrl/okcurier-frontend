@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Router} from "@angular/router";
 import {NgForOf, NgIf} from "@angular/common";
-import {CourierOption} from "../../dashboard/courier-options/courier.option";
-import {OrderData} from "../../dashboard/create-order/order.data";
+import {CourierOption} from "../../../model/courier.option";
+import {OrderData} from "../../../model/order-data";
 
 @Component({
   selector: 'app-netopia-payment',

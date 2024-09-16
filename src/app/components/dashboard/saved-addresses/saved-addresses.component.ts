@@ -5,7 +5,6 @@ import {OrderFormComponent} from "../create-order/order-form/order-form.componen
 import {PackageFormComponent} from "../create-order/package-form/package-form.component";
 import {PackageOverviewComponent} from "../create-order/package-overview/package-overview.component";
 import {PaginatorModule} from "primeng/paginator";
-import {OrderData} from "../create-order/order.data";
 import {TableComponent} from "./table/table.component";
 import {OrderService} from "../../../services/order.service";
 import {Router} from "@angular/router";

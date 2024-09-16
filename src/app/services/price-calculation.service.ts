@@ -2,16 +2,15 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {environment} from "../../environments/environment";
-import {OrderData} from "../components/dashboard/create-order/order.data";
-import {CourierOption} from "../components/dashboard/courier-options/courier.option";
+import {CourierOption} from "../model/courier.option";
 import {switchMap} from "rxjs/operators";
 import {AuthService} from "@auth0/auth0-angular";
+import {OrderData} from "../model/order-data";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PriceCalculationService {
-w
   private apiUrl =  environment.apiUrl;
 
   constructor(private http: HttpClient, private auth: AuthService) {}

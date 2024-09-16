@@ -1,23 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {environment} from '../../environments/environment';
 import {AuthService} from "@auth0/auth0-angular";
 import {switchMap} from "rxjs/operators";
-
-interface Courier {
-  nameEnum: string;
-  logo: string;
-}
-
-export interface ServicePricing {
-  id?: number;
-  courierCompany: Courier;
-  serviceName: string;
-  basePrice: number;
-  premiumAddedPrice: number;
-  standardAddedPrice: number;
-}
+import {ServicePricing} from "../model/service.pricing";
 
 @Injectable({
   providedIn: 'root'

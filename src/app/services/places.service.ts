@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from "../../environments/environment";
-import {StateCodeProjection} from "../components/dashboard/create-order/order-form/state-code.projection";
+import {StateCodeProjection} from "../model/state-code.projection";
 
 @Injectable({
   providedIn: 'root'

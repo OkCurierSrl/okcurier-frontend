@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
-import {Address, OrderData} from "../components/dashboard/create-order/order.data";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {map, share, switchMap} from "rxjs/operators";
 import {AuthService} from "@auth0/auth0-angular";
+import {OrderData} from "../model/order-data";
+import {Address} from "../model/address";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,13 @@ export class OrderService {
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient, private auth: AuthService) {}
+
+  trackOrder(awbNumber: string): Observable<any> {
+    let url = this.apiUrl + '/api/okcurier/track-order?awbNumber' + awbNumber;
+    return this.addAuthHeader().pipe(
+      switchMap(headers => this.http.get<any>(url, { headers }))
+    );
+  }
 
   placeOrder(data: OrderData, courier: string): Observable<any> {
     let url = this.apiUrl + '/api/okcurier/place-order?courierCompany=' + courier;

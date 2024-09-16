@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {CalendarModule} from "primeng/calendar";
 import {PaginatorModule} from "primeng/paginator";
-import {Address} from "../../create-order/order.data";
 import {OrderService} from "../../../../services/order.service";
+import {Address} from "../../../../model/address";
 
 @Component({
   selector: 'app-table',
