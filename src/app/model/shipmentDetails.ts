@@ -1,9 +1,8 @@
 export interface ShipmentDetails {
-  iban: string;
   status: string;
+  statusDate: string;
   awb: string;
   deliveryDate: string;
-  pickupDate: string;
   courier: string;
-  deliveryCost: number;
+  iban: string;
 }

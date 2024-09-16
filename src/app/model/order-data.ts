@@ -3,6 +3,8 @@ import {Address} from "./address";
 export interface OrderData {
     expeditor: Address;
     destinatar: Address;
+    pickupDate: Date
+    price: number
     packages: {
         length: number;
         width: number;

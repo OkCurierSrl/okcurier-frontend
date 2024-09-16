@@ -6,6 +6,7 @@ import {map, share, switchMap} from "rxjs/operators";
 import {AuthService} from "@auth0/auth0-angular";
 import {OrderData} from "../model/order-data";
 import {Address} from "../model/address";
+import {Shipment} from "../model/shipment";
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +17,16 @@ export class OrderService {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   trackOrder(awbNumber: string): Observable<any> {
-    let url = this.apiUrl + '/api/okcurier/track-order?awbNumber' + awbNumber;
+    let url = this.apiUrl + '/api/okcurier/track-order?awb=' + awbNumber;
     return this.addAuthHeader().pipe(
       switchMap(headers => this.http.get<any>(url, { headers }))
+    );
+  }
+
+  getAllOrders(): Observable<Shipment[]> {
+    let url = this.apiUrl + '/api/okcurier/orders';
+    return this.addAuthHeader().pipe(
+      switchMap(headers => this.http.get<Shipment[]>(url, { headers }))
     );
   }
 

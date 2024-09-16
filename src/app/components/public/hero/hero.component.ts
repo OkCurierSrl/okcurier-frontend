@@ -78,6 +78,8 @@ export class HeroComponent {
 
   calculateTariff(): void {
     const orderData: OrderData = {
+      pickupDate: undefined,
+      price: undefined,
       destinatar: undefined,
       expeditor: undefined,
       extraServices: {},

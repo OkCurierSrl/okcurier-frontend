@@ -51,18 +51,18 @@
       <ng-container *ngFor="let order of filteredOrders">
         <tr>
           <td>{{ order.awb }}</td>
-          <td><img [src]="getCourierLogo(order.courier)" alt="{{ order.courier }} logo"></td>
-          <td>{{ order.senderName }}</td>
-          <td>{{ order.senderAddress }}</td>
-          <td>{{ order.recipientName }}</td>
-          <td>{{ order.recipientAddress }}</td>
-          <td>{{ order.creationDate }}</td>
-          <td>{{ order.pickupDate }}</td>
-          <td>{{ order.iban }}</td>
-          <td>{{ order.orderNumber }}</td>
-          <td>{{ order.packageCount }}</td>
-          <td>{{ order.weight }}</td>
-          <td>{{ order.cashOnDelivery }} RON</td>
+          <td><img [src]="getCourierLogo(order?.courier)" alt="{{ order.courier }} logo"></td>
+          <td>{{ order?.senderName }}</td>
+          <td>{{ order?.senderAddress }}</td>
+          <td>{{ order?.recipientName }}</td>
+          <td>{{ order?.recipientAddress }}</td>
+          <td>{{ order?.creationDate }}</td>
+          <td>{{ order?.pickupDate }}</td>
+          <td>{{ order?.iban }}</td>
+          <td>{{ order?.orderNumber }}</td>
+          <td>{{ order?.packageCount }}</td>
+          <td>{{ order?.weight }}</td>
+          <td>{{ order?.cashOnDelivery }} RON</td>
           <td [ngClass]="getStatusClass(order.status)">{{ order.status }}</td>
           <td class="actions">
             <div class="action-buttons">

@@ -37,6 +37,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   @ViewChildren(PackageFormComponent) packageForms: QueryList<PackageFormComponent>;
   @ViewChildren(PackageOverviewComponent) packageOverviewComponents: QueryList<PackageOverviewComponent>;
 
+  private isLoggedIn: boolean;
+
   expeditorFormValid: boolean = false;
   destinatarFormValid: boolean = false;
   courierPackages: { form: FormGroup, valid: boolean }[] = [];
@@ -53,11 +55,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   asigurare: number | null = 0;
   rambursCont: number | null = 0;
   isPlicSelected: boolean;
-  private isLoggedIn: boolean;
   client: Client;
   isProfileComplete: boolean = true;
-  private email: string;
-
 
   constructor(private fb: FormBuilder,
               private renderer: Renderer2,
@@ -186,13 +185,13 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   checkFormsValidity(): void {
-    // console.log('Expeditor form valid:', this.expeditorFormValid);
-    // console.log('Destinatar form valid:', this.destinatarFormValid);
-    // console.log('Package count:', this.courierPackages.length > 0);
-    //
-    // this.courierPackages.forEach((pkg, idx) => {
-    //   console.log(`Package ${idx + 1} valid:`, pkg.valid);
-    // });
+    console.log('Expeditor form valid:', this.expeditorFormValid);
+    console.log('Destinatar form valid:', this.destinatarFormValid);
+    console.log('Package count:', this.courierPackages.length > 0);
+
+    this.courierPackages.forEach((pkg, idx) => {
+      console.log(`Package ${idx + 1} valid:`, pkg.valid);
+    });
   }
 
   isFormValid(): boolean {
@@ -206,6 +205,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       const packagesData = this.courierPackages.map(pkg => pkg.form.getRawValue());
 
       const orderData: OrderData = {
+        pickupDate: undefined,
+        price: undefined,
         expeditor: expeditorData,
         destinatar: destinatarData,
         packages: this.isPlicSelected ? [] : packagesData,
@@ -218,7 +219,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
           transportRamburs: this.selectedServices['transportRamburs'],
           rambursCont: this.isPlicSelected ? 0 : this.rambursCont,
         },
-        isPlicSelected: this.isPlicSelected,
+        isPlicSelected: this.isPlicSelected
       };
 
       // Log the payload for debugging

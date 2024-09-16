@@ -4,6 +4,7 @@ import {OrderData} from "../../../model/order-data";
 import {ShipmentDetails} from "../../../model/shipmentDetails";
 import {NgClass} from "@angular/common";
 import {OrderService} from "../../../services/order.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-show',
@@ -17,14 +18,37 @@ import {OrderService} from "../../../services/order.service";
 export class ShowComponent implements OnInit {
 
 
-  constructor(private orderService: OrderService) {
-    // this.order = orderService.trackOrder()// subscribe...
-    // this.shippmentDetails = orderService.trackOrder()
-  }
+  constructor(private orderService: OrderService,
+              private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-      throw new Error('Method not implemented.');
+    // Get the AWB from the route parameters
+    this.route.paramMap.subscribe(params => {
+      const awb = params.get('awb');
+      if (awb) {
+        this.fetchOrderDetails(awb); // Fetch order details using AWB
+      }
+      else {
+        console.log("mock data provided")
+      }
+    });
   }
+
+  fetchOrderDetails(awb: string): void {
+    // Fetch the order and shipment details based on the AWB number
+    this.orderService.trackOrder(awb).subscribe(
+      (data: { order: OrderData; shipmentDetails: ShipmentDetails }) => {
+        this.order = data.order;
+        this.shipmentDetails = data.shipmentDetails;
+      },
+      error => {
+        console.error('Error fetching order details:', error);
+        // Handle error (e.g., display a message to the user)
+      }
+    );
+  }
+
+
   order: OrderData = {
     expeditor: {
       shortName: 'Expeditor',
@@ -56,15 +80,16 @@ export class ShowComponent implements OnInit {
       rambursCont: 29.75
     },
     isPlicSelected: false,
+    price: 23.32,
+    pickupDate: undefined,
   };
 
-  shippmentDetails: ShipmentDetails = {
+  shipmentDetails: ShipmentDetails = {
+    statusDate: "2024-02-05",
     status: "Tranzit",
     awb: "1071589994",
     deliveryDate: "2024-02-05",
-    pickupDate: "2024-02-03",
     courier: "Cargus",
-    deliveryCost: 23.32,
     iban: "RO29PORL1876996576376282"
   }
 }

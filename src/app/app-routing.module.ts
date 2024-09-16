@@ -65,7 +65,7 @@ export const routes: Routes = [
         component: SavedAddressesComponent,
       },
       {
-        path: 'track',
+        path: 'track/:awb',
         component: ShowComponent,
       },
       {
@@ -124,7 +124,7 @@ export const routes: Routes = [
         component: ClientsComponent
       },
       {
-        path: 'track',
+        path: 'track/:awb',
         component: ShowComponent,
       },
       { path: 'client-view',
@@ -143,7 +143,7 @@ export const routes: Routes = [
       {path: '', component: CreateOrderComponent},
       {path: 'courier-options', component: CourierOptionsPublicComponent},
       {path: 'info', component: HowToOrderComponent},
-      {path: 'track', component: ShowComponent,}
+      {path: 'track/:awb', component: ShowComponent,}
     ]
   },
 ];

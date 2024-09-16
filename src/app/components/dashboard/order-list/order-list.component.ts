@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {CalendarModule} from "primeng/calendar";
+import {Shipment} from "../../../model/shipment";
+import {OrderService} from "../../../services/order.service";
+import {shouldBeautify} from "@angular-devkit/build-angular/src/utils/environment-options";
 
 interface Package {
   number: string;
@@ -44,7 +47,7 @@ interface Order {
   styleUrls: ['./order-list.component.css']
 })
 export class OrderListComponent implements OnInit {
-  orders: Order[] = []; // This should be fetched from the service
+  orders: Shipment[] = []; // This should be fetched from the service
   filteredOrders: Order[] = [];
   pages: number[] = [1, 2, 3, 4, 5]; // Mock pagination data
   currentPage: number = 1;
@@ -69,153 +72,71 @@ export class OrderListComponent implements OnInit {
     status: ''
   };
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+              private cdr: ChangeDetectorRef,
+              private orderService: OrderService) {}
 
   ngOnInit(): void {
-    this.loadMockData();
-    // TODO load real data
-    this.filterOrders();
+    this.orderService.getAllOrders().subscribe(shipments => {
+      this.orders = shipments;
+      this.filteredOrders = [...this.orders]; // Initialize the filtered orders
+      console.log(this.orders);
+    });
   }
-
-  loadMockData(): void {
-    const baseOrders = [
-      {
-        awb: '8089868547',
-        courier: 'dpd',
-        senderName: 'John Doe',
-        senderAddress: '123 Main St, City, Country',
-        recipientName: 'Jane Smith',
-        recipientAddress: '456 Elm St, City, Country',
-        creationDate: '09-07-2024',
-        pickupDate: '10-07-2024',
-        count: 1,
-        iban: 'RO49AAAA1B31007593840000',
-        orderNumber: '1178/27.05.2024',
-        packageCount: 1,
-        weight: 2.5,
-        cashOnDelivery: 123.92,
-        status: 'awb generat',
-        packages: [
-          { number: '1', weight: 2.5, dimensions: '30x30x30 cm' }
-        ]
-      },
-      {
-        awb: '8089868548',
-        courier: 'cargus',
-        senderName: 'Alice Johnson',
-        senderAddress: '789 Oak St, City, Country',
-        recipientName: 'Bob Brown',
-        recipientAddress: '101 Pine St, City, Country',
-        creationDate: '09-07-2024',
-        pickupDate: '11-07-2024',
-        count: 1,
-        iban: 'RO49AAAA1B31007593840001',
-        orderNumber: '1179/27.05.2024',
-        packageCount: 2,
-        weight: 5.0,
-        cashOnDelivery: 200.00,
-        status: 'comanda trimisa',
-        packages: [
-          { number: '1', weight: 2.5, dimensions: '30x30x30 cm' },
-          { number: '2', weight: 2.5, dimensions: '30x30x30 cm' }
-        ]
-      },
-      {
-        awb: '8089868549',
-        courier: 'fan',
-        senderName: 'Charlie Davis',
-        senderAddress: '102 Maple St, City, Country',
-        recipientName: 'Dana White',
-        recipientAddress: '103 Birch St, City, Country',
-        creationDate: '08-07-2024',
-        pickupDate: '12-07-2024',
-        count: 1,
-        iban: 'RO49AAAA1B31007593840002',
-        orderNumber: '1180/27.05.2024',
-        packageCount: 3,
-        weight: 7.5,
-        cashOnDelivery: 150.75,
-        status: 'neridicat',
-        packages: [
-          { number: '1', weight: 2.5, dimensions: '30x30x30 cm' },
-          { number: '2', weight: 2.5, dimensions: '30x30x30 cm' },
-          { number: '3', weight: 2.5, dimensions: '30x30x30 cm' }
-        ]
-      },
-      {
-        awb: '8089868550',
-        courier: 'gls',
-        senderName: 'Eve Martinez',
-        senderAddress: '104 Cedar St, City, Country',
-        recipientName: 'Franklin Green',
-        recipientAddress: '105 Spruce St, City, Country',
-        creationDate: '07-07-2024',
-        pickupDate: '09-07-2024',
-        count: 1,
-        iban: 'RO49AAAA1B31007593840003',
-        orderNumber: '1181/27.05.2024',
-        packageCount: 1,
-        weight: 3.0,
-        cashOnDelivery: 175.50,
-        status: 'intarziat',
-        packages: [
-          { number: '1', weight: 3.0, dimensions: '30x30x30 cm' }
-        ]
-      },
-      {
-        awb: '8089868551',
-        courier: 'sameday',
-        senderName: 'Grace Hopper',
-        senderAddress: '106 Elm St, City, Country',
-        recipientName: 'Heidi Klum',
-        recipientAddress: '107 Pine St, City, Country',
-        creationDate: '06-07-2024',
-        pickupDate: '08-07-2024',
-        count: 1,
-        iban: 'RO49AAAA1B31007593840004',
-        orderNumber: '1182/27.05.2024',
-        packageCount: 2,
-        weight: 6.0,
-        cashOnDelivery: 250.00,
-        status: 'livrat',
-        packages: [
-          { number: '1', weight: 3.0, dimensions: '30x30x30 cm' },
-          { number: '2', weight: 3.0, dimensions: '30x30x30 cm' }
-        ]
-      }
-    ];
-
-    this.orders = [];
-    for (let i = 0; i < 4; i++) {
-      this.orders = this.orders.concat(baseOrders.map(order => ({
-        ...order,
-        awb: `${order.awb}-${i}` // Adjust the AWB to ensure uniqueness
-      })));
+  getCourierLogo(courier: string | undefined): string {
+    if (!courier) {
+      return ''; // Return a default or empty string if courier is undefined or null
     }
-  }
 
-  getCourierLogo(courier: string): string {
     switch (courier.toLowerCase()) {
-      case 'dpd': return 'assets/dpd-logo.png';
-      case 'cargus': return 'assets/cargus-logo.png';
-      case 'fan': return 'assets/fan-logo.png';
-      case 'gls': return 'assets/gls-logo.png';
-      case 'sameday': return 'assets/sameday-logo.png';
-      default: return '';
+      case 'dpd':
+        return 'assets/dpd-logo.png';
+      case 'cargus':
+        return 'assets/cargus-logo.png';
+      case 'fan':
+        return 'assets/fan-logo.png';
+      case 'gls':
+        return 'assets/gls-logo.png';
+      case 'sameday':
+        return 'assets/sameday-logo.png';
+      default:
+        return ''; // Return a default or empty string if no match is found
     }
   }
 
   getStatusClass(status: string): string {
-    switch (status.toLowerCase()) {
-      case 'awb generat': return 'status-awb-generat';
-      case 'comanda trimisa': return 'status-comanda-trimisa';
-      case 'neridicat': return 'status-neridicat';
-      case 'intarziat': return 'status-intarziat';
-      case 'livrat': return 'status-livrat';
-      case 'anulat': return 'status-anulat';
-      case 'inchis intern': return 'status-inchis-intern';
-      default: return '';
+    if (!status) {
+      console.log('nu am gasit status')
+      return ''; // Return a default or empty string if courier is undefined or null
     }
+    console.log('am gasit status'  + status)
+    let clas = '';
+    switch (status.toUpperCase()) {
+      case 'AWB_GENERAT': clas =  'status-awb-generat';
+        break;
+      case 'COMANDA_TRIMISA': clas =  'status-comanda-trimisa';
+        break;
+      case 'AWB_RIDICAT': clas =  'status-ridicat';
+        break;
+      case 'TRANZIT': clas =  'status-in-tranzit';
+        break;
+      case 'IN_LIVRARE': clas =  'status-in-livrare';
+        break;
+      case 'LIVRAT': clas =  'status-livrat';
+        break;
+      case 'RAMBURSAT': clas =  'status-rambursat';//
+          break;
+      case 'RETURNARE': clas =  'status-clas = are';//
+          break;
+      case 'REDIRECTIONARE': clas =  'status-redirectionare';
+        break;
+      case 'EROARE': clas =  'status-eroare';
+        break;
+      default: clas =  '';
+        break;
+    }
+    console.log('asadeci ' +  clas);
+    return clas;
   }
   filterOrders() {
     this.filteredOrders = this.orders.filter(order => {
@@ -257,9 +178,19 @@ export class OrderListComponent implements OnInit {
     const totalPages = Math.ceil(this.filteredOrders.length / 3);
     return Array(totalPages).fill(0).map((x, i) => i + 1);
   }
+
   viewOrder(order: Order): void {
-    // Handle view order logic
-    this.router.navigate(['/order-details', order.awb]);
+    // Get the current path from the activated route
+    const currentPath = this.router.url
+
+    // Determine the base path for navigation
+    const basePath = currentPath.replace(/\/order-list$/, ''); // Remove /view from the end
+
+    // Construct the target path
+    const targetPath = `${basePath}/track/${order.awb}`;
+
+    // Navigate to the dynamically constructed path
+    this.router.navigate([targetPath]);
   }
 
   downloadOrder(order: Order): void {
