@@ -2,7 +2,7 @@
 import {Component, OnInit} from '@angular/core';
 import {OrderData} from "../../../model/order-data";
 import {ShipmentDetails} from "../../../model/shipmentDetails";
-import {NgClass} from "@angular/common";
+import {NgClass, NgForOf} from "@angular/common";
 import {OrderService} from "../../../services/order.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {routes} from "../../../app-routing.module";
@@ -11,9 +11,9 @@ import {Address} from "../../../model/address";
 import {ExpandOperator} from "rxjs/internal/operators/expand";
 
 export interface TrackingResponse {
-  shipment: Shipment;
-  parcels: ApiParcelResponse;
-  iban: ApiParcelResponse;
+  shipmentData: Shipment;
+  parcelData: ApiParcelResponse;
+  iban: string;
 }
 
 export interface Shipment {
@@ -25,7 +25,6 @@ export interface Shipment {
   orderNumber: number | null;
   numberOfParcels: number | null;
   totalWeight: number | null;
-  iban: string;
 
   // Prices
   appPrice: number | null;
@@ -71,13 +70,15 @@ export interface ParcelGenericStatus {
   templateUrl: './show.component.html',
   standalone: true,
   imports: [
-    NgClass
+    NgClass,
+    NgForOf
   ],
   styleUrls: ['./show.component.css']
 })
 export class ShowComponent implements OnInit {
   shipment: Shipment;
-  shipmentDetails: ApiParcelResponse;
+  apiParcelResponse: ApiParcelResponse;
+  iban: string;
 
 
   constructor(private orderService: OrderService,
@@ -101,8 +102,10 @@ export class ShowComponent implements OnInit {
     // Fetch the order and shipment details based on the AWB number
     this.orderService.trackOrder(awb).subscribe(
       (data) => {
-        this.shipment = data.shipment;
-        this.shipmentDetails = data.parcels;
+        this.shipment = data.shipmentData;
+        console.log(this.shipment)
+        this.apiParcelResponse = data.parcelData;
+        this.iban = data.iban;
       },
       error => {
         console.error('Error fetching order details:', error);
@@ -115,49 +118,5 @@ export class ShowComponent implements OnInit {
     );
   }
 
-
-  // order: OrderData = {
-  //   expeditor: {
-  //     shortName: 'Expeditor',
-  //     name: 'Florin',
-  //     phone1: '0786860450',
-  //     phone2: '0768741081',
-  //     county: 'Bucuresti',
-  //     city: 'Bucuresti',
-  //     street: 'Camil Ressu',
-  //     number: '33',
-  //     block: 'n4',
-  //     staircase: '2',
-  //     floor: '9',
-  //     postalCode: '012345'
-  //   },
-  //   destinatar: {
-  //     shortName: 'Destinatar',
-  //     name: 'Fulea Adrian',
-  //     phone1: '0747782423',
-  //     county: 'Mehedinti',
-  //     city: 'Dobra',
-  //     street: 'Principala',
-  //     number: '1',
-  //     postalCode: '678912'
-  //   },
-  //   packages: [],
-  //   extraServices: {
-  //     deschidereColet: true,
-  //     rambursCont: 29.75
-  //   },
-  //   isPlicSelected: false,
-  //   price: 23.32,
-  //   pickupDate: undefined,
-  // };
-  //
-  // shipmentDetails: ShipmentDetails = {
-  //   statusDate: "2024-02-05",
-  //   status: "Tranzit",
-  //   awb: "1071589994",
-  //   deliveryDate: "2024-02-05",
-  //   courier: "Cargus",
-  //   iban: "RO29PORL1876996576376282"
-  // }
 }
 
