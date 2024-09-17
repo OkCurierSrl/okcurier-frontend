@@ -11,7 +11,6 @@
   </div>
   <div class="auth-buttons">
     <div class="profile-dropdown" (mouseover)="showDropdown = true" (mouseleave)="showDropdown = false">
-      <span><img [src]="user.picture" alt="User Photo" class="user-photo"> {{ user.name }}</span>
       <div class="dropdown-content" *ngIf="showDropdown">
         <a routerLink="/dashboard/profile"><i class="fa-solid fa-user"></i> Profil</a>
         <a routerLink="/dashboard/requests"><i class="fas fa-truck-loading"></i> Solicita materiale</a>
