@@ -55,6 +55,7 @@ export class CourierOptionsComponent implements OnInit {
 
   generateAWB(): void {
     const selectedCourier = this.couriers.find(courier => courier.selected);
+    this.orderData.price = selectedCourier.totalPrice;
     if (!selectedCourier) {
       console.error('No courier selected');
       return;
