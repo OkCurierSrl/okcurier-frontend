@@ -6,6 +6,65 @@ import {NgClass} from "@angular/common";
 import {OrderService} from "../../../services/order.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {routes} from "../../../app-routing.module";
+import {FlatShipment} from "../../../model/flatShipment";
+import {Address} from "../../../model/address";
+import {ExpandOperator} from "rxjs/internal/operators/expand";
+
+export interface TrackingResponse {
+  shipment: Shipment;
+  parcels: ApiParcelResponse;
+  iban: ApiParcelResponse;
+}
+
+export interface Shipment {
+  id: number; // Assuming the ID is always present when used
+  // General Information
+
+  awb: string | null;
+  curier: string | null;
+  orderNumber: number | null;
+  numberOfParcels: number | null;
+  totalWeight: number | null;
+  iban: string;
+
+  // Prices
+  appPrice: number | null;
+  codPrice: number | null;
+  insurancePrice: number | null;
+
+  // Dates
+  creationDate: string | null;
+  pickupDate: string | null;
+  deliveryDate: string | null;
+
+  // Extra Services
+  codToAccount: boolean | null;
+  insurance: boolean | null;
+  transportIncluded: boolean | null;
+  parcelOpening: boolean | null;
+  parcelExchange: boolean | null;
+  documentExchange: boolean | null;
+  returnUnDeliveredParcel: boolean | null;
+
+  // Sender and Receiver
+  sender: Address | null;
+  receiver: Address | null;
+}
+
+export interface ApiParcelResponse {
+  parcelsStatus: ParcelGenericStatus[]; // Array of ParcelGenericStatus
+}
+
+// parcel-generic-status.model.ts
+export interface ParcelGenericStatus {
+  parcelIdentifier: string | null;
+  status: string | null;
+  description: string | null;
+  date: string | null;
+}
+
+
+// Example PackageType Enum (Adjust based on your application's needs)
 
 @Component({
   selector: 'app-show',
@@ -17,8 +76,8 @@ import {routes} from "../../../app-routing.module";
   styleUrls: ['./show.component.css']
 })
 export class ShowComponent implements OnInit {
-  order: OrderData;
-  shipmentDetails: ShipmentDetails;
+  shipment: Shipment;
+  shipmentDetails: ApiParcelResponse;
 
 
   constructor(private orderService: OrderService,
@@ -41,9 +100,9 @@ export class ShowComponent implements OnInit {
   fetchOrderDetails(awb: string): void {
     // Fetch the order and shipment details based on the AWB number
     this.orderService.trackOrder(awb).subscribe(
-      (data: { order: OrderData; shipmentDetails: ShipmentDetails }) => {
-        this.order = data.order;
-        this.shipmentDetails = data.shipmentDetails;
+      (data) => {
+        this.shipment = data.shipment;
+        this.shipmentDetails = data.parcels;
       },
       error => {
         console.error('Error fetching order details:', error);

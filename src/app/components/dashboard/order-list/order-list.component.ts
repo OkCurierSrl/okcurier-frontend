@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {CalendarModule} from "primeng/calendar";
-import {Shipment} from "../../../model/shipment";
+import {FlatShipment} from "../../../model/flatShipment";
 import {OrderService} from "../../../services/order.service";
 import {shouldBeautify} from "@angular-devkit/build-angular/src/utils/environment-options";
 
@@ -47,7 +47,7 @@ interface Order {
   styleUrls: ['./order-list.component.css']
 })
 export class OrderListComponent implements OnInit {
-  orders: Shipment[] = []; // This should be fetched from the service
+  orders: FlatShipment[] = []; // This should be fetched from the service
   filteredOrders: Order[] = [];
   pages: number[] = [1, 2, 3, 4, 5]; // Mock pagination data
   currentPage: number = 1;

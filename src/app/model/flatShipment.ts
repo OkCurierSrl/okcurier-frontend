@@ -1,5 +1,5 @@
 
-export interface Shipment {
+export interface FlatShipment {
   awb: string,
   courier: string,
   senderName: string,
