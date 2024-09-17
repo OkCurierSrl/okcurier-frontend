@@ -62,29 +62,34 @@ export class CourierOptionsPublicComponent implements OnInit {
     }
   }
 
-  orderCourier(): void {
-    const selectedCourier = this.couriers.find(courier => courier.selected);
-    this.orderData.price = selectedCourier.totalPrice;
-      this.orderService.pickupOrder(this.orderData, selectedCourier.courier).subscribe(
-          (response) => {
-              console.log('Order Placed successfully', response);
-          },
-          (error) => {
-              console.error('Error placing the order', error);
-          }
-      );
-
-    if (selectedCourier) {
-      this.router.navigate(['/netopia'], {
-        state: {
-          selectedCourier: selectedCourier,
-          orderData: this.orderData
-        }
-      }); // Redirect to Netopia with the selected courier and orderData
-    } else {
-      console.log('No courier selected');
-    }
+  generateAWB(): void {
+    this.callBackendWithPickup(true);
   }
+
+  orderCourier(): void {
+    this.callBackendWithPickup(true);
+  }
+
+  private callBackendWithPickup(pickup: boolean) {
+    const selectedCourier = this.couriers.find(courier => courier.selected);
+    if (!selectedCourier) {
+      console.error('No courier selected');
+      return;
+    }
+    this.orderService.placeOrder(this.orderData, selectedCourier.courier, pickup).subscribe({
+      next: (response) => {
+        console.log('AWB generated successfully:', response);
+        this.router.navigate(['/dashboard/order-list']); // Redirect to order list
+      },
+      error: (error) => {
+        console.error('Error generating AWB:', error);
+      },
+      complete: () => {
+        console.log('AWB generation completed');
+      }
+    });
+  }
+
 
   goBack(): void {
     this.router.navigate(['/order']);

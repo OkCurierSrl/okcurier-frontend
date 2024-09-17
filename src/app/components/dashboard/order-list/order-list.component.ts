@@ -49,10 +49,11 @@ interface Order {
 export class OrderListComponent implements OnInit {
   orders: FlatShipment[] = []; // This should be fetched from the service
   filteredOrders: Order[] = [];
-  pages: number[] = [1, 2, 3, 4, 5]; // Mock pagination data
+  pages: number[] = []
   currentPage: number = 1;
   searchTerm: string = '';
   filterProperty: string = 'all';
+  private readonly size = 3;
 
   filter: any = {
     awb: '',
@@ -77,12 +78,10 @@ export class OrderListComponent implements OnInit {
               private orderService: OrderService) {}
 
   ngOnInit(): void {
-    this.orderService.getAllOrders().subscribe(shipments => {
-      this.orders = shipments;
-      this.filteredOrders = [...this.orders]; // Initialize the filtered orders
-      console.log(this.orders);
-    });
+    this.goToPage(1);
   }
+
+
   getCourierLogo(courier: string | undefined): string {
     if (!courier) {
       return ''; // Return a default or empty string if courier is undefined or null
@@ -199,20 +198,29 @@ export class OrderListComponent implements OnInit {
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      // Load previous page data
+      this.loadData(this.currentPage);
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.pages.length) {
       this.currentPage++;
-      // Load next page data
+      this.loadData(this.currentPage);
     }
   }
 
+
   goToPage(page: number): void {
     this.currentPage = page;
-    // Load specific page data
+    this.loadData(page);
+  }
+
+  private loadData(page: number) { -
+    this.orderService.getAllOrders(page, this.size).subscribe(shipments => {
+      this.orders = shipments;
+      this.filteredOrders = [...this.orders]; // Initialize the filtered orders
+      this.pages = Array.from({length: shipments?.pop()?.pages - 1}, (_, index) => index + 1);
+    });
   }
 
   exportToExcel(): void {

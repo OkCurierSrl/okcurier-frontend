@@ -2,7 +2,7 @@
 import {Component, OnInit} from '@angular/core';
 import {OrderData} from "../../../model/order-data";
 import {ShipmentDetails} from "../../../model/shipmentDetails";
-import {NgClass, NgForOf} from "@angular/common";
+import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {OrderService} from "../../../services/order.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {routes} from "../../../app-routing.module";
@@ -71,7 +71,9 @@ export interface ParcelGenericStatus {
   standalone: true,
   imports: [
     NgClass,
-    NgForOf
+    NgForOf,
+    NgIf,
+    DatePipe
   ],
   styleUrls: ['./show.component.css']
 })

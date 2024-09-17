@@ -1,5 +1,6 @@
 
 export interface FlatShipment {
+  pages: number;
   awb: string,
   courier: string,
   senderName: string,

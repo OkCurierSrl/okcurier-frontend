@@ -2,12 +2,13 @@ import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {map, share, switchMap} from "rxjs/operators";
+import {map, switchMap} from "rxjs/operators";
 import {AuthService} from "@auth0/auth0-angular";
 import {OrderData} from "../model/order-data";
 import {Address} from "../model/address";
 import {FlatShipment} from "../model/flatShipment";
 import {TrackingResponse} from "../components/dashboard/show/show.component";
+import {PickupData} from "./pickupData";
 
 @Injectable({
   providedIn: 'root'
@@ -24,22 +25,22 @@ export class OrderService {
     );
   }
 
-  getAllOrders(): Observable<FlatShipment[]> {
-    let url = this.apiUrl + '/api/okcurier/orders';
+  getAllOrders(page: number, number: number): Observable<FlatShipment[]> {
+    let url = this.apiUrl + '/api/okcurier/orders?page='+page+'&size='+number;
     return this.addAuthHeader().pipe(
       switchMap(headers => this.http.get<FlatShipment[]>(url, { headers }))
     );
   }
 
-  placeOrder(data: OrderData, courier: string): Observable<any> {
-    let url = this.apiUrl + '/api/okcurier/place-order?courierCompany=' + courier;
+  placeOrder(orderData : OrderData, courier: string, pickup: boolean): Observable<any> {
+    let url = this.apiUrl + '/api/okcurier/place-order?courierCompany=' + courier + '&alsoPickup=' + pickup;
     return this.addAuthHeader().pipe(
-      switchMap(headers => this.http.post<any>(url, data, { headers }))
+      switchMap(headers => this.http.post<any>(url, orderData, { headers }))
     );
   }
 
-  pickupOrder(data: OrderData, courier: string): Observable<any> {
-    let url = this.apiUrl + '/api/okcurier/pickup-order?courierCompany=' + courier;
+  pickupOrder(data: PickupData, courier: string, orderId: number): Observable<any> {
+    let url = this.apiUrl + '/api/okcurier/pickup-order?courierCompany=' + courier + "id=" + orderId;
     return this.addAuthHeader().pipe(
       switchMap(headers => this.http.post<any>(url, data, { headers }))
     );

@@ -54,13 +54,20 @@ export class CourierOptionsComponent implements OnInit {
   }
 
   generateAWB(): void {
+    this.callBackendWithPickup(false);
+  }
+
+  orderCourier(): void {
+    this.callBackendWithPickup(true);
+  }
+
+  private callBackendWithPickup(pickup: boolean) {
     const selectedCourier = this.couriers.find(courier => courier.selected);
-    this.orderData.price = selectedCourier.totalPrice;
     if (!selectedCourier) {
       console.error('No courier selected');
       return;
     }
-    this.orderService.placeOrder(this.orderData, selectedCourier.courier).subscribe({
+    this.orderService.placeOrder(this.orderData, selectedCourier.courier, pickup).subscribe({
       next: (response) => {
         console.log('AWB generated successfully:', response);
         this.router.navigate(['/dashboard/order-list']); // Redirect to order list
@@ -70,28 +77,6 @@ export class CourierOptionsComponent implements OnInit {
       },
       complete: () => {
         console.log('AWB generation completed');
-      }
-    });
-  }
-
-  orderCourier(): void {
-    const selectedCourier = this.couriers.find(courier => courier.selected);
-    this.orderData.price = selectedCourier.totalPrice;
-    if (!selectedCourier) {
-      console.error('No courier selected');
-      return;
-    }
-    this.orderService.pickupOrder(this.orderData, selectedCourier.courier).subscribe({
-      next: (response) => {
-        console.log(this.orderData);
-        console.log('Courier ordered successfully:', response);
-        this.router.navigate(['/dashboard/order-list']); // Redirect to order list
-      },
-      error: (error) => {
-        console.error('Error ordering courier:', error);
-      },
-      complete: () => {
-        console.log('Courier ordering completed');
       }
     });
   }
