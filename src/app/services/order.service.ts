@@ -9,6 +9,7 @@ import {Address} from "../model/address";
 import {FlatShipment} from "../model/flatShipment";
 import {TrackingResponse} from "../components/dashboard/show/show.component";
 import {PickupData} from "./pickupData";
+import {ApiGenerateResponse} from "../components/dashboard/courier-options/api-generate.response";
 
 @Injectable({
   providedIn: 'root'
@@ -32,10 +33,10 @@ export class OrderService {
     );
   }
 
-  placeOrder(orderData : OrderData, courier: string, pickup: boolean): Observable<any> {
+  placeOrder(orderData : OrderData, courier: string, pickup: boolean): Observable<ApiGenerateResponse> {
     let url = this.apiUrl + '/api/okcurier/place-order?courierCompany=' + courier + '&alsoPickup=' + pickup;
     return this.addAuthHeader().pipe(
-      switchMap(headers => this.http.post<any>(url, orderData, { headers }))
+      switchMap(headers => this.http.post<ApiGenerateResponse>(url, orderData, { headers }))
     );
   }
 
