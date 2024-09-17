@@ -180,16 +180,9 @@ export class OrderListComponent implements OnInit {
   }
 
   viewOrder(order: Order): void {
-    // Get the current path from the activated route
     const currentPath = this.router.url
-
-    // Determine the base path for navigation
     const basePath = currentPath.replace(/\/order-list$/, ''); // Remove /view from the end
-
-    // Construct the target path
     const targetPath = `${basePath}/track/${order.awb}`;
-
-    // Navigate to the dynamically constructed path
     this.router.navigate([targetPath]);
   }
 

@@ -44,10 +44,12 @@ export class OrderService {
     );
   }
 
-  getOrders(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl + '/api/getOrders').pipe(
+  awbExists(awb: string): Observable<any> {
+    // Check that apiUrl ends with a slash and the path starts correctly
+    let url = `${this.apiUrl}/api/okcurier/awb-exists?awb=${awb}`;
+    console.log(url)
+    return this.http.get<any>(url).pipe(
       map(data => {
-        // Process data if necessary
         return data;
       })
     );

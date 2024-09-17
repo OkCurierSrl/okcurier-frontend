@@ -26,6 +26,7 @@ import {RoleGuard} from "./components/role-guard/role-guard.component";
 import {ClientsComponent} from "./components/admin/clients-component/clients.component";
 import {ClientViewComponent} from "./components/admin/client-view/client-view.component";
 import {ShowComponent} from "./components/dashboard/show/show.component";
+import {TrackComponent} from "./components/dashboard/track/track.component";
 
 export const routes: Routes = [
 
@@ -67,6 +68,10 @@ export const routes: Routes = [
       {
         path: 'track/:awb',
         component: ShowComponent,
+      },
+      {
+        path: 'track',
+        component: TrackComponent,
       },
       {
         path: 'ticketing',
@@ -127,6 +132,10 @@ export const routes: Routes = [
         path: 'track/:awb',
         component: ShowComponent,
       },
+      {
+        path: 'track',
+        component: TrackComponent,
+      },
       { path: 'client-view',
         component: ClientViewComponent
       }
@@ -143,7 +152,8 @@ export const routes: Routes = [
       {path: '', component: CreateOrderComponent},
       {path: 'courier-options', component: CourierOptionsPublicComponent},
       {path: 'info', component: HowToOrderComponent},
-      {path: 'track/:awb', component: ShowComponent,}
+      {path: 'track/:awb', component: ShowComponent,},
+      {path: 'track', component: TrackComponent,},
     ]
   },
 ];
