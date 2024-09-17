@@ -40,7 +40,7 @@ export class OrderService {
   }
 
   pickupOrder(data: PickupData, courier: string, orderId: number): Observable<any> {
-    let url = this.apiUrl + '/api/okcurier/pickup-order?courierCompany=' + courier + "id=" + orderId;
+    let url = this.apiUrl + '/api/okcurier/pickup-order?courierCompany=' + courier + '&id=' + orderId;
     return this.addAuthHeader().pipe(
       switchMap(headers => this.http.post<any>(url, data, { headers }))
     );

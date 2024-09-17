@@ -209,44 +209,44 @@
 }
 
 
-/* statusuri */
-status-awb-generat-awb-generat {
-  color: #ffc107; /* Yellow */
+/* .statusuri */
+.status-awb-generat {
+  color: #0f561f; /* Green */
 }
 
-status-comanda-trimisa-comanda-trimisa {
-  color: #28a745; /* Green */
+.status-comanda-trimisa {
+  color: #054373; /* Red */
 }
 
-status-ridicat-ridicat {
+.status-ridicat-ridicat {
   color: #69d281; /* Red */
 }
 
-status-in-tranzit {
+.status-in-tranzit {
   color: #ff6347; /* Orange */
 }
 
-status-in-livrare {
+.status-in-livrare {
   color: #20c997; /* Teal */
 }
 
-status-livrat {
+.status-livrat {
   color: #054373; /* Teal */
 }
 
-status-rambursat {
+.status-rambursat {
   color: #6c757d; /* Grey */
 }
 
-status-returnare {
+.status-returnare {
   color: #604949; /* Cyan */
 }
 
-status-redirectionare {
+.status-redirectionare {
   color: #6c5902; /* Orange */
 }
 
-status-eroare {
+.status-eroare {
   color: #d50c0c !important; /* Grey */
   background-color: #d50c0c !important
 }

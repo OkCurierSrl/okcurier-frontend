@@ -1,4 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css"; /* You can add global styles to this file, and also import other style files */
+
 :root {
   --ok-primary-color: rgb(239 68 68);
   --ok-primary-color-dark: rgb(166, 26, 26);
@@ -33,4 +34,5 @@ body {
 .invalid input {
   border: 1px solid red;
 }
+
 

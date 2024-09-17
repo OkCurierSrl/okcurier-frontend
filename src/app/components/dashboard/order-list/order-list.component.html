@@ -1,13 +1,22 @@
 <div class="order-list-container">
   <h2>Lista cu AWB</h2>
   <div class="order-list-actions">
-    <button (click)="exportToExcel()">Export Excel</button>
-    <button (click)="printOrders()">Print</button>
+    <button (click)="requestCourierPickup()">Cheama curierii!</button>
+    <button (click)="exportExcel()">Export excel</button>
+    <app-date-picker-dialog
+      *ngIf="showDialog"
+      (confirm)="onDialogConfirm($event)"
+      (cancel)="onDialogCancel()"
+    ></app-date-picker-dialog>
+
   </div>
   <div class="table-responsive">
     <table class="order-list-table">
       <thead>
       <tr>
+        <th>
+          Sel
+        </th>
         <th>Numar AWB</th>
         <th>Curier</th>
         <th>Nume Expeditor</th>
@@ -25,6 +34,7 @@
         <th>Actiuni</th>
       </tr>
       <tr>
+        <th></th>
         <th><input type="text" [(ngModel)]="filter.awb" (input)="filterOrders()"></th>
         <th><input type="text" [(ngModel)]="filter.courier" (input)="filterOrders()"></th>
         <th><input type="text" [(ngModel)]="filter.senderName" (input)="filterOrders()"></th>
@@ -43,13 +53,16 @@
         <th><input type="text" [(ngModel)]="filter.weight" (input)="filterOrders()"></th>
         <th><input type="text" [(ngModel)]="filter.cashOnDelivery" (input)="filterOrders()"></th>
         <th><input type="text" [(ngModel)]="filter.status" (input)="filterOrders()"></th>
-        <th>Download/View/Print</th>
+        <th>Download/View</th>
 
       </tr>
       </thead>
       <tbody>
       <ng-container *ngFor="let order of filteredOrders">
         <tr>
+          <td>
+            <input type="checkbox" [(ngModel)]="order.isSelected" />
+          </td>
           <td>{{ order.awb }}</td>
           <td><img [src]="getCourierLogo(order?.courier)" alt="{{ order.courier }} logo"></td>
           <td>{{ order?.senderName }}</td>
@@ -68,28 +81,7 @@
             <div class="action-buttons">
               <button class="btn btn-action" (click)="downloadOrder(order)"><i class="fas fa-download"></i></button>
               <button class="btn btn-action" (click)="viewOrder(order)"><i class="fas fa-eye"></i></button>
-              <button class="btn btn-action" (click)="printOrder(order)"><i class="fas fa-print"></i></button>
             </div>
-          </td>
-        </tr>
-        <tr *ngIf="order.showPackages" class="package-details-row">
-          <td colspan="16">
-            <table class="package-details-table">
-              <thead>
-              <tr>
-                <th>Numar Colet</th>
-                <th>Greutate</th>
-                <th>Dimensiuni</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let aPackage of order.packages">
-                <td>{{ aPackage.number }}</td>
-                <td>{{ aPackage.weight }}</td>
-                <td>{{ aPackage.dimensions }}</td>
-              </tr>
-              </tbody>
-            </table>
           </td>
         </tr>
       </ng-container>

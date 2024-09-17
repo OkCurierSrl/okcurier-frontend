@@ -1,11 +1,12 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {CalendarModule} from "primeng/calendar";
 import {FlatShipment} from "../../../model/flatShipment";
 import {OrderService} from "../../../services/order.service";
-import {shouldBeautify} from "@angular-devkit/build-angular/src/utils/environment-options";
+import {PickupData} from "../../../services/pickupData";
+import {DatePickerDialogComponent} from "../date-picker-dialog/date-picker-dialog.component";
 
 interface Package {
   number: string;
@@ -31,6 +32,7 @@ interface Order {
   status: string;
   showPackages?: boolean;
   packages?: Package[];
+  isSelected?: boolean; // Add this property
 }
 
 @Component({
@@ -43,17 +45,19 @@ interface Order {
     CalendarModule,
     NgIf,
     NgForOf,
+    DatePickerDialogComponent,
   ],
   styleUrls: ['./order-list.component.css']
 })
 export class OrderListComponent implements OnInit {
   orders: FlatShipment[] = []; // This should be fetched from the service
-  filteredOrders: Order[] = [];
+  filteredOrders: FlatShipment[] = [];
   pages: number[] = []
   currentPage: number = 1;
   searchTerm: string = '';
   filterProperty: string = 'all';
   private readonly size = 3;
+  showDialog: boolean = false;
 
   filter: any = {
     awb: '',
@@ -72,10 +76,12 @@ export class OrderListComponent implements OnInit {
     cashOnDelivery: '',
     status: ''
   };
+  private selectedOrders: FlatShipment[];
 
   constructor(private router: Router,
               private cdr: ChangeDetectorRef,
-              private orderService: OrderService) {}
+              private orderService: OrderService) {
+  }
 
   ngOnInit(): void {
     this.goToPage(1);
@@ -105,38 +111,48 @@ export class OrderListComponent implements OnInit {
 
   getStatusClass(status: string): string {
     if (!status) {
-      console.log('nu am gasit status')
       return ''; // Return a default or empty string if courier is undefined or null
     }
-    console.log('am gasit status'  + status)
     let clas = '';
     switch (status.toUpperCase()) {
-      case 'AWB_GENERAT': clas =  'status-awb-generat';
+      case 'AWB_GENERAT':
+        clas = 'status-awb-generat';
         break;
-      case 'COMANDA_TRIMISA': clas =  'status-comanda-trimisa';
+      case 'COMANDA_TRIMISA':
+        clas = 'status-comanda-trimisa';
         break;
-      case 'AWB_RIDICAT': clas =  'status-ridicat';
+      case 'AWB_RIDICAT':
+        clas = 'status-ridicat';
         break;
-      case 'TRANZIT': clas =  'status-in-tranzit';
+      case 'TRANZIT':
+        clas = 'status-in-tranzit';
         break;
-      case 'IN_LIVRARE': clas =  'status-in-livrare';
+      case 'IN_LIVRARE':
+        clas = 'status-in-livrare';
         break;
-      case 'LIVRAT': clas =  'status-livrat';
+      case 'LIVRAT':
+        clas = 'status-livrat';
         break;
-      case 'RAMBURSAT': clas =  'status-rambursat';//
-          break;
-      case 'RETURNARE': clas =  'status-clas = are';//
-          break;
-      case 'REDIRECTIONARE': clas =  'status-redirectionare';
+      case 'RAMBURSAT':
+        clas = 'status-rambursat';//
         break;
-      case 'EROARE': clas =  'status-eroare';
+      case 'RETURNARE':
+        clas = 'status-clas = are';//
         break;
-      default: clas =  '';
+      case 'REDIRECTIONARE':
+        clas = 'status-redirectionare';
+        break;
+      case 'EROARE':
+        clas = 'status-eroare';
+        break;
+      default:
+        clas = '';
         break;
     }
-    console.log('asadeci ' +  clas);
+    console.log(clas)
     return clas;
   }
+
   filterOrders() {
     this.filteredOrders = this.orders.filter(order => {
       const matchesAwb = order.awb.includes(this.filter.awb);
@@ -178,19 +194,19 @@ export class OrderListComponent implements OnInit {
     return Array(totalPages).fill(0).map((x, i) => i + 1);
   }
 
-  viewOrder(order: Order): void {
+  viewOrder(order: FlatShipment): void {
     const currentPath = this.router.url
     const basePath = currentPath.replace(/\/order-list$/, ''); // Remove /view from the end
     const targetPath = `${basePath}/track/${order.awb}`;
     this.router.navigate([targetPath]);
   }
 
-  downloadOrder(order: Order): void {
+  downloadOrder(order: FlatShipment): void {
     // Handle download order logic
     console.log('Download order', order);
   }
 
-  printOrder(order: Order): void {
+  printFlatShipment(order: FlatShipment): void {
     // Handle print order logic
     console.log('Print order', order);
   }
@@ -215,21 +231,57 @@ export class OrderListComponent implements OnInit {
     this.loadData(page);
   }
 
-  private loadData(page: number) { -
-    this.orderService.getAllOrders(page, this.size).subscribe(shipments => {
-      this.orders = shipments;
-      this.filteredOrders = [...this.orders]; // Initialize the filtered orders
-      this.pages = Array.from({length: shipments?.pop()?.pages - 1}, (_, index) => index + 1);
+  private loadData(page: number) {
+    -
+      this.orderService.getAllOrders(page, this.size).subscribe(shipments => {
+        this.orders = shipments;
+        this.filteredOrders = [...this.orders]; // Initialize the filtered orders
+        this.pages = Array.from({length: shipments?.pop()?.pages - 1}, (_, index) => index + 1);
+      });
+  }
+
+  requestCourierPickup(): void {
+    const selectedOrders = this.filteredOrders.filter(order => order.isSelected);
+
+    this.selectedOrders = selectedOrders
+
+    console.log("printing " + JSON.stringify(selectedOrders));
+    if (selectedOrders.length === 0) {
+      alert('Please select at least one order.');
+      return;
+    }
+
+    // Proceed to show the date picker popup
+    this.showDialog = true; // Show the custom dialog
+  }
+
+  exportExcel(): void {
+
+  }
+
+  onDialogConfirm(pickupDate: string): void {
+    this.showDialog = false; // Hide the dialog
+
+    console.log("lalal " + this.selectedOrders)
+    // Process the selected orders with the selected date
+    this.selectedOrders.forEach(order => {
+      const data: PickupData = {pickupDate};
+      const courier = order.courier;
+      const orderId = Number(order.orderNumber);
+
+      this.orderService.pickupOrder(data, courier, orderId).subscribe(
+        response => {
+          console.log(`Order ${order.awb} pickup scheduled successfully.`);
+          // Update order status or provide feedback
+        },
+        error => {
+          console.error(`Failed to schedule pickup for order ${order.awb}.`, error);
+        }
+      );
     });
   }
 
-  exportToExcel(): void {
-    // Handle export to Excel logic
-    console.log('Export to Excel');
-  }
-
-  printOrders(): void {
-    // Handle print orders logic
-    console.log('Print orders');
+  onDialogCancel(): void {
+    this.showDialog = false; // Hide the dialog
   }
 }
