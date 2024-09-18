@@ -233,7 +233,7 @@ export class OrderListComponent implements OnInit {
 
   private loadData(page: number) {
     -
-      this.orderService.getAllOrders(page, this.size).subscribe(shipments => {
+      this.orderService.getAllOrders(page-1, this.size).subscribe(shipments => {
         this.orders = shipments;
         this.filteredOrders = [...this.orders]; // Initialize the filtered orders
         this.pages = Array.from({length: shipments?.pop()?.pages - 1}, (_, index) => index + 1);
