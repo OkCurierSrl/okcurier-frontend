@@ -129,38 +129,6 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     this.courierPackages = [...this.courierPackages]; // Trigger change detection
   }
 
-  calculateOverview(): void {
-    const totalPackages = this.courierPackages.length;
-    const totalWeight = this.courierPackages.reduce((acc, pkg) => acc + (pkg.form.value.weight || 0), 0);
-
-    // Emit the updated overview values
-    const overviewComponent = this.packageOverviewComponents.first;
-    if (overviewComponent) {
-      overviewComponent.totalPackages = totalPackages;
-      overviewComponent.totalWeight = totalWeight;
-    }
-  }
-
-  onWeightChange(): void {
-    setTimeout(() => this.calculateOverview(), 1);
-  }
-
-  onLengthChange() {
-    setTimeout(() => this.calculateOverview(), 1);
-
-  }
-
-  onwWidthChange() {
-    setTimeout(() => this.calculateOverview(), 1);
-
-  }
-
-  onHeightChange() {
-    setTimeout(() => this.calculateOverview(), 1);
-
-  }
-
-
   removePackage(index: number): void {
     this.courierPackages.splice(index, 1);
     this.courierPackages = [...this.courierPackages]; // Trigger change detection
@@ -185,13 +153,6 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   checkFormsValidity(): void {
-    console.log('Expeditor form valid:', this.expeditorFormValid);
-    console.log('Destinatar form valid:', this.destinatarFormValid);
-    console.log('Package count:', this.courierPackages.length > 0);
-
-    this.courierPackages.forEach((pkg, idx) => {
-      console.log(`Package ${idx + 1} valid:`, pkg.valid);
-    });
   }
 
   isFormValid(): boolean {

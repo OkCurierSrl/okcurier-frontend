@@ -60,7 +60,7 @@
         <input id="street" pInputText formControlName="streetInput" (input)="onAddressInput($event)" placeholder="Strada" #streetInputField [ngClass]="{'valid': orderForm.get('street').valid && orderForm.get('street').touched}" />
         <ul *ngIf="addressSuggestions.length" class="suggestions-list">
           <li *ngFor="let suggestion of addressSuggestions" (click)="selectAddress(suggestion, streetInputField)">
-            {{ suggestion.description }}
+            {{ suggestion }}
           </li>
         </ul>
         <input type="hidden" formControlName="street" />
@@ -73,11 +73,6 @@
         <div class="p-col-6" [ngClass]="{'invalid': orderForm.get('number').invalid && orderForm.get('number').touched}">
           <label for="number">Numarul</label>
           <input type="number" id="number" #numberInput pInputText formControlName="number" (input)="onNumberInput($event)" placeholder="numarul" />
-          <ul *ngIf="numberSuggestions.length" class="suggestions-list">
-            <li *ngFor="let suggestion of numberSuggestions" (click)="selectNumber(suggestion)">
-              {{ suggestion.description }}
-            </li>
-          </ul>
           <div *ngIf="orderForm.get('number').invalid && orderForm.get('number').touched" class="error">
             Numarul este obligatoriu.
           </div>

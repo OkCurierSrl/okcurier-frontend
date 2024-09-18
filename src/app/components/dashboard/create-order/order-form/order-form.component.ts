@@ -42,7 +42,7 @@ export class OrderFormComponent implements OnInit {
   @ViewChild('postalCodeInput') postalCodeInput: ElementRef;
 
   orderForm: FormGroup;
-  addressSuggestions: any[] = [];
+  addressSuggestions: string[] = [];
   numberSuggestions: any[] = [];
   counties: any[] = [];
   cities: any[] = [];
@@ -131,67 +131,59 @@ export class OrderFormComponent implements OnInit {
 
   onAddressInput(event: any): void {
     const input = event.target.value;
-    if (input) {
-      this.placesService.getAddressSuggestions(input).subscribe(suggestions => {
-        this.addressSuggestions = suggestions.map(suggestion => ({
-          description: this.extractStreetName(suggestion.description),
-          rawDescription: suggestion.description
-        }));
-      });
+    const city = this.orderForm.get('county').value; // Get the city value from the form
+
+    if (input && city) {
+      this.placesService.getAddressSuggestions(input, city).subscribe(suggestions => {
+        // Assuming suggestions is a list of strings, map them to the desired format
+        this.addressSuggestions = suggestions;
+        })
     } else {
       this.addressSuggestions = [];
     }
   }
 
-
-  selectAddress(suggestion: any, streetInputField: HTMLInputElement) {
+  selectAddress(suggestion: string, streetInputField: HTMLInputElement) {
     this.orderForm.patchValue({
-      street: suggestion.description, // Hidden field for validated street
-      streetInput: suggestion.description // Displayed input field
+      street: suggestion, // Hidden field for validated street
+      streetInput: suggestion // Displayed input field
     });
-    streetInputField.value = suggestion.description;
+    streetInputField.value = suggestion;
     this.addressSuggestions = [];
   }
 
   isSuggestionValid(input: string): boolean {
-    console.log('value : ', input);
-    console.log('suggestions : ', this.addressSuggestions);
-    return this.addressSuggestions.some(suggestion => suggestion.description === input) || this.isSavedAddress;
+    return this.addressSuggestions.some(suggestion => suggestion === input) || this.isSavedAddress;
   }
 
-  extractStreetName(description: string): string {
-    // Extract the street name from the full description
-    const parts = description.split(',');
-    return parts[0] || description;
-  }
 
   onNumberInput(event: any): void {
-    // const input = event.target.value;
-    // const street = this.orderForm.get('street').value;
-    // const city = this.orderForm.get('city').value;
-    // if (input && street) {
-    //   this.placesService.getStreetNumberSuggestions(input, street, city).subscribe(suggestions => {
-    //     this.numberSuggestions = suggestions;
-    //   });
-    // } else {
-    //   this.numberSuggestions = [];
-    // }
+    const number = event.target.value;
+    const street = this.orderForm.get('street').value;
+    const city = this.orderForm.get('city').value;
+
+    if (number && street && city) {
+      // Call the postal code service
+      this.placesService.getPostalCode(number, street, city).subscribe(response => {
+        console.log(response)
+        if (response && response.postal_code) {
+          console.log(response)
+
+          // Update the postal code field in the form
+          this.orderForm.patchValue({
+            postalCode: response.postal_code
+          });
+
+          // Optionally, you can also focus on the next input field (e.g., postal code input field)
+          this.postalCodeInput.nativeElement.focus();
+        }
+      }, error => {
+        console.error('Error fetching postal code: ', error);
+      });
+    }
   }
 
-  selectNumber(number: any): void {
-    // this.placesService.getAddressDetails(number.place_id).subscribe(details => {
-    //   const postalCode = details.address_components.find(ac => ac.types.includes('postal_code')).long_name;
-    //   const state = details.address_components.find(ac => ac.types.includes('administrative_area_level_1')).long_name;
-    //   this.orderForm.patchValue({
-    //     number: number.description.split(',')[0],
-    //     postalCode,
-    //     state
-    //   });
-    //   console.log("numarul este" + number);
-    //   this.postalCodeInput.nativeElement.focus(); // Focus on postal code input
-    // });
-    // this.numberSuggestions = [];
-  }
+
 
   onFavoriteChange(event: Event): void {
     const elem = event.target as HTMLSelectElement

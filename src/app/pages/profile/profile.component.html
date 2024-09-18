@@ -2,12 +2,6 @@
   <div class="card profile-card">
     <div class="card-body">
       <div class="row align-items-center profile-header">
-        <div class="col-md-3 text-center">
-          <img
-            class="rounded-circle img-fluid profile-picture mb-3"
-            alt="Poza de profil"
-          />
-        </div>
         <div class="col-md-9">
           <h2>{{ user.name }}</h2>
           <p class="lead text-muted">{{ user.email }}</p>
@@ -72,6 +66,39 @@
                 style="margin-left: 5px; cursor: pointer;"
               ></i>
             </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="nume">Nume detinator IBAN</label>
+              <input
+                id="nume"
+                [(ngModel)]="client?.billing_info.name"
+                name="name"
+                class="form-control"
+              />
+              <i
+                *ngIf="!client?.billing_info.name || client?.billing_info.name === 'None'"
+                class="fas fa-exclamation-circle text-danger"
+                title="Informatii obligatorii pentru trimiterea de colete"
+                style="margin-left: 5px; cursor: pointer;"
+              ></i>
+            </div>
+            <div class="form-group">
+              <label for="iban">IBAN</label>
+              <input
+                id="iban"
+                [(ngModel)]="client?.billing_info.iban"
+                name="iban"
+                class="form-control"
+              />
+              <i
+                *ngIf="!client?.billing_info.iban || client?.billing_info.iban === 'None'"
+                class="fas fa-exclamation-circle text-danger"
+                title="Informatii obligatorii pentru trimiterea de colete"
+                style="margin-left: 5px; cursor: pointer;"
+              ></i>
+            </div>
+
             <div class="form-group">
               <label for="phoneNumber">Număr de Telefon</label>
               <input
@@ -88,27 +115,17 @@
               ></i>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="iban">IBAN</label>
-              <input
-                id="iban"
-                [(ngModel)]="client?.billing_info.iban"
-                name="iban"
-                class="form-control"
-              />
-              <i
-                *ngIf="!client?.billing_info.iban || client?.billing_info.iban === 'None'"
-                class="fas fa-exclamation-circle text-danger"
-                title="Informatii obligatorii pentru trimiterea de colete"
-                style="margin-left: 5px; cursor: pointer;"
-              ></i>
-            </div>
-          </div>
         </div>
         <div class="text-center mt-3">
           <button type="submit" class="btn btn-success">Salvează</button>
         </div>
+        <!-- Add this to display the list of error messages -->
+        <div *ngIf="errorMessages && errorMessages.length > 0" class="alert alert-danger mt-3">
+          <ul>
+            <li *ngFor="let errorMessage of errorMessages">{{ errorMessage }}</li>
+          </ul>
+        </div>
+
       </form>
 
       <div *ngIf="!editMode">
@@ -141,6 +158,7 @@
                 style="margin-left: 5px; cursor: pointer;"
               ></i>
             </p>
+            <p><strong>Contract:</strong> {{ client?.billing_info.contract_number }}</p>
           </div>
           <div class="col-md-6">
             <p>
@@ -161,9 +179,17 @@
                 style="margin-left: 5px; cursor: pointer;"
               ></i>
             </p>
+            <p>
+              <strong>Nume detinator IBAN:</strong> {{ client?.billing_info.name }}
+              <i
+                *ngIf="!client?.billing_info.name || client?.billing_info.name === 'None'"
+                class="fas fa-exclamation-circle text-danger"
+                title="Informatii obligatorii pentru trimiterea de colete"
+                style="margin-left: 5px; cursor: pointer;"
+              ></i>
+            </p>
 
             <p><strong>Rol:</strong> {{ client?.roles?.slice(-1)[0]?.name || 'N/A' }}</p>
-            <p><strong>Contract:</strong> {{ client?.billing_info.contract_number }}</p>
           </div>
         </div>
       </div>

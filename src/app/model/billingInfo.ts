@@ -2,6 +2,7 @@ import {Discount} from "./discount";
 
 export interface BillingInfo {
   phone_number: string;
+  name: string;
   id: number;
   email: string;
   contract_number: string;
