@@ -1,10 +1,10 @@
 <!-- Display error message if there was an error navigating to the AWB -->
 <div *ngIf="showError" class="error-message">
-  <p>Error fetching order details. Please try again.</p>
+  <p>Am intampinat o eroare. Va rugam asigurati-va ca AWB-ul este corect</p>
 </div>
 
 <!-- Input Box for AWB Number -->
 <div class="container">
-  <input type="text" [(ngModel)]="awbNumber" placeholder="Enter AWB Number" />
+  <input type="text" [(ngModel)]="awbNumber" placeholder="Introduceti numarul de AWB" />
   <button (click)="navigateToAWB()">Track AWB</button>
 </div>

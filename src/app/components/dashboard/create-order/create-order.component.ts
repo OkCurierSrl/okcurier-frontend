@@ -245,7 +245,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     this.renderer.setStyle(infoDiv, 'textAlign', 'center');
     this.renderer.setStyle(infoDiv, 'boxShadow', '0px 4px 10px rgba(0, 0, 0, 0.2)');
 
-    const infoText = this.renderer.createText('Please complete your profile to send packages.');
+    const infoText = this.renderer.createText('Va rugam compleati datele profilului pentru a incepe sa trimiteti!');
     this.renderer.appendChild(infoDiv, infoText);
 
     // Create a button to go to the profile page
