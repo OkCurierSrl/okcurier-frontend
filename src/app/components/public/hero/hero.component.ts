@@ -6,13 +6,14 @@ import { HttpClient } from '@angular/common/http';
 import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { TabViewModule } from 'primeng/tabview';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonDirective } from 'primeng/button';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { PriceCalculationService } from '../../../services/price-calculation.service';
 import {Router} from "@angular/router";
 import {OrderData} from "../../../model/order-data";
+import {StateCodeProjection} from "../../../model/state-code.projection";
 
 @Component({
   selector: 'app-hero',
@@ -27,53 +28,44 @@ import {OrderData} from "../../../model/order-data";
     ButtonDirective,
     NgForOf,
     AsyncPipe,
-    NgIf
+    NgIf,
+    ReactiveFormsModule
   ],
   standalone: true
 })
-export class HeroComponent {
-  citySuggestions: Observable<{ label: string, value: string }[]>;
-  activeField: 'location' | 'destination' | null = null;
-  selectedLocation: string;
-  selectedDestination: string;
+export class HeroComponent implements OnInit {
   selectedPackageType: string;
   weight: number;
   length: number;
   width: number;
   height: number;
   prices: any[];
+  counties: StateCodeProjection[];
 
   constructor(private placesService: PlacesService, private http: HttpClient, private priceCalculationService: PriceCalculationService, private router: Router) {
     this.selectedPackageType = 'plic';
   }
 
-
-
-  onCityInputChange(event: Event, field: 'location' | 'destination'): void {
-    const target = event.target as HTMLInputElement;
-    const value = target.value;
-    this.activeField = field;
-
-    this.citySuggestions = this.placesService.getCitySuggestions(value).pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      map(predictions => predictions.map(prediction => {
-        let label = prediction.description.split(',')[0].trim();
-        return ({
-          label: label,
-          value: label
-        });
-      }))
-    );
-  }
-
-  selectSuggestion(suggestion: { label: string, value: string }): void {
-    if (this.activeField === 'location') {
-      this.selectedLocation = suggestion.value;
-    } else if (this.activeField === 'destination') {
-      this.selectedDestination = suggestion.value;
+  ngOnInit(): void {
+        this.loadCounties()
     }
-    this.activeField = null;
+
+
+
+  loadCounties(): void {
+    this.placesService.getCounties().pipe(
+      map((counties: StateCodeProjection[]) =>
+        counties.map(county => {
+          const transformedStateName = county.stateName.replace('County', '').trim();
+          return {
+            ...county,
+            stateName: transformedStateName
+          };
+        })
+      )
+    ).subscribe((counties: StateCodeProjection[]) => {
+      this.counties = counties;
+    });
   }
 
   calculateTariff(): void {
@@ -93,7 +85,7 @@ export class HeroComponent {
     };
 
     console.log(orderData);
-    this.priceCalculationService.getPrices(orderData).subscribe(
+    this.priceCalculationService.getPricesFree(orderData).subscribe(
       response => {
         console.log(response);
         this.router.navigate(['/courier-options'],

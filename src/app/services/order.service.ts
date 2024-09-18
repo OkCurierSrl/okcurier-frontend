@@ -40,6 +40,12 @@ export class OrderService {
     );
   }
 
+  placeOrderFree(orderData : OrderData, courier: string, pickup: boolean): Observable<ApiGenerateResponse> {
+    let url = this.apiUrl + '/api/okcurier/place-order-free?courierCompany=' + courier
+    return  this.http.post<ApiGenerateResponse>(url, orderData);
+  }
+
+
   pickupOrder(data: PickupData, courier: string, orderId: number): Observable<any> {
     let url = this.apiUrl + '/api/okcurier/pickup-order?courierCompany=' + courier + '&id=' + orderId;
     return this.addAuthHeader().pipe(

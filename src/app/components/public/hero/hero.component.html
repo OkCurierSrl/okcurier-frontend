@@ -8,38 +8,20 @@
   <div class="calculator-form">
     <div class="form-fields">
       <div class="field">
-        <label for="localitate-expeditie">Localitate expeditie</label>
-        <input type="text" id="localitate-expeditie"
-               (input)="onCityInputChange($event, 'location')"
-               placeholder="Ex: Cluj-Napoca"
-               [(ngModel)]="selectedLocation">
-        <!-- Suggestions Dropdown -->
-        <ul class="suggestions-list" *ngIf="(citySuggestions | async) as suggestions">
-          <ng-container *ngIf="activeField === 'location'">
-            <li *ngFor="let suggestion of suggestions" (click)="selectSuggestion(suggestion)">
-              {{ suggestion.label }}
-            </li>
-          </ng-container>
-        </ul>
-      </div>
 
+        <label>Localitate expeditie</label>
+        <select>
+          <option value="" disabled selected>Judet</option>
+          <option *ngFor="let county of counties" [value]="county.stateName">{{ county.stateName }}</option>
+        </select>
+      </div>
       <div class="field">
-        <label for="localitate-destinatie">Localitate destinatie</label>
-        <input type="text" id="localitate-destinatie"
-               (input)="onCityInputChange($event, 'destination')"
-               placeholder="Ex: Bucuresti"
-               [(ngModel)]="selectedDestination">
-        <!-- Suggestions Dropdown -->
-        <ul class="suggestions-list" *ngIf="(citySuggestions | async) as suggestions">
-          <ng-container *ngIf="activeField === 'destination'">
-            <li *ngFor="let suggestion of suggestions" (click)="selectSuggestion(suggestion)">
-              {{ suggestion.label }}
-            </li>
-          </ng-container>
-        </ul>
+        <label>Judet destinatie</label>
+        <select>
+          <option value="" disabled selected>Judet</option>
+          <option *ngFor="let county of counties" [value]="county.stateName">{{ county.stateName }}</option>
+        </select>
       </div>
-
-      <!-- Additional form fields... -->
 
       <div class="field-2">
         <label for="tip-pachet">Tipul pachetului</label>

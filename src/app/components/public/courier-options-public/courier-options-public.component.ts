@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {OrderService} from "../../../services/order.service";
-import {AuthService} from "@auth0/auth0-angular";
 import {CourierOption} from "../../../model/courier.option";
 import {OrderData} from "../../../model/order-data";
+import {routes} from "../../../app-routing.module";
 
 @Component({
   selector: 'app-courier-options',
@@ -23,7 +23,6 @@ export class CourierOptionsPublicComponent implements OnInit {
   private orderData: OrderData;
 
   constructor(private route: ActivatedRoute,
-              private auth: AuthService,
               private router: Router,
               private orderService: OrderService) {
   }
@@ -62,10 +61,6 @@ export class CourierOptionsPublicComponent implements OnInit {
     }
   }
 
-  generateAWB(): void {
-    this.callBackendWithPickup(true);
-  }
-
   orderCourier(): void {
     this.callBackendWithPickup(true);
   }
@@ -76,10 +71,13 @@ export class CourierOptionsPublicComponent implements OnInit {
       console.error('No courier selected');
       return;
     }
-    this.orderService.placeOrder(this.orderData, selectedCourier.courier, pickup).subscribe({
+    if (this.orderData.expeditor == null) {
+      this.router.navigate(["/order"]);
+    }
+    this.orderService.placeOrderFree(this.orderData, selectedCourier.courier, pickup).subscribe({
       next: (response) => {
+        this.router.navigate(["/netopia"]);
         console.log('AWB generated successfully:', response);
-        this.router.navigate(['/dashboard/order-list']); // Redirect to order list
       },
       error: (error) => {
         console.error('Error generating AWB:', error);

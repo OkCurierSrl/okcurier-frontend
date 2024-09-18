@@ -21,6 +21,11 @@ export class PriceCalculationService {
       ));
   }
 
+  getPricesFree(orderData: OrderData): Observable<CourierOption> {
+    return this.http.post<CourierOption>(this.apiUrl + '/api/orders/free', orderData);
+  }
+
+
   private addAuthHeader(): Observable<HttpHeaders> {
     return this.auth.getAccessTokenSilently().pipe(
       switchMap(token => {

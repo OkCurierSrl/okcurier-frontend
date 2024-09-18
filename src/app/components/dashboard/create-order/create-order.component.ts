@@ -65,8 +65,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
               private auth: AuthService,
               private clientService: ClientService,
               private router: Router) {
-    this.auth.isAuthenticated$.subscribe((loggedIn, ) => {
-        this.isLoggedIn = loggedIn;
+    this.auth.isAuthenticated$.subscribe((loggedIn,) => {
+      this.isLoggedIn = loggedIn;
     });
   }
 
@@ -186,23 +186,31 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       // Log the payload for debugging
       console.log('Submitting order data:', JSON.stringify(orderData, null, 2));
 
-      this.priceCalculationService.getPrices(orderData).subscribe(
-        (response) => {
-          console.log('Order submitted successfully', response);
-          let url: string;
-          if (this.isLoggedIn) {
-            url = '/dashboard/courier-options';
-          } else {
-            url = '/courier-options';
-          }
-          this.router.navigate([url],
-            {
-              queryParams: {
-                couriers: JSON.stringify(response),
-                orderData: JSON.stringify(orderData)
-              }
-            });
-        });
+      if (this.isLoggedIn) {
+        this.priceCalculationService.getPrices(orderData).subscribe(
+          (response) => {
+            console.log('Order submitted successfully', response);
+            this.router.navigate(['/dashboard/courier-options'],
+              {
+                queryParams: {
+                  couriers: JSON.stringify(response),
+                  orderData: JSON.stringify(orderData)
+                }
+              });
+          });
+      } else {
+        this.priceCalculationService.getPricesFree(orderData).subscribe(
+          (response) => {
+            console.log('Order submitted successfully', response);
+            this.router.navigate(['/courier-options'],
+              {
+                queryParams: {
+                  couriers: JSON.stringify(response),
+                  orderData: JSON.stringify(orderData)
+                }
+              });
+          })
+      }
     }
   }
 
