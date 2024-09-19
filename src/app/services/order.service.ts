@@ -9,7 +9,7 @@ import {Address} from "../model/address";
 import {FlatShipment} from "../model/flatShipment";
 import {TrackingResponse} from "../components/dashboard/show/show.component";
 import {PickupData} from "./pickupData";
-import {ApiGenerateResponse} from "../components/dashboard/courier-options/api-generate.response";
+import {ApiDownloadResponse} from "../components/dashboard/courier-options/api-download.response";
 
 @Injectable({
   providedIn: 'root'
@@ -33,17 +33,23 @@ export class OrderService {
     );
   }
 
-  placeOrder(orderData : OrderData, courier: string, pickup: boolean): Observable<ApiGenerateResponse> {
+  placeOrder(orderData : OrderData, courier: string, pickup: boolean): Observable<ApiDownloadResponse> {
     let url = this.apiUrl + '/api/okcurier/place-order?courierCompany=' + courier + '&alsoPickup=' + pickup;
     return this.addAuthHeader().pipe(
-      switchMap(headers => this.http.post<ApiGenerateResponse>(url, orderData, { headers }))
+      switchMap(headers => this.http.post<ApiDownloadResponse>(url, orderData, { headers }))
     );
   }
 
-  placeOrderFree(orderData : OrderData, courier: string, pickup: boolean): Observable<ApiGenerateResponse> {
+  placeOrderFree(orderData : OrderData, courier: string, pickup: boolean): Observable<ApiDownloadResponse> {
     let url = this.apiUrl + '/api/okcurier/place-order-free?courierCompany=' + courier
-    return  this.http.post<ApiGenerateResponse>(url, orderData);
+    return  this.http.post<ApiDownloadResponse>(url, orderData);
   }
+
+  downloadLabel(awb: string) {
+    let url = this.apiUrl + '/api/okcurier/download-label?awb=' + awb;
+    return this.http.get<ApiDownloadResponse>(url);
+  }
+
 
 
   pickupOrder(data: PickupData, courier: string, orderId: number): Observable<any> {
