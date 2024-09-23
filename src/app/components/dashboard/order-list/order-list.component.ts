@@ -192,7 +192,7 @@ export class OrderListComponent implements OnInit {
 
   getPagesArray() {
     const totalPages = Math.ceil(this.filteredOrders.length / 3);
-    return Array(totalPages).fill(0).map((x, i) => i + 1);
+    return Array(totalPages+1).fill(0).map((x, i) => i + 1);
   }
 
   viewOrder(order: FlatShipment): void {
@@ -304,7 +304,7 @@ export class OrderListComponent implements OnInit {
       this.orderService.getAllOrders(page-1, this.size).subscribe(shipments => {
         this.orders = shipments;
         this.filteredOrders = [...this.orders]; // Initialize the filtered orders
-        this.pages = Array.from({length: shipments?.pop()?.pages - 1}, (_, index) => index + 1);
+        this.pages = Array.from({length: shipments?.pop()?.pages}, (_, index) => index + 1);
       });
   }
 
