@@ -50,6 +50,7 @@ export class ClientViewComponent implements OnInit {
       if (email) {
         this.clientService.getClientByEmail(email).subscribe(
           (client: Client) => {
+            console.log(client);
             this.client = client;
             this.clientName = client.name;
             this.fetchPricesForCourier('DPD');

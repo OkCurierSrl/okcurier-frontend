@@ -19,10 +19,15 @@ export class ClientService {
   constructor(private http: HttpClient, private auth: AuthService) {
   }
 
-  // Fetch all users from the backend
+  getClientByEmail(email: string): Observable<Client> {
+    return this.addAuthHeader().pipe(
+      switchMap(headers => this.http.get<Client>(`${this.apiUrl}/api/client?email=` + email, {headers}))
+    );
+  }
+
   getAllClients(): Observable<Client[]> {
     return this.addAuthHeader().pipe(
-      switchMap(headers => this.http.get<Client[]>(`${this.apiUrl}/api/test/get-users`, {headers}))
+      switchMap(headers => this.http.get<Client[]>(`${this.apiUrl}/api/clients`, {headers}))
     );
   }
 
@@ -42,13 +47,13 @@ export class ClientService {
     );
   }
 
+
   inviteClient(newClientEmail: string, newClientContractNumber: string) {
     return this.http.get<void>(
       `${this.apiUrl}/api/client/send-invitation?email=${newClientEmail}&contractNumber=${newClientContractNumber}`,
       {responseType: 'text' as 'json'} // Specify responseType to handle plain text
     );
   }
-
 
   private addAuthHeader(): Observable<HttpHeaders> {
     return this.auth.getAccessTokenSilently().pipe(
@@ -60,12 +65,6 @@ export class ClientService {
         });
         return [headers];
       })
-    );
-  }
-
-  getClientByEmail(email: string): Observable<Client> {
-    return this.addAuthHeader().pipe(
-      switchMap(headers => this.http.get<Client>(`${this.apiUrl}/api/client?email=` + email, {headers}))
     );
   }
 

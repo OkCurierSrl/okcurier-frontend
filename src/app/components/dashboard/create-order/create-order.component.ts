@@ -43,7 +43,6 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   destinatarFormValid: boolean = false;
   courierPackages: { form: FormGroup, valid: boolean }[] = [];
   extraServices: { label: string, value: string }[] = [
-    {label: 'Retur', value: 'returColetNelivrat'},
     {label: 'Document la schimb', value: 'documentSchimb'},
     {label: 'Colet la schimb', value: 'coletSchimb'},
     {label: 'Deschidere Colet', value: 'deschidereColet'},
@@ -54,7 +53,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   selectedServices: { [key: string]: boolean } = {};
   asigurare: number | null = 0;
   rambursCont: number | null = 0;
-  isPlicSelected: boolean;
+  isPlicSelected: boolean = false;
   client: Client;
   isProfileComplete: boolean = true;
 

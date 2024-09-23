@@ -68,6 +68,7 @@ export class CourierOptionsComponent implements OnInit {
       console.error('No courier selected');
       return;
     }
+    this.orderData.price = selectedCourier.totalPrice;
     this.orderService.placeOrder(this.orderData, selectedCourier.courier, pickup).subscribe({
       next: (response) => {
         console.log('AWB generated successfully:', response);

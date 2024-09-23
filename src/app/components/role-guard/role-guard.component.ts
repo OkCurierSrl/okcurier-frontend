@@ -15,7 +15,6 @@ export class RoleGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     const expectedRoles: string[] = route.data.roles; // Get the roles required for the route
 
-    console.log("expected rolse " + expectedRoles)
     return this.roleService.hasRequiredRole(expectedRoles).pipe(
       map(hasRole => {
         if (hasRole) {

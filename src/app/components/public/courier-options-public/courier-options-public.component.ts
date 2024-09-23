@@ -74,6 +74,7 @@ export class CourierOptionsPublicComponent implements OnInit {
     if (this.orderData.expeditor == null) {
       this.router.navigate(["/order"]);
     }
+    this.orderData.price = selectedCourier.totalPrice;
     this.orderService.placeOrderFree(this.orderData, selectedCourier.courier, pickup).subscribe({
       next: (response) => {
         this.router.navigate(["/netopia"]);

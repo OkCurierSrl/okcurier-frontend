@@ -1,8 +1,9 @@
 {
   "domain": "okcurier-staging.eu.auth0.com",
-  "clientId": "1hb3H0yukuvKuLrIbisl1IImg9idloW0",
+  "clientId": "AbybAkzIS7jaPkT4Fv4AjLR93xUsxQG5",
   "authorizationParams": {
-    "audience": "https://okcurier-staging.eu.auth0.com/api/v2/"
+    "audience": "https://my-springboot-api",
+    "scope": "openid profile email"
   },
   "apiUri": "http://localhost:8080/",
   "appUri": "https://okcurier-frontend-d66f2ea5edab.herokuapp.com",
