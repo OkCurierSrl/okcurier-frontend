@@ -28,3 +28,6 @@ nvm l
 
 # See remote enviroment variables
 > heroku config --app okcurier-frontend
+
+# Check the logs
+>heroku logs --tail  --app okcurier-frontend
