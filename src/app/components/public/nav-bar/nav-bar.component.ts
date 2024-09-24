@@ -48,13 +48,13 @@ export class NavBarComponent {
     this.auth.isAuthenticated$.subscribe((loggedIn) => {
       if (loggedIn) {
         // Subscribe to the Observable returned by hasRequiredRole to get the actual boolean value
-        // this.roleService.hasRequiredRole(['ADMIN']).subscribe((hasAdminRole) => {
-        //   if (hasAdminRole) {
+        this.roleService.hasRequiredRole(['ADMIN']).subscribe((hasAdminRole) => {
+          if (hasAdminRole) {
             this.router.navigate(['/admin']);
-          // } else {            console.log("Trying to go to dashboard");
-          //   this.router.navigate(['/dashboard']);
-          // }
-        // });
+          } else {            console.log("Trying to go to dashboard");
+            this.router.navigate(['/dashboard']);
+          }
+        });
       }
     });
   }

@@ -33,15 +33,13 @@ export class RoleService {
   hasRequiredRole(requiredRoles: string[]): Observable<boolean> {
     return this.auth.getAccessTokenSilently().pipe(
       switchMap((token) => {
-        //   if (!token) {
-        //     return of(false);
-        //   }
-        //   const decodedToken = this.jwtHelper.decodeToken(token);
-        //   const roles = decodedToken['https://mynamespace.com/roles'] as string[] || [];
-        //   return of(requiredRoles.some(role => roles.includes(role)));
-        // })
-        return of(true);
-      }
-    ));
+        if (!token) {
+          return of(false);
+        }
+        const decodedToken = this.jwtHelper.decodeToken(token);
+        const roles = decodedToken['https://mynamespace.com/roles'] as string[] || [];
+        return of(requiredRoles.some(role => roles.includes(role)));
+      })
+    );
   }
 }
