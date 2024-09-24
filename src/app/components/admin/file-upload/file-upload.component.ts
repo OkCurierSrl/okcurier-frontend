@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { UploadService } from "../../../services/upload.service";
 import { NgIf } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import {interval} from "rxjs";
+import {switchMap, takeWhile} from "rxjs/operators";
+import {ProcessingStatus} from "../../../services/processing-status.service";
 
 @Component({
   selector: 'app-file-upload',
@@ -16,6 +19,8 @@ import { FormsModule } from "@angular/forms";
 export class FileUploadComponent {
   selectedFiles: File[] = [];
   responseMessage: string | null = null;
+  processing: boolean = false;
+  taskId: string | null = null;
 
   constructor(private uploadService: UploadService) {}
 
@@ -37,9 +42,10 @@ export class FileUploadComponent {
 
       this.uploadService.uploadFiles(formData)
         .subscribe({
-          next: (response) => {
-            this.downloadFile(response, "excel-files.zip"); // Updated to download the ZIP file
-            this.responseMessage = 'Files uploaded and processed successfully!';
+          next: (taskId) => {
+            this.taskId = taskId;
+            this.responseMessage = 'Files uploaded successfully! Processing started...';
+            this.startPollingStatus(taskId);
           },
           error: (error) => {
             console.error('Error uploading files:', error);
@@ -49,14 +55,47 @@ export class FileUploadComponent {
     }
   }
 
-  // Utility function to download file
-  downloadFile(data: Blob, filename: string): void {
-    const blob = new Blob([data], { type: 'application/zip' }); // Updated type to 'application/zip'
+  startPollingStatus(taskId: string): void {
+    this.processing = true;
+
+    interval(5000) // Poll every 5 seconds
+      .pipe(
+        switchMap(() => this.uploadService.checkProcessingStatus(taskId)),
+        takeWhile((status: ProcessingStatus) => status.status !== 'Completed' && status.status !== 'Error')
+      )
+      .subscribe({
+        next: (status: ProcessingStatus) => {
+          this.responseMessage = `Current status: ${status.status}`;
+          if (status.status === 'Completed') {
+            this.downloadFile(taskId);
+            this.processing = false;
+          }
+        },
+        error: (error) => {
+          console.error('Error checking status:', error);
+          this.responseMessage = 'Error checking status. Please try again.';
+          this.processing = false;
+        }
+      });
+  }
+
+  downloadFile(taskId: string): void {
+    this.uploadService.downloadResult(taskId)
+      .subscribe({
+        next: (blob) => this.downloadFileFromBlob(blob, "excel-files.zip"),
+        error: (error) => {
+          console.error('Error downloading file:', error);
+          this.responseMessage = 'Error downloading file. Please try again.';
+        }
+      });
+  }
+
+  downloadFileFromBlob(blob: Blob, filename: string): void {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = filename; // Download the file with the correct ZIP filename
+    a.download = filename;
     a.click();
-    window.URL.revokeObjectURL(url); // Release the memory used by the object URL
+    window.URL.revokeObjectURL(url);
   }
 }
