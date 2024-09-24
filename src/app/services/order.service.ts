@@ -93,7 +93,6 @@ export class OrderService {
 
   getAddresses(): Observable<Address[]> {
     const url = `${this.apiUrl}/api/addresses`;
-
     return this.addAuthHeader().pipe(
       switchMap(headers => this.http.get<Address[]>(url, { headers }))
     );
