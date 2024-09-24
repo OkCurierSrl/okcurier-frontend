@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { UploadService } from "../../../services/upload.service";
 import { NgIf } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import {interval} from "rxjs";
-import {switchMap, takeWhile} from "rxjs/operators";
+import {interval, Subject} from "rxjs";
+import {finalize, switchMap, takeUntil, takeWhile} from "rxjs/operators";
 import {ProcessingStatus} from "../../../services/processing-status.service";
 
 @Component({
@@ -54,6 +54,7 @@ export class FileUploadComponent {
         });
     }
   }
+  private stopPolling = new Subject<void>();
 
   startPollingStatus(taskId: string): void {
     this.processing = true;
@@ -61,23 +62,29 @@ export class FileUploadComponent {
     interval(5000) // Poll every 5 seconds
       .pipe(
         switchMap(() => this.uploadService.checkProcessingStatus(taskId)),
-        takeWhile((status: ProcessingStatus) => status.status !== 'Completed' && status.status !== 'Error')
+        takeUntil(this.stopPolling), // Stops polling when stopPolling emits
+        finalize(() => {
+          this.processing = false; // Reset processing state when polling stops
+          console.log('Polling stopped');
+        })
       )
       .subscribe({
-        next: (status: ProcessingStatus) => {
-          this.responseMessage = `Current status: ${status.status}`;
-          if (status.status === 'Completed') {
-            this.downloadFile(taskId);
-            this.processing = false;
+        next: (status: string) => {
+          this.responseMessage = `Current status: ${status}`;
+          console.log(`Current status: ${status}`);
+          if (status === 'Completed' || status === 'Error') {
+            this.stopPolling.next(); // Stop the polling
+            this.downloadFile(taskId); // Download the file if needed
           }
         },
         error: (error) => {
           console.error('Error checking status:', error);
           this.responseMessage = 'Error checking status. Please try again.';
-          this.processing = false;
+          this.stopPolling.next(); // Stop the polling on error
         }
       });
   }
+
 
   downloadFile(taskId: string): void {
     this.uploadService.downloadResult(taskId)
