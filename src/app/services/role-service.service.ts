@@ -26,7 +26,6 @@ export interface User {
 })
 export class RoleService {
 
-  baseUrl = environment.apiUrl;
   private jwtHelper = new JwtHelperService();
 
   constructor(private auth: AuthService, private http: HttpClient) {}
@@ -38,7 +37,6 @@ export class RoleService {
           return of(false);
         }
         const decodedToken = this.jwtHelper.decodeToken(token);
-        console.log(decodedToken)
         const roles = decodedToken['https://mynamespace.com/roles'] as string[] || [];
         return of(requiredRoles.some(role => roles.includes(role)));
       })

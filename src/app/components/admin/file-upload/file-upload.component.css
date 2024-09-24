@@ -1,0 +1,78 @@
+/* Center the input and button on the page */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh; /* Adjusts the vertical centering */
+}
+
+h2 {
+  color: whitesmoke;
+}
+/*!* Style the input field *!*/
+/*input {*/
+/*  padding: 15px 15px 20px;*/
+/*  font-size: 20px;*/
+/*  border: 2px solid #007bff;*/
+/*  border-radius: 8px;*/
+/*  outline: none;*/
+/*  transition: all 0.3s ease;*/
+/*  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);*/
+/*}*/
+
+/* Add focus effects */
+input:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 15px rgba(0, 86, 179, 0.7);
+}
+
+/* Style the button */
+button {
+  margin-top: 20px;
+  padding: 12px 24px;
+  font-size: 18px;
+  color: white;
+  background-color: #28a745;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+}
+
+/* Add hover effect to the button */
+button:hover {
+  background-color: #218838;
+  box-shadow: 0 0 15px rgba(33, 136, 56, 0.7);
+}
+
+
+/* Style for the error message container */
+.error-message {
+  margin: 20px auto;
+  padding: 15px;
+  width: 80%;
+  max-width: 600px;
+  border: 1px solid #ff4d4d;
+  background-color: #ffe6e6;
+  color: #d8000c;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.3);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Fade-in animation for the error message */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

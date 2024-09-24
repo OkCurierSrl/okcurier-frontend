@@ -224,7 +224,6 @@ export class OrderListComponent implements OnInit {
   private downloadLabel(response: ApiDownloadResponse): void {
     const labelData = response.label;
 
-    console.log(response)
     if (!labelData) {
       console.error('No label data found in the response.');
       return;

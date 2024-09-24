@@ -27,6 +27,7 @@ import {ClientsComponent} from "./components/admin/clients-component/clients.com
 import {ClientViewComponent} from "./components/admin/client-view/client-view.component";
 import {ShowComponent} from "./components/dashboard/show/show.component";
 import {TrackComponent} from "./components/dashboard/track/track.component";
+import {FileUploadComponent} from "./components/admin/file-upload/file-upload.component";
 
 export const routes: Routes = [
 
@@ -138,6 +139,9 @@ export const routes: Routes = [
       },
       { path: 'client-view',
         component: ClientViewComponent
+      },
+      { path: 'ramburs',
+        component: FileUploadComponent
       }
     ]
   },

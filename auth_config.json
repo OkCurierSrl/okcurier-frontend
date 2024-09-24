@@ -5,7 +5,7 @@
     "audience": "https://my-springboot-api",
     "scope": "openid profile email"
   },
-  "apiUri": "http://localhost:8080/",
+  "apiUri": "https://okcurier-backend-0f6dc5b97bfd.herokuapp.com/",
   "appUri": "https://okcurier-frontend-d66f2ea5edab.herokuapp.com",
   "errorPath": "/error"
 }

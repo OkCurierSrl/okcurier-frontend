@@ -1,0 +1,27 @@
+<div class="container">
+  <h2>Introduceti fisierele excel pentru cei 5 curieri (in orice ordine)</h2>
+  <form (ngSubmit)="onSubmit($event)" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="files">Select Excel Files:</label>
+      <input
+        type="file"
+        id="files"
+        name="files"
+        (change)="onFileSelected($event)"
+        multiple
+        class="form-control"
+        accept=".xlsx, .xls"
+      />
+    </div>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="!selectedFiles.length"
+    >
+      Upload Files
+    </button>
+  </form>
+  <div *ngIf="responseMessage" class="alert alert-info mt-3">
+    {{ responseMessage }}
+  </div>
+</div>

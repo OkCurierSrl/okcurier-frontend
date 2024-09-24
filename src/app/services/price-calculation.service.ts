@@ -29,13 +29,11 @@ export class PriceCalculationService {
   private addAuthHeader(): Observable<HttpHeaders> {
     return this.auth.getAccessTokenSilently().pipe(
       switchMap(token => {
-        console.log('JWT Token:', token);
         const headers = new HttpHeaders({
           'Content-Type': 'application/json',
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`
         });
-        console.log('token = '  + token)
         return [headers];
       })
     );
