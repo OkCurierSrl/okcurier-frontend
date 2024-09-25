@@ -86,4 +86,10 @@ export class CourierOptionsComponent implements OnInit {
   goBack(): void {
     this.router.navigate(['/dashboard/order']);
   }
+
+  isGlsSelected(): boolean {
+    const selectedCourier = this.couriers.find(courier => courier.selected);
+    return selectedCourier ? selectedCourier.courier.toLowerCase() === 'gls' : false;
+  }
+
 }

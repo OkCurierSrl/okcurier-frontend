@@ -61,7 +61,7 @@
       <ng-container *ngFor="let order of filteredOrders">
         <tr>
           <td>
-            <input type="checkbox" [(ngModel)]="order.isSelected" />
+            <input *ngIf="awbGenerat(order.status)" type="checkbox" [(ngModel)]="order.isSelected" />
           </td>
           <td>{{ order.awb }}</td>
           <td><img [src]="getCourierLogo(order?.courier)" alt="{{ order.courier }} logo"></td>

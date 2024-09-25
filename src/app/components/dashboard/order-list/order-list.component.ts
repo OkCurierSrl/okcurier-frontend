@@ -351,4 +351,8 @@ export class OrderListComponent implements OnInit {
   onDialogCancel(): void {
     this.showDialog = false; // Hide the dialog
   }
+
+  awbGenerat(status: string) {
+    return status.toUpperCase() === 'AWB_GENERAT';
+  }
 }
