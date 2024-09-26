@@ -8,6 +8,7 @@ import {OrderService} from "../../../services/order.service";
 import {PickupData} from "../../../services/pickupData";
 import {DatePickerDialogComponent} from "../date-picker-dialog/date-picker-dialog.component";
 import {ApiDownloadResponse} from "../courier-options/api-download.response";
+import {filter} from "rxjs/operators";
 
 interface Package {
   number: string;
@@ -51,14 +52,12 @@ interface Order {
   styleUrls: ['./order-list.component.css']
 })
 export class OrderListComponent implements OnInit {
-  orders: FlatShipment[] = []; // This should be fetched from the service
   filteredOrders: FlatShipment[] = [];
   pages: number[] = []
   currentPage: number = 1;
-  searchTerm: string = '';
-  filterProperty: string = 'all';
-  private readonly size = 3;
+  private readonly pageSize = 10;
   showDialog: boolean = false;
+  private totalPages: number;
 
   filter: any = {
     awb: '',
@@ -150,49 +149,7 @@ export class OrderListComponent implements OnInit {
         clas = '';
         break;
     }
-    console.log(clas)
     return clas;
-  }
-
-  filterOrders() {
-    this.filteredOrders = this.orders.filter(order => {
-      const matchesAwb = order.awb.includes(this.filter.awb);
-      const matchesCourier = order.courier.includes(this.filter.courier);
-      const matchesSenderName = order.senderName.includes(this.filter.senderName);
-      const matchesSenderAddress = order.senderAddress.includes(this.filter.senderAddress);
-      const matchesRecipientName = order.recipientName.includes(this.filter.recipientName);
-      const matchesRecipientAddress = order.recipientAddress.includes(this.filter.recipientAddress);
-      const matchesCount = order.count.toString().includes(this.filter.count);
-      const matchesIban = order.iban.includes(this.filter.iban);
-      const matchesOrderNumber = order.orderNumber.includes(this.filter.orderNumber);
-      const matchesPackageCount = order.packageCount.toString().includes(this.filter.packageCount);
-      const matchesWeight = order.weight.toString().includes(this.filter.weight);
-      const matchesCashOnDelivery = order.cashOnDelivery.toString().includes(this.filter.cashOnDelivery);
-      const matchesStatus = order.status.includes(this.filter.status);
-
-      const matchesCreationDateRange = this.filter.creationDateRange
-        ? new Date(order.creationDate) >= new Date(this.filter.creationDateRange[0])
-        && new Date(order.creationDate) <= new Date(this.filter.creationDateRange[1])
-        : true;
-
-      const matchesPickupDateRange = this.filter.pickupDateRange
-        ? new Date(order.pickupDate) >= new Date(this.filter.pickupDateRange[0])
-        && new Date(order.pickupDate) <= new Date(this.filter.pickupDateRange[1])
-        : true;
-
-      return matchesAwb && matchesCourier && matchesSenderName && matchesSenderAddress
-        && matchesRecipientName && matchesRecipientAddress && matchesCount && matchesIban
-        && matchesOrderNumber && matchesPackageCount && matchesWeight && matchesCashOnDelivery
-        && matchesStatus && matchesCreationDateRange && matchesPickupDateRange;
-    });
-
-    this.currentPage = 1;
-    this.pages = this.getPagesArray();
-  }
-
-  getPagesArray() {
-    const totalPages = Math.ceil(this.filteredOrders.length / 3);
-    return Array(totalPages+1).fill(0).map((x, i) => i + 1);
   }
 
   viewOrder(order: FlatShipment): void {
@@ -215,12 +172,6 @@ export class OrderListComponent implements OnInit {
     );
     console.log('Downloaded label');
   }
-
-  printFlatShipment(order: FlatShipment): void {
-    // Handle print order logic
-    console.log('Print order', order);
-  }
-
   private downloadLabel(response: ApiDownloadResponse): void {
     const labelData = response.label;
 
@@ -281,30 +232,49 @@ export class OrderListComponent implements OnInit {
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.loadData(this.currentPage);
+      this.filterOrders();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.pages.length) {
       this.currentPage++;
-      this.loadData(this.currentPage);
+      this.filterOrders();
     }
   }
 
 
   goToPage(page: number): void {
     this.currentPage = page;
-    this.loadData(page);
+    this.filterOrders();
   }
 
-  private loadData(page: number) {
-    -
-      this.orderService.getAllOrders(page-1, this.size).subscribe(shipments => {
-        this.orders = shipments;
-        this.filteredOrders = [...this.orders]; // Initialize the filtered orders
-        this.pages = Array.from({length: shipments?.pop()?.pages}, (_, index) => index + 1);
-      });
+  filterOrders(): void {
+    this.orderService.filterShipments(this.filter, this.currentPage - 1, 3).subscribe(
+      (response) => {
+        console.log('Raw API Response:', response);
+        // Assuming response is an array of FlatShipment
+        const data = response as FlatShipment[];
+        this.filteredOrders = data;
+        this.totalPages = data.length > 0 ? data[0].pages : 0;
+        console.log(data)
+        console.log(this.filteredOrders)
+        this.cdr.detectChanges(); // Update the view
+      },
+      error => {
+        console.error('Error loading filtered shipments:', error);
+      }
+    );
+  }
+
+  // Method to handle filter input changes
+  filterChange(): void {
+    this.currentPage = 1; // Reset to first page
+    this.filterOrders();
+  }
+
+  getPagesArray() {
+    return Array(this.totalPages).fill(0).map((x, i) => i + 1);
   }
 
   requestCourierPickup(): void {
@@ -312,7 +282,6 @@ export class OrderListComponent implements OnInit {
 
     this.selectedOrders = selectedOrders
 
-    console.log("printing " + JSON.stringify(selectedOrders));
     if (selectedOrders.length === 0) {
       alert('Please select at least one order.');
       return;
@@ -329,7 +298,6 @@ export class OrderListComponent implements OnInit {
   onDialogConfirm(pickupDate: string): void {
     this.showDialog = false; // Hide the dialog
 
-    console.log("lalal " + this.selectedOrders)
     // Process the selected orders with the selected date
     this.selectedOrders.forEach(order => {
       const data: PickupData = {pickupDate};
@@ -353,6 +321,6 @@ export class OrderListComponent implements OnInit {
   }
 
   awbGenerat(status: string) {
-    return status.toUpperCase() === 'AWB_GENERAT';
+    return status?.toUpperCase() === 'AWB_GENERAT';
   }
 }

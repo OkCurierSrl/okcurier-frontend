@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {map, switchMap} from "rxjs/operators";
 import {AuthService} from "@auth0/auth0-angular";
 import {OrderData} from "../model/order-data";
@@ -26,12 +26,22 @@ export class OrderService {
     );
   }
 
-  getAllOrders(page: number, number: number): Observable<FlatShipment[]> {
-    let url = this.apiUrl + '/api/okcurier/orders?page='+page+'&size='+number;
+  filterShipments(filters: any, page: number, size: number): Observable<any> {
+    let params = new HttpParams();
+
+    // Convert each filter property to query parameters
+    for (const key in filters) {
+      if (filters[key]) {
+        params = params.set(key, filters[key]);
+      }
+    }
+    params = params.set('page', page.toString()).set('size', size.toString());
+
     return this.addAuthHeader().pipe(
-      switchMap(headers => this.http.get<FlatShipment[]>(url, { headers }))
+      switchMap(headers => this.http.get<any>(`${this.apiUrl}/api/okcurier/orders/filter`, { headers, params }))
     );
   }
+
 
   placeOrder(orderData : OrderData, courier: string, pickup: boolean): Observable<ApiDownloadResponse> {
     let url = this.apiUrl + '/api/okcurier/place-order?courierCompany=' + courier + '&alsoPickup=' + pickup;
@@ -62,7 +72,6 @@ export class OrderService {
   awbExists(awb: string): Observable<any> {
     // Check that apiUrl ends with a slash and the path starts correctly
     let url = `${this.apiUrl}/api/okcurier/awb-exists?awb=${awb}`;
-    console.log(url)
     return this.http.get<any>(url).pipe(
       map(data => {
         return data;

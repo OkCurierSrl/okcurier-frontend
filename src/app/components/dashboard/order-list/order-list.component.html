@@ -10,8 +10,8 @@
     ></app-date-picker-dialog>
 
   </div>
-  <div class="table-responsive">
-    <table class="order-list-table">
+  <div class="table-responsive" style="overflow: visible; position: relative;">
+    <table class="order-list-table" style="overflow: visible; position: relative;">
       <thead>
       <tr>
         <th>
@@ -35,25 +35,25 @@
       </tr>
       <tr>
         <th></th>
-        <th><input type="text" [(ngModel)]="filter.awb" (input)="filterOrders()"></th>
-        <th><input type="text" [(ngModel)]="filter.courier" (input)="filterOrders()"></th>
-        <th><input type="text" [(ngModel)]="filter.senderName" (input)="filterOrders()"></th>
-        <th><input type="text" [(ngModel)]="filter.senderAddress" (input)="filterOrders()"></th>
-        <th><input type="text" [(ngModel)]="filter.recipientName" (input)="filterOrders()"></th>
-        <th><input type="text" [(ngModel)]="filter.recipientAddress" (input)="filterOrders()"></th>
+        <th><input type="text" [(ngModel)]="filter.awb"></th>
+        <th><input type="text" [(ngModel)]="filter.courier"></th>
+        <th><input type="text" [(ngModel)]="filter.senderName"></th>
+        <th><input type="text" [(ngModel)]="filter.senderAddress"></th>
+        <th><input type="text" [(ngModel)]="filter.recipientName"></th>
+        <th><input type="text" [(ngModel)]="filter.recipientAddress"></th>
         <th>
-          <p-calendar [(ngModel)]="filter.creationDateRange" selectionMode="range" dateFormat="dd-mm-yy" (onSelect)="filterOrders()"></p-calendar>
+          <p-calendar [(ngModel)]="filter.creationDateRange" selectionMode="range" dateFormat="dd-mm-yy"></p-calendar>
         </th>
         <th>
-          <p-calendar [(ngModel)]="filter.pickupDateRange" selectionMode="range" dateFormat="dd-mm-yy" (onSelect)="filterOrders()"></p-calendar>
+          <p-calendar [(ngModel)]="filter.pickupDateRange" selectionMode="range" dateFormat="dd-mm-yy"></p-calendar>
         </th>
-        <th><input type="text" [(ngModel)]="filter.iban" (input)="filterOrders()"></th>
-        <th><input type="text" [(ngModel)]="filter.orderNumber" (input)="filterOrders()"></th>
-        <th><input type="text" [(ngModel)]="filter.packageCount" (input)="filterOrders()"></th>
-        <th><input type="text" [(ngModel)]="filter.weight" (input)="filterOrders()"></th>
-        <th><input type="text" [(ngModel)]="filter.cashOnDelivery" (input)="filterOrders()"></th>
-        <th><input type="text" [(ngModel)]="filter.status" (input)="filterOrders()"></th>
-        <th>Download/View</th>
+        <th><input type="text" [(ngModel)]="filter.iban"></th>
+        <th><input type="text" [(ngModel)]="filter.orderNumber"></th>
+        <th><input type="text" [(ngModel)]="filter.packageCount"></th>
+        <th><input type="text" [(ngModel)]="filter.weight"></th>
+        <th><input type="text" [(ngModel)]="filter.cashOnDelivery"></th>
+        <th><input type="text" [(ngModel)]="filter.status"></th>
+        <th><button (click)="filterChange()">filtreaza</button></th>
 
       </tr>
       </thead>
@@ -90,7 +90,7 @@
   </div>
   <div class="pagination">
     <button class="btn btn-pagination" (click)="prevPage()">« Previous</button>
-    <ng-container *ngFor="let page of pages">
+    <ng-container *ngFor="let page of getPagesArray()">
       <button class="btn btn-pagination" [ngClass]="{'active': page === currentPage}" (click)="goToPage(page)">{{ page }}</button>
     </ng-container>
     <button class="btn btn-pagination" (click)="nextPage()">Next »</button>
