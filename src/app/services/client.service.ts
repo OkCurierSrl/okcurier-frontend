@@ -25,6 +25,19 @@ export class ClientService {
     );
   }
 
+  deleteClientByEmail(email: string): Observable<Client> {
+    return this.addAuthHeader().pipe(
+      switchMap(headers => this.http.delete<Client>(`${this.apiUrl}/api/client?email=` + email, {headers}))
+    );
+  }
+
+
+  blockClientByEmail(email: string, block: boolean): Observable<Client> {
+    return this.addAuthHeader().pipe(
+      switchMap(headers => this.http.get<Client>(`${this.apiUrl}/api/client/block?email=` + email + `&block=` + block, {headers}))
+    );
+  }
+
   getAllClients(): Observable<Client[]> {
     return this.addAuthHeader().pipe(
       switchMap(headers => this.http.get<Client[]>(`${this.apiUrl}/api/clients`, {headers}))

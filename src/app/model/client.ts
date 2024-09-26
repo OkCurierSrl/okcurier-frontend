@@ -12,6 +12,7 @@ export interface Client {
   given_name: string;
   nickname: string;
   email_verified: boolean;
+  blocked: boolean;
   created_at: string;
   updated_at: string;
   last_login: string;

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { PlacesService } from '../../../services/places.service';
@@ -6,14 +6,14 @@ import { HttpClient } from '@angular/common/http';
 import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { TabViewModule } from 'primeng/tabview';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonDirective } from 'primeng/button';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { PriceCalculationService } from '../../../services/price-calculation.service';
-import {Router} from "@angular/router";
-import {OrderData} from "../../../model/order-data";
-import {StateCodeProjection} from "../../../model/state-code.projection";
+import { Router } from "@angular/router";
+import { OrderData } from "../../../model/order-data";
+import { StateCodeProjection } from "../../../model/state-code.projection";
 
 @Component({
   selector: 'app-hero',
@@ -42,15 +42,24 @@ export class HeroComponent implements OnInit {
   prices: any[];
   counties: StateCodeProjection[];
 
-  constructor(private placesService: PlacesService, private http: HttpClient, private priceCalculationService: PriceCalculationService, private router: Router) {
+  // Properties for auto-complete functionality
+  expeditionCity: string = '';
+  destinationCity: string = '';
+  expeditionCitySuggestions: string[] = [];
+  destinationCitySuggestions: string[] = [];
+
+  constructor(
+    private placesService: PlacesService,
+    private http: HttpClient,
+    private priceCalculationService: PriceCalculationService,
+    private router: Router
+  ) {
     this.selectedPackageType = 'plic';
   }
 
   ngOnInit(): void {
-        this.loadCounties()
-    }
-
-
+    this.loadCounties();
+  }
 
   loadCounties(): void {
     this.placesService.getCounties().pipe(
@@ -89,10 +98,53 @@ export class HeroComponent implements OnInit {
       response => {
         console.log(response);
         this.router.navigate(['/courier-options'],
-          { queryParams: {
-            couriers: JSON.stringify(response),
+          {
+            queryParams: {
+              couriers: JSON.stringify(response),
               orderData: JSON.stringify(orderData)
-          }});
-    });
+            }
+          });
+      });
+  }
+
+  onCitySearch(type: string): void {
+    let searchTerm = type === 'expeditionCity' ? this.expeditionCity : this.destinationCity;
+    if (searchTerm.length > 2) {  // Only search if input length is greater than 2
+      this.placesService.getCitySuggestions(searchTerm).subscribe((cities: string[]) => {
+        if (type === 'expeditionCity') {
+          this.expeditionCitySuggestions = cities;
+        } else {
+          this.destinationCitySuggestions = cities;
+        }
+      });
+    } else {
+      // Reset suggestions if search term is less than 3 characters
+      if (type === 'expeditionCity') {
+        this.expeditionCitySuggestions = [];
+      } else {
+        this.destinationCitySuggestions = [];
+      }
+    }
+  }
+
+  selectCity(type: string, city: string): void {
+    if (type === 'expeditionCity') {
+      this.expeditionCity = city;
+      this.expeditionCitySuggestions = []; // Clear suggestions after selection
+    } else {
+      this.destinationCity = city;
+      this.destinationCitySuggestions = []; // Clear suggestions after selection
+    }
+  }
+
+  hideSuggestions(type: string): void {
+    setTimeout(() => {
+      if (type === 'expeditionCity') {
+        this.expeditionCitySuggestions = [];
+      } else {
+        this.destinationCitySuggestions = [];
+      }
+    }, 200); // Add a small delay to allow click selection
+
   }
 }

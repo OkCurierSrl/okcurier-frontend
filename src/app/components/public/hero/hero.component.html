@@ -8,20 +8,48 @@
   <div class="calculator-form">
     <div class="form-fields">
       <div class="field">
-
         <label>Localitate expeditie</label>
-        <select>
-          <option value="" disabled selected>Judet</option>
-          <option *ngFor="let county of counties" [value]="county.stateName">{{ county.stateName }}</option>
-        </select>
+        <input
+          type="text"
+          [(ngModel)]="expeditionCity"
+          (input)="onCitySearch('expeditionCity')"
+          placeholder="Introduceți localitatea"
+          (blur)="hideSuggestions('expeditionCity')"
+          (focus)="onCitySearch('expeditionCity')"/>
+
+        <div *ngIf="expeditionCitySuggestions.length > 0" class="suggestions-box">
+          <ul>
+            <li
+              *ngFor="let suggestion of expeditionCitySuggestions"
+              (click)="selectCity('expeditionCity', suggestion)">
+              {{ suggestion }}
+            </li>
+          </ul>
+        </div>
       </div>
+
       <div class="field">
-        <label>Judet destinatie</label>
-        <select>
-          <option value="" disabled selected>Judet</option>
-          <option *ngFor="let county of counties" [value]="county.stateName">{{ county.stateName }}</option>
-        </select>
+        <label>Localitate destinatie</label>
+        <input
+          type="text"
+          [(ngModel)]="destinationCity"
+          (input)="onCitySearch('destinationCity')"
+          placeholder="Introduceți localitatea"
+          (blur)="hideSuggestions('destinationCity')"
+          (focus)="onCitySearch('destinationCity')"/>
+
+        <div *ngIf="destinationCitySuggestions.length > 0" class="suggestions-box">
+          <ul>
+            <li
+              *ngFor="let suggestion of destinationCitySuggestions"
+              (click)="selectCity('destinationCity', suggestion)">
+              {{ suggestion }}
+            </li>
+          </ul>
+        </div>
       </div>
+
+
 
       <div class="field-2">
         <label for="tip-pachet">Tipul pachetului</label>

@@ -14,16 +14,18 @@ export class PlacesService {
 
   constructor(private http: HttpClient) {}
 
-  getCitySuggestions(input: string): Observable<any[]> {
-    const url = this.baseUrl + `/api/place/autocomplete?input=${encodeURIComponent(input)}`;
-    return this.http.get(url).pipe(map((res: any) => res.predictions));
+  getCitySuggestions(input: string): Observable<string[]> {
+    const url = this.baseUrl + `/api/place/cities/search?input=${encodeURIComponent(input)}`;
+    return this.http.get(url).pipe(
+      map((res: any) => res.map((city: any) => city.formattedName)) // Extract 'name' property from each city object
+    );
   }
 
   getAddressSuggestions(input: string, city: string): Observable<string[]> {
     const url = this.baseUrl + `/api/place/street?street=${encodeURIComponent(input)}&city=${encodeURIComponent(city)}`;
     return  this.http.get<string[]>(url);
   }
-
+//
   getPostalCode(number: string, street: string, city: string): Observable<any> {//u
     const url = this.baseUrl + `/api/place/postal-code?number=${encodeURIComponent(number)}&street=${encodeURIComponent(street)}&city=${encodeURIComponent(city)}`;
     return this.http.get<any>(url);

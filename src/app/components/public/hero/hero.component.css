@@ -92,6 +92,10 @@
   text-align: center; /* updated text alignment */
 }
 
+select {
+  background: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23333" class="bi bi-caret-down" viewBox="0 0 16 16"> <path d="M3.204 5h9.592L8 10.481 3.204 5z"/> </svg>') no-repeat right 10px center;
+}
+
 .field input::placeholder,
 .field-2 input::placeholder {
   color: var(--ok-grey-color); /* updated placeholder color */
@@ -111,7 +115,25 @@
   height: 50px;
 }
 
-.suggestions-list {
+/*.suggestions-list {*/
+/*  list-style-type: none;*/
+/*  padding: 0;*/
+/*  margin: 0;*/
+/*  color: black;*/
+/*  position: absolute;*/
+/*  width: 40%;*/
+/*  background: white;*/
+/*  border: 1px solid #ccc;*/
+/*  max-height: 150px;*/
+/*  overflow-y: auto;*/
+/*  z-index: 1000;*/
+/*}*/
+
+/* Styling for the unordered list inside the suggestions box */
+.suggestions-box ul {
+  list-style-type: none; /* Remove default list styling */
+  padding: 0;
+  margin: 0;
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -124,6 +146,30 @@
   overflow-y: auto;
   z-index: 1000;
 }
+
+/* Styling for each list item (suggestion) */
+.suggestions-box ul li {
+  padding: 10px 15px; /* Add some padding */
+  cursor: pointer; /* Show pointer on hover */
+}
+
+/* Styling for hovered suggestion */
+.suggestions-box ul li:hover {
+  background-color: #f1f1f1; /* Light grey on hover */
+}
+
+/* Styling for selected suggestion */
+.suggestions-box ul li.selected {
+  background-color: #e0e0e0; /* Slightly darker grey for selected item */
+  font-weight: bold; /* Bold text */
+}
+
+/* Hide the suggestions box when input is not focused */
+.suggestions-box.hidden {
+  display: none;
+}
+
+
 
 .suggestions-list li {
   padding: 8px;

@@ -42,7 +42,6 @@ export class AdminPricesComponent implements OnInit {
   }
 
   fetchPricesForCourier(courier: string): void {
-    // Simulate fetching prices for the selected courier
     this.servicePricingService.getAllServicePricing().subscribe(data => {
       this.services = data.filter(service => service.courierCompany.nameEnum === courier);
       this.cdr.detectChanges(); // Force Angular to update the UI

@@ -6,7 +6,9 @@ import {Discount} from "../../../model/discount";
 import {ClientService} from "../../../services/client.service";
 import {Client} from "../../../model/client";
 import {OkCurierServicesDisplayMap, OkCurierServicesEnum} from "../../../model/okCurierServicesEnum";
-import {Courier} from "../../../model/courier"; // Define an interface matching the backend Discount class
+import {Courier} from "../../../model/courier";
+import {ServicePricingService} from "../../../services/service-pricing.service";
+import {ServicePricing} from "../../../model/service.pricing"; // Define an interface matching the backend Discount class
 
 @Component({
   selector: 'app-client-view',
@@ -36,11 +38,13 @@ export class ClientViewComponent implements OnInit {
   ];
   selectedCourier: string | null = null;
   alertBoolean: boolean = false;
+  private services: ServicePricing[];
 
   constructor(
     private route: ActivatedRoute,
     private clientService: ClientService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private servicePricingService: ServicePricingService
   ) {
   }
 
@@ -50,10 +54,10 @@ export class ClientViewComponent implements OnInit {
       if (email) {
         this.clientService.getClientByEmail(email).subscribe(
           (client: Client) => {
-            console.log(client);
             this.client = client;
             this.clientName = client.name;
-            this.fetchPricesForCourier('DPD');
+            this.fetchDiscountsForCourier('DPD');
+            this.fetchPricesForCourier('DPD')
           },
           error => {
             console.error('Error fetching client data', error);
@@ -81,11 +85,19 @@ export class ClientViewComponent implements OnInit {
     this.selectedCourier = courier;
     this.modified = false;
     this.alertBoolean = false;
+    this.fetchDiscountsForCourier(courier);
     this.fetchPricesForCourier(courier);
     this.cdr.detectChanges(); // Force Angular to update the UI
   }
 
   fetchPricesForCourier(courier: string): void {
+    this.servicePricingService.getAllServicePricing().subscribe(data => {
+      this.services = data.filter(service => service.courierCompany.nameEnum === courier);
+      this.cdr.detectChanges(); // Force Angular to update the UI
+    });
+  }
+
+  fetchDiscountsForCourier(courier: string): void {
     // Ensure you are selecting the correct courier and reset the state
     this.selectedCourier = courier;
 
@@ -123,5 +135,19 @@ export class ClientViewComponent implements OnInit {
         }
       );
     }
+  }
+
+  getBasicPrice(service: string) {
+    console.log(service)
+    console.log(this.getServiceDisplayName(service))
+
+    let servicePricing1 = this.services.filter(
+      (servicePricing) => servicePricing.serviceName === this.getServiceDisplayName(service)).pop();
+    return servicePricing1.basePrice + servicePricing1.premiumAddedPrice;
+  }
+
+  getFinalPriceWithDiscount(key: string) {
+    let number = this.getBasicPrice(key) - this.discount.servicesEnumDoubleMap[key]/100 * this.getBasicPrice(key);
+    return number.toFixed(2);
   }
 }

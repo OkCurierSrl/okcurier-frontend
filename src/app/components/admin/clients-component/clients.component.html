@@ -26,7 +26,6 @@
       <tr>
         <th>Nume</th>
         <th>Email</th>
-        <th>Rol</th>
         <th>Ultima Logare</th>
         <th>Acțiuni</th>
       </tr>
@@ -36,12 +35,24 @@
         <tr>
           <td>{{ client.name }}</td>
           <td>{{ client.email }}</td>
-          <td>{{ client.roles?.length ? client.roles[client.roles.length - 1].name : 'None' }}</td>
           <td>{{ client.last_login | date: 'short' }}</td>
           <td>
             <div class="action-buttons">
-              <button class="btn-action" title="Suspendă Acces" (click)="suspendAccess(client)">
+              <button
+                class="btn-action"
+                *ngIf="!client.blocked"
+                title="Suspendă Acces"
+                (click)="suspendAccess(client)"
+              >
                 <i class="fas fa-ban"></i>
+              </button>
+              <button
+                class="btn-action"
+                *ngIf="client.blocked"
+                title="Reabilitează Acces"
+                (click)="suspendAccess(client)"
+              >
+                <i class="fas fa-unlock"></i>
               </button>
               <button class="btn-action" title="Șterge Client" (click)="deleteClient(client)">
                 <i class="fas fa-trash"></i>

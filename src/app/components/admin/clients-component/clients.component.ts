@@ -56,14 +56,33 @@ export class ClientsComponent implements OnInit {
 
   suspendAccess(client: Client): void {
     // Implement suspend access logic
-    console.log('Suspend access for', client);
-    // Example: this.clientService.suspendAccess(client.id).subscribe(...);
+    this.clientService.blockClientByEmail(client.email, !client.blocked).subscribe(
+      () => {
+        if (client.blocked) {
+          alert('Client deblocat cu succes!');
+        } else {
+          alert('Client blocat cu succes!');
+        }
+        this.ngOnInit();
+      },
+      error => {
+        console.error('Error inviting client:', error);
+        alert('Eroare la blocarea clientului.');
+      }
+    );
   }
 
   deleteClient(client: Client): void {
-    // Implement delete client logic
-    console.log('Delete client', client);
-    // Example: this.clientService.deleteClient(client.id).subscribe(...);
+    this.clientService.deleteClientByEmail(client.email).subscribe(
+      () => {
+          alert('Client sters cu succes!');
+        this.ngOnInit();
+      },
+      error => {
+        console.error('Error deleting client:', error);
+        alert('Eroare la stergerea clientului.');
+      }
+    );
   }
 
   redirectToClientView(client: Client): void {

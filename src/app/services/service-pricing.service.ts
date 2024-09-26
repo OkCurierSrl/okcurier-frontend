@@ -16,24 +16,14 @@ export class ServicePricingService {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   getAllServicePricing(): Observable<ServicePricing[]> {
-    return this.auth.idTokenClaims$.pipe(
-      switchMap(token => this.http.get<ServicePricing[]>(this.apiUrl, {
-        headers: new HttpHeaders({
-          Authorization: `Bearer ${token.__raw}`}),
-        withCredentials: true
-      }))
+    return this.addAuthHeader().pipe(
+      switchMap(headers => this.http.get<ServicePricing[]>(this.apiUrl, {headers}))
     );
   }
 
   saveServicePricing(servicePricing: ServicePricing): Observable<ServicePricing> {
-    return this.auth.idTokenClaims$.pipe(
-      switchMap(token => this.http.post<ServicePricing>(this.apiUrl, servicePricing, {
-        headers: new HttpHeaders({
-          Authorization: `Bearer ${token.__raw}`,
-          'Content-Type': 'application/json'
-        }),
-        withCredentials: true
-      }))
+    return this.addAuthHeader().pipe(
+      switchMap(headers => this.http.post<ServicePricing>(this.apiUrl, servicePricing, {headers}))
     );
   }
 
@@ -47,4 +37,18 @@ export class ServicePricingService {
       }))
     );
   }
+
+  private addAuthHeader(): Observable<HttpHeaders> {
+    return this.auth.getAccessTokenSilently().pipe(
+      switchMap(token => {
+        const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`
+        });
+        return [headers];
+      })
+    );
+  }
+
 }
