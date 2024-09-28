@@ -6,6 +6,6 @@
     "scope": "openid profile email"
   },
   "apiUri": "https://okcurier-backend-0f6dc5b97bfd.herokuapp.com/",
-  "appUri": "https://okcurier-frontend-d66f2ea5edab.herokuapp.com",
+  "appUri": "https://test.okcurier.ro/",
   "errorPath": "/error"
 }

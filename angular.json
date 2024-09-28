@@ -20,7 +20,8 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/robots.txt"
             ],
             "styles": [
               "node_modules/highlight.js/styles/monokai-sublime.css",
@@ -95,7 +96,8 @@
             "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/robots.txt"
             ],
             "styles": [
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",

@@ -1,0 +1,89 @@
+<div class="order-list-container">
+  <h2>Lista cu AWB</h2>
+  <div class="order-list-actions">
+    <button (click)="requestCourierPickup()">Cheama curierii!</button>
+    <button (click)="exportExcel()">Export excel</button>
+    <app-date-picker-dialog
+      *ngIf="showDialog"
+      (confirm)="onDialogConfirm($event)"
+      (cancel)="onDialogCancel()"
+    ></app-date-picker-dialog>
+
+  </div>
+  <div class="table-responsive" style="overflow: visible; position: relative;">
+    <table class="order-list-table" style="overflow: visible; position: relative;">
+      <thead>
+      <tr>
+        <th>Numar AWB</th>
+        <th>Curier</th>
+        <th>Nume Expeditor</th>
+        <th>Adresa Expeditor</th>
+        <th>Nume Destinatar</th>
+        <th>Adresa Destinatar</th>
+        <th>Data Creare</th>
+        <th>Data Ridicare</th>
+        <th>Greutate Declarata</th>
+        <th>Greutate Reala</th>
+        <th>Suma diferenta</th>
+        <th>Actiuni</th>
+      </tr>
+      <tr>
+        <th><input type="text" [(ngModel)]="filter.awb"></th>
+        <th><input type="text" [(ngModel)]="filter.courier"></th>
+
+        <th><input type="text" [(ngModel)]="filter.senderName"></th>
+        <th><input type="text" [(ngModel)]="filter.senderAddress"></th>
+        <th><input type="text" [(ngModel)]="filter.recipientName"></th>
+        <th><input type="text" [(ngModel)]="filter.recipientAddress"></th>
+
+        <th>
+          <p-calendar [(ngModel)]="filter.creationDateRange" selectionMode="range" dateFormat="dd-mm-yy"></p-calendar>
+        </th>
+        <th>
+          <p-calendar [(ngModel)]="filter.pickupDateRange" selectionMode="range" dateFormat="dd-mm-yy"></p-calendar>
+        </th>
+
+        <th><input type="text" [(ngModel)]="filter.weight"></th>
+        <th><input type="text" [(ngModel)]="filter.weightRechecked"></th>
+        <th><input type="text" [(ngModel)]="filter.extraPriceWeighRecheck"></th>
+
+        <th><button (click)="filterChange()">filtreaza</button></th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngFor="let order of filteredOrders">
+        <tr>
+          <td>{{ order.awb }}</td>
+          <td><img [src]="getCourierLogo(order?.courier)" alt="{{ order.courier }} logo"></td>
+
+          <td>{{ order?.senderName }}</td>
+          <td>{{ order?.senderAddress }}</td>
+          <td>{{ order?.recipientName }}</td>
+          <td>{{ order?.recipientAddress }}</td>
+
+          <td>{{ order?.creationDate }}</td>
+          <td>{{ order?.pickupDate }}</td>
+
+          <td>{{ order?.weight }} kg </td>
+          <td>{{ order?.weightRechecked }} kg</td>
+
+          <td>{{ order?.extraPriceWeighRecheck }} RON</td>
+          <td class="actions">
+            <div class="action-buttons">
+              <button class="btn btn-action" (click)="downloadOrder(order)"><i class="fas fa-download"></i></button>
+              <button class="btn btn-action" (click)="viewOrder(order)"><i class="fas fa-eye"></i></button>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination">
+    <button class="btn btn-pagination" (click)="prevPage()">« Previous</button>
+    <ng-container *ngFor="let page of getPagesArray()">
+      <button class="btn btn-pagination" [ngClass]="{'active': page === currentPage}" (click)="goToPage(page)">{{ page }}</button>
+    </ng-container>
+    <button class="btn btn-pagination" (click)="nextPage()">Next »</button>
+  </div>
+</div>

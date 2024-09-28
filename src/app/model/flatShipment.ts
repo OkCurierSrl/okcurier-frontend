@@ -14,6 +14,8 @@ export interface FlatShipment {
   orderNumber: string,
   packageCount: number,
   weight: number,
+  weightRechecked: number,
+  extraPriceWeighRecheck: number,
   cashOnDelivery: number,
   status: string
   isSelected: string

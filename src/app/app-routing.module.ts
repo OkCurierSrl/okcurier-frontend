@@ -28,6 +28,7 @@ import {ClientViewComponent} from "./components/admin/client-view/client-view.co
 import {ShowComponent} from "./components/dashboard/show/show.component";
 import {TrackComponent} from "./components/dashboard/track/track.component";
 import {FileUploadComponent} from "./components/admin/file-upload/file-upload.component";
+import {OrderListRecheckedComponent} from "./components/dashboard/order-list-rechecked/order-list-rechecked.component";
 
 export const routes: Routes = [
 
@@ -57,6 +58,10 @@ export const routes: Routes = [
       {
         path: 'order-list',
         component: OrderListComponent,
+      },
+      {
+        path: 'order-list-recheck',
+        component: OrderListRecheckedComponent,
       },
       {
         path: 'requests',
@@ -104,6 +109,10 @@ export const routes: Routes = [
       {
         path: 'order',
         component: CreateOrderComponent,
+      },
+      {
+        path: 'order-list-recheck',
+        component: OrderListRecheckedComponent,
       },
       {
         path: 'courier-options',

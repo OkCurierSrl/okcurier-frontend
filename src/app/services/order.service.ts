@@ -42,6 +42,22 @@ export class OrderService {
     );
   }
 
+  filterShipmentsRechecked(filters: any, page: number, size: number): Observable<any> {
+    let params = new HttpParams();
+
+    // Convert each filter property to query parameters
+    for (const key in filters) {
+      if (filters[key]) {
+        params = params.set(key, filters[key]);
+      }
+    }
+    params = params.set('page', page.toString()).set('size', size.toString());
+
+    return this.addAuthHeader().pipe(
+      switchMap(headers => this.http.get<any>(`${this.apiUrl}/api/okcurier/orders/filter/rechecked`, { headers, params }))
+    );
+  }
+
 
   placeOrder(orderData : OrderData, courier: string, pickup: boolean): Observable<ApiDownloadResponse> {
     let url = this.apiUrl + '/api/okcurier/place-order?courierCompany=' + courier + '&alsoPickup=' + pickup;
