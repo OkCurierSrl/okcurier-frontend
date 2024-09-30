@@ -34,7 +34,6 @@ export class CourierOptionsPublicComponent implements OnInit {
       }
       if (params['orderData']) {
         this.orderData = JSON.parse(params['orderData']);
-        console.log(this.orderData + ' Order Data');
       }
     });
   }
@@ -54,8 +53,8 @@ export class CourierOptionsPublicComponent implements OnInit {
         return 'assets/sameday-logo.png';
       case 'gls':
         return 'assets/gls-logo.png';
-      case 'fan':
-        return 'assets/fan-logo.png';
+      // case 'fan':
+      //   return 'assets/fan-logo.png';
       default:
         return '';
     }

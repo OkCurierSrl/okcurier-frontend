@@ -93,7 +93,6 @@ export class OrderListRecheckedComponent implements OnInit {
   downloadOrder(order: FlatShipment): void {
     this.orderService.downloadLabel(order.awb).subscribe(
       response => {
-        console.log(`Order ${order.awb} download label successfully.`);
         // Update order status or provide feedback
         this.downloadLabel(response);
       },
@@ -183,12 +182,10 @@ export class OrderListRecheckedComponent implements OnInit {
   filterOrders(): void {
     this.orderService.filterShipmentsRechecked(this.filter, this.currentPage - 1, 3).subscribe(
       (response) => {
-        console.log('Raw API Response:', response);
         // Assuming response is an array of FlatShipment
         const data = response as FlatShipment[];
         this.filteredOrders = data;
         this.totalPages = data.length > 0 ? data[0].pages : 0;
-        console.log(data)
         console.log(this.filteredOrders)
         this.cdr.detectChanges(); // Update the view
       },

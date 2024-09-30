@@ -51,7 +51,7 @@ export class NavBarComponent {
         this.roleService.hasRequiredRole(['ADMIN']).subscribe((hasAdminRole) => {
           if (hasAdminRole) {
             this.router.navigate(['/admin']);
-          } else {            console.log("Trying to go to dashboard");
+          } else {
             this.router.navigate(['/dashboard']);
           }
         });

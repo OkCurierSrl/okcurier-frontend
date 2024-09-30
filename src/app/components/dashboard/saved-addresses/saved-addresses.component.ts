@@ -54,7 +54,6 @@ export class SavedAddressesComponent {
 
       this.orderService.saveAddress(data).subscribe(
         response => {
-          console.log('Address saved successfully:', response);
           this.tableComponent.refreshTable();  // Refresh the table component
           this.router.navigate(['/dashboard/favorite-addresses']);
         },

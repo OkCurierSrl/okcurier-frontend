@@ -93,7 +93,6 @@ export class HeroComponent implements OnInit {
       }]
     };
 
-    console.log(orderData);
     this.priceCalculationService.getPricesFree(orderData).subscribe(
       response => {
         console.log(response);

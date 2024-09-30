@@ -182,13 +182,9 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
         isPlicSelected: this.isPlicSelected
       };
 
-      // Log the payload for debugging
-      console.log('Submitting order data:', JSON.stringify(orderData, null, 2));
-
       if (this.isLoggedIn) {
         this.priceCalculationService.getPrices(orderData).subscribe(
           (response) => {
-            console.log('Order submitted successfully', response);
             this.router.navigate(['/dashboard/courier-options'],
               {
                 queryParams: {
@@ -200,7 +196,6 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       } else {
         this.priceCalculationService.getPricesFree(orderData).subscribe(
           (response) => {
-            console.log('Order submitted successfully', response);
             this.router.navigate(['/courier-options'],
               {
                 queryParams: {

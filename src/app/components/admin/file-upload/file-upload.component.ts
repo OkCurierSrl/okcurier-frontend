@@ -71,7 +71,6 @@ export class FileUploadComponent {
       .subscribe({
         next: (status: string) => {
           this.responseMessage = `Current status: ${status}`;
-          console.log(`Current status: ${status}`);
           if (status === 'Completed' || status === 'Error') {
             this.stopPolling.next(); // Stop the polling
             this.downloadFile(taskId); // Download the file if needed

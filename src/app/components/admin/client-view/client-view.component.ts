@@ -138,8 +138,6 @@ export class ClientViewComponent implements OnInit {
   }
 
   getBasicPrice(service: string) {
-    console.log(service)
-    console.log(this.getServiceDisplayName(service))
 
     let servicePricing1 = this.services.filter(
       (servicePricing) => servicePricing.serviceName === this.getServiceDisplayName(service)).pop();

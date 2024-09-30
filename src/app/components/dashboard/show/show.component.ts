@@ -51,7 +51,7 @@ export interface Shipment {
 }
 
 export interface ApiParcelResponse {
-  parcelsStatus: ParcelGenericStatus[]; // Array of ParcelGenericStatus
+  parcelGenericStatuses: ParcelGenericStatus[]; // Array of ParcelGenericStatus
 }
 
 // parcel-generic-status.model.ts
@@ -91,12 +91,7 @@ export class ShowComponent implements OnInit {
     // Get the AWB from the route parameters
     this.route.paramMap.subscribe(params => {
       const awb = params.get('awb');
-      if (awb) {
         this.fetchOrderDetails(awb); // Fetch order details using AWB
-      }
-      else {
-        console.log("mock data provided")
-      }
     });
   }
 
@@ -105,7 +100,7 @@ export class ShowComponent implements OnInit {
     this.orderService.trackOrder(awb).subscribe(
       (data) => {
         this.shipment = data.shipmentData;
-        console.log(this.shipment)
+        console.log(data)
         this.apiParcelResponse = data.parcelData;
         this.iban = data.iban;
       },

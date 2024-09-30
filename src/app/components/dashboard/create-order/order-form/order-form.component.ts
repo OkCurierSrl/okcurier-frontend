@@ -64,7 +64,6 @@ export class OrderFormComponent implements OnInit {
     // Watch the streetInput field and validate it
     this.orderForm.get('streetInput').valueChanges.subscribe(value => {
       let suggestionValid = this.isSuggestionValid(value);
-      console.log('Suggestion valid: ', suggestionValid);
       if (value && !suggestionValid) {
         this.orderForm.get('street').setValue('');
         this.orderForm.get('street').setErrors({ invalid: true });
@@ -123,7 +122,6 @@ export class OrderFormComponent implements OnInit {
     const county = aux.value
     this.placesService.getCities(county).subscribe(data => {
       this.cities = data;
-      console.log(this.cities)
     }, error => {``
       console.error('Error loading cities: ', error);
     });
@@ -165,10 +163,7 @@ export class OrderFormComponent implements OnInit {
     if (number && street && city) {
       // Call the postal code service
       this.placesService.getPostalCode(number, street, city).subscribe(response => {
-        console.log(response)
         if (response && response.postal_code) {
-          console.log(response)
-
           // Update the postal code field in the form
           this.orderForm.patchValue({
             postalCode: response.postal_code

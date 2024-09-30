@@ -40,7 +40,7 @@ export const routes: Routes = [
       {
         path: '',
         redirectTo: 'order',
-        pathMatch: 'full' // Ensures redirect occurs only on exact 'admin' path
+        pathMatch: 'full' // Ensures redirect occurs only on exact 'dashboard/order' path
       },
 
       {
