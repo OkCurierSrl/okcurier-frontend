@@ -58,16 +58,26 @@ body {
   font-size: 1rem;
 }
 
-.nav a:hover {
-  color: var(--ok-primary-color-dark);
+
+/* Combine hover and active-link styles for .nav a and .nav a i */
+.nav a:hover,
+.nav a:hover i,
+.nav a.active-link,
+.nav a.active-link i {
+  color: var(--ok-primary-color-dark) !important;
   text-decoration: none;
+  font-weight: bold;
 }
 
-.auth-buttons .login-icon{
+.auth-buttons {
   display: flex;
   align-items: center;
   color: whitesmoke;
-  background-color: var(--ok-primary-color-dark);
+  font-size: 1.3rem;
+  cursor: pointer;
+  margin-right: var(--header-height);
+  justify-content: space-around;
+  gap: 10px;
 }
 
 
@@ -97,6 +107,7 @@ body {
 .menu a:hover {
   color: #f1f1f1;
 }
+
 
 .menu .closebtn {
   position: absolute;

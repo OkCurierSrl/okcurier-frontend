@@ -11,7 +11,7 @@
 .shipping-calculator {
   text-align: center;
   min-height: 100vh;
-  font-family: Poppins, serif;
+  font-family: Montserrat, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,13 +29,14 @@
 }
 
 .headline h1 {
-  font-size: 50px;
+  font-size: 48px;
   margin: 10px 0;
   text-transform: uppercase;
+  font-family: Montserrat, sans-serif;
 }
 
 .headline p {
-  font-size: 18px;
+  font-size: 16px;
   text-transform: uppercase;
 }
 

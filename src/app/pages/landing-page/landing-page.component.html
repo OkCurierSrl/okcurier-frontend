@@ -1,9 +1,10 @@
 <div class="landing-page">
   <app-hero></app-hero>
-  <!--     DONE     -->
+
+  <!-- About Us Section -->
   <section class="about-us-section full-screen-section">
-    <div class="allign-row">
-      <div class="about-us-content grid-item">
+    <div class="align-row">
+      <div class="about-us-content">
         <h2>DESPRE NOI</h2>
         <h3>Consolidarea afacerii dumneavoastră cu soluții logistice personalizate</h3>
         <p>
@@ -12,7 +13,7 @@
           suntem dedicați consolidării afacerii dumneavoastră prin experiențe de transport fără cusur.
         </p>
       </div>
-      <div class="about-us-logo grid-item">
+      <div class="about-us-logo">
         <img src="assets/logo.png" alt="OKCurier Logo"/>
       </div>
     </div>
@@ -32,66 +33,88 @@
     </div>
   </section>
 
-<!--    DONE    -->
+  <!-- How It Works Section -->
   <section class="how-it-works-section">
     <div class="how-it-works-grid">
       <div class="grid-item">
-        <img src="assets/feature1.png" alt="Step 1" class="step-image"/>
+        <img src="assets/feature1.png" alt="Step 1" class="step-image-noborder"/>
       </div>
       <div class="grid-item">
-        <div>
-          <div class="how-it-works-header">
-            <h2>Cum funcționează?</h2>
-            <h3>Usurează-ți experiența de expediere cu procesul nostru în pași simpli</h3>
-            <p>
-              Descoperă un proces de expediere mai simplu și mai eficient cu serviciile noastre de curierat.
-              Lasă-ne pe noi să ne ocupăm de tot, de la început până la sfârșit, pentru a garanta sosirea în
-              siguranță a mărfii tale.
-            </p>
-          </div>
+        <div class="how-it-works-header">
+          <h2>Cum funcționează?</h2>
+          <p class="subtitle">Usurează-ți experiența<br> de expediere cu procesul nostru în pași simpli</p>
+          <p>
+            Descoperă un proces de expediere mai simplu și mai eficient cu serviciile noastre de curierat.
+            Lasă-ne pe noi să ne ocupăm de tot, de la început până la sfârșit, pentru a garanta sosirea în
+            siguranță a mărfii tale.
+          </p>
         </div>
       </div>
       <div class="dashed-line"></div>
+
+      <!-- Step 1 -->
       <div class="grid-item">
         <div class="step-details">
           <button class="step-details-background"><h4>Pasul 1</h4></button>
           <div class="step-icon">
-            <img src="assets/feature-step.png" alt="Step Icon 2"/>
+            <img src="assets/awb-step.png" alt="Step Icon 1"/>
           </div>
-          <p>Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</p>
+          <p class="step-title">CREEARE AWB</p>
+          <p>Crează AWB-ul rapid pe okcurier.ro și economisește timp! Ușor, rapid, eficient!</p>
         </div>
       </div>
       <div class="grid-item">
-        <img src="assets/feature2.png" alt="Step 2" class="step-image"/>
+        <img src="assets/creeare-awb-feature.png" alt="Step 1" class="step-image"/>
       </div>
+
+      <!-- Step 2 -->
       <div class="grid-item">
-        <img src="assets/feature3.png" alt="Step 3" class="step-image"/>
+        <img src="assets/feature3.png" alt="Step 2" class="step-image"/>
       </div>
       <div class="grid-item">
         <div class="step-details">
           <button class="step-details-background"><h4>Pasul 2</h4></button>
           <div class="step-icon">
-            <img src="assets/feature-step.png" alt="Step Icon 3"/>
+            <img src="assets/ambalare-step.png" alt="Step Icon 2"/>
           </div>
-          <p>Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</p>
+          <p class="step-title">AMBALARE</p>
+          <p>Asigură-te că ai ambalat corect și sigur coletul pentru a-l proteja împotriva eventualelor accidente. Lipește AWB-ul pe colet și așteaptă curierul confortabil la tine acasă!</p>
         </div>
       </div>
 
+      <!-- Step 3 -->
       <div class="grid-item">
         <div class="step-details">
           <button class="step-details-background"><h4>Pasul 3</h4></button>
           <div class="step-icon">
-            <img src="assets/feature-step.png" alt="Step Icon 2"/>
+            <img src="assets/ridicare-step.png" alt="Step Icon 3"/>
           </div>
-          <p>Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</p>
+          <p class="step-title">RIDICARE</p>
+          <p>Un curier de la una dintre companiile noastre partenere va veni direct la adresa ta pentru ridicare. Simplu și convenabil!</p>
         </div>
       </div>
       <div class="grid-item">
-        <img src="assets/feature4.png" alt="Step 2" class="step-image"/>
+        <img src="assets/feature4.png" alt="Step 3" class="step-image"/>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="grid-item">
+        <img src="assets/feature2.png" alt="Step 4" class="step-image"/>
+      </div>
+      <div class="grid-item">
+        <div class="step-details">
+          <button class="step-details-background"><h4>Pasul 4</h4></button>
+          <div class="step-icon">
+            <img src="../../../assets/transport-icon.png" alt="Step Icon 4"/>
+          </div>
+          <p class="step-title">LIVRARE</p>
+          <p> Coletul tău va fi livrat rapid și eficient către destinatar, în cel mai scurt timp posibil. Oferim promptitudine și siguranță!</p>
+        </div>
       </div>
     </div>
   </section>
-  <!--    DONE    -->
+
+  <!-- Services Section -->
   <section id="services" class="full-screen-section">
     <div class="services-header">
       <h5>SERVICIILE NOASTRE</h5>
@@ -99,78 +122,85 @@
     </div>
     <div class="services-grid">
       <div class="service-item">
-        <div class="service-icon">
-          <img src="assets/service-icon.png" alt="Icon">
+        <div class="service-icon-title"> <!-- Container to align icon and title side by side -->
+          <div class="service-icon">
+            <img src="assets/custom-offers-icon.png" alt="Icon">
+          </div>
+          <h3>OFERTE PERSONALIZATE</h3>
         </div>
-        <h3>TRANSPORT MARITIM</h3>
+        <p>La OKCurier.ro, clienții cu contract beneficiază de prețuri personalizate adaptate nevoilor lor. Cu cât trimiți mai mult, cu atât plătești mai puțin! Înregistrează-te acum pentru a descoperi ofertele noastre speciale bazate pe volumul tău de colete.</p>
+      </div>
+      <div class="service-item">
+        <div class="service-icon-title"> <!-- Container to align icon and title side by side -->
+          <div class="service-icon">
+            <img src="assets/national-transport-icon.png" alt="Icon">
+          </div>
+          <h3>TRANSPORT NAȚIONAL</h3>
+        </div>
+        <p>Acum poți trimite oriunde în România plicuri și colete de până la 31 kg cu OKCurier.ro. Eficient și simplu, în orice colț al țării. Înregistrează-te și începe să trimiți astăzi! Trimite ușor, trimite sigur!</p>
+      </div>
+      <div class="service-item">
+        <div class="service-icon-title"> <!-- Container to align icon and title side by side -->
+          <div class="service-icon">
+            <img src="assets/international-transport-icon.png" alt="Icon">
+          </div>
+          <h3>TRANSPORT INTERNAȚIONAL</h3>
+        </div>
         <p>La OKCurier credem în oferirea de soluții logistice personalizate și eficiente clienților noștri, care să le satisfacă nevoile unice.</p>
       </div>
       <div class="service-item">
-        <div class="service-icon">
-          <img src="assets/service-icon.png" alt="Icon">
+        <div class="service-icon-title"> <!-- Container to align icon and title side by side -->
+          <div class="service-icon">
+            <img src="assets/online-payment-icon.png" alt="Icon">
+          </div>
+          <h3>PLATA ONLINE</h3>
         </div>
-        <h3>TRANSPORT AERIAN</h3>
-        <p>La OKCurier credem în oferirea de soluții logistice personalizate și eficiente clienților noștri, care să le satisfacă nevoile unice.</p>
+        <p>Generează AWB-ul și plătește cu cardul online pe okcurier.ro! Rapid, sigur, fără bătăi de cap. Trimite mai ușor, plătește mai smart!</p>
       </div>
       <div class="service-item">
-        <div class="service-icon">
-          <img src="assets/service-icon.png" alt="Icon">
+        <div class="service-icon-title"> <!-- Container to align icon and title side by side -->
+          <div class="service-icon">
+            <img src="assets/cash-on-delivery-icon.png" alt="Icon">
+          </div>
+          <h3>SERVICIU DE RAMBURS</h3>
         </div>
-        <h3>TRANSPORT RUTIER</h3>
-        <p>La OKCurier credem în oferirea de soluții logistice personalizate și eficiente clienților noștri, care să le satisfacă nevoile unice.</p>
+        <p>Bucură-te de simplitatea de a primi banii direct în contul tău bancar! Fără bătăi de cap sau întârzieri inutile, pentru ca toate coletările trimise ajung acolo unde trebuie. Ideal pentru afacerile care doresc o gestionare eficientă a fluxului de numerar.</p>
       </div>
       <div class="service-item">
-        <div class="service-icon">
-          <img src="assets/service-icon.png" alt="Icon">
+        <div class="service-icon-title"> <!-- Container to align icon and title side by side -->
+          <div class="service-icon">
+            <img src="assets/locker-shipment-icon.png" alt="Icon">
+          </div>
+          <h3>TRIMITE IN LOCKER</h3>
         </div>
-        <h3>INTERNATIONAL</h3>
-        <p>La OKCurier credem în oferirea de soluții logistice personalizate și eficiente clienților noștri, care să le satisfacă nevoile unice.</p>
-      </div>
-      <div class="service-item">
-        <div class="service-icon">
-          <img src="assets/service-icon.png" alt="Icon">
-        </div>
-        <h3>EXPEDIERE DE MARFURI</h3>
-        <p>La OKCurier credem în oferirea de soluții logistice personalizate și eficiente clienților noștri, care să le satisfacă nevoile unice.</p>
-      </div>
-      <div class="service-item">
-        <div class="service-icon">
-          <img src="assets/service-icon.png" alt="Icon">
-        </div>
-        <h3>ASIGURARE</h3>
-        <p>La OKCurier credem în oferirea de soluții logistice personalizate și eficiente clienților noștri, care să le satisfacă nevoile unice.</p>
+        <p>În curând vei putea trimite colete în lockere pentru toate firmele de curierat ce au această opțiune.</p>
       </div>
     </div>
   </section>
 
-  <section class="testimonials-section">
-    <div class="testimonials-header">
-      <h2>CE SPUN CLIENȚII NOȘTRI</h2>
+  <!-- Testimonials Section -->
+</div><div class="testimonials-section">
+  <div class="testimonials-header">
+    <h2>CE SPUN CLIENȚII NOȘTRI</h2>
+  </div>
+  <div #testimonialsCarousel class="testimonials-carousel">
+    <div
+      *ngFor="let testimonial of testimonials; let i = index"
+      class="testimonial-item"
+      [ngClass]="{ 'active': i === currentTestimonialIndex }"
+      (click)="selectTestimonial(i)"
+    >
+      <div class="testimonial-rating">★★★★★</div>
+      <p>{{ testimonial.content }}</p>
+      <h4>{{ testimonial.author }}</h4>
     </div>
-    <div class="testimonials-grid">
-      <div class="testimonial-item">
-        <div class="testimonial-rating">★★★★★</div>
-        <p>La OKCurier credem în oferirea de soluții logistice personalizate și eficiente clienților noștri, care să le satisfacă nevoile unice.</p>
-        <h4>JOHN SMITH, FREELANCE CONSULTANT</h4>
-      </div>
-      <div class="testimonial-item">
-        <div class="testimonial-rating">★★★★★</div>
-        <p>La OKCurier credem în oferirea de soluții logistice personalizate și eficiente clienților noștri, care să le satisfacă nevoile unice.</p>
-        <h4>MICHAEL JOHNSON, CEO</h4>
-      </div>
-      <div class="testimonial-item">
-        <div class="testimonial-rating">★★★★★</div>
-        <p>La OKCurier credem în oferirea de soluții logistice personalizate și eficiente clienților noștri, care să le satisfacă nevoile unice.</p>
-        <h4>SARAH LEE, ONLINE RETAILER</h4>
-      </div>
-    </div>
-    <div class="clients-logos">
-      <img src="assets/dpd-logo.png" alt="Client Logo 1">
-      <img src="assets/cargus-logo.png" alt="Client Logo 2">
-      <img src="assets/fan-logo.png" alt="Client Logo 3">
-      <img src="assets/sameday-logo.png" alt="Client Logo 4">
-      <img src="assets/gls-logo.png" alt="Client Logo 4">
-    </div>
-  </section>
-
+  </div>
+  <div class="testimonial-dots">
+    <div
+      *ngFor="let testimonial of testimonials; let i = index"
+      class="testimonial-dot"
+      [ngClass]="{ 'active': i === currentTestimonialIndex }"
+      (click)="selectTestimonial(i)"
+    ></div>
+  </div>
 </div>

@@ -10,16 +10,26 @@
     </a>
   </div>
   <div class="nav">
-    <a routerLink="/"><i class="fas fa-home"></i>Acasa</a>
-    <a routerLink="/order"><i class="fas fa-shipping-fast"></i>Trimite</a>
-    <a routerLink="/track"><i class="fa-regular fa-eye"></i>Urmarire AWB</a>
-    <a routerLink="/oferta"><i class="fas fa-bell"></i>Solicita oferta</a>
-    <a routerLink="/info"><i class="fas fa-box"></i>Suport</a>
+    <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+      <i class="fas fa-home"></i>Acasa
+    </a>
+    <a routerLink="/order" routerLinkActive="active-link">
+      <i class="fas fa-shipping-fast"></i>Trimite
+    </a>
+    <a routerLink="/track" routerLinkActive="active-link">
+      <i class="fa-regular fa-eye"></i>Urmarire AWB
+    </a>
+    <a routerLink="/oferta" routerLinkActive="active-link">
+      <i class="fas fa-bell"></i>Solicita oferta
+    </a>
+    <a routerLink="/info" routerLinkActive="active-link">
+      <i class="fas fa-box"></i>Suport
+    </a>
   </div>
+
   <div class="auth-buttons">
-    <button class="login-icon" (click)="loginWithRedirect()">
-      LOGIN
-    </button>
+    <app-language-toggle></app-language-toggle>
+    <i title="login/register" class="fas fa-user" (click)="loginWithRedirect()" ></i>
   </div>
 </div>
 

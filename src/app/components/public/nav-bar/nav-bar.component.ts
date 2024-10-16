@@ -15,6 +15,7 @@ import {MenubarModule} from "primeng/menubar";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {environment} from "../../../../environments/environment";
 import {RoleService} from "../../../services/role-service.service";
+import {LanguageToggleComponent} from "../language-toggle/language-toggle.component";
 
 @Component({
   selector: 'app-nav-bar',
@@ -30,7 +31,7 @@ import {RoleService} from "../../../services/role-service.service";
     AsyncPipe,
     NgIf,
     RouterLink,
-    CommonModule, RouterModule, MenubarModule, ButtonModule
+    CommonModule, RouterModule, MenubarModule, ButtonModule, LanguageToggleComponent
   ],
 })
 export class NavBarComponent {
@@ -75,5 +76,9 @@ export class NavBarComponent {
   toggleNav(): void {
     this.isNavOpen = !this.isNavOpen;
     console.log('nav open ' + this.isNavOpen);
+  }
+
+  toggleLanguage(en: string) {
+    console.log('language ' + en);
   }
 }
