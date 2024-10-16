@@ -1,0 +1,65 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+  border-radius: 100px;
+}
+
+.dropdown-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: whitesmoke;
+  text-transform: uppercase;
+  gap: 10px
+}
+
+.flag-icon {
+  width: 20px;
+  height: auto;
+  margin-right: 8px;
+}
+
+.arrow {
+  margin-left: 8px;
+  transition: transform 0.2s;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+
+.dropdown-menu-1 li {
+  display: flex; /* Aligns items horizontally */
+  justify-content: space-between; /* Puts space between the language name and the flag */
+  align-items: center; /* Centers items vertically */
+  padding: 8px 12px;
+  cursor: pointer;
+  background-color: whitesmoke;
+  color: black;
+  font-family: Montserrat, sans-serif;
+  width: 200px;
+}
+
+.flag-icon {
+  width: 20px;
+  height: auto;
+  /* Remove margin-left to align the flag to the right */
+}
+
+
+.dropdown-menu-1 {
+  list-style-type: none; /* Removes bullet points */
+  padding: 0; /* Removes default padding */
+  margin: 0; /* Removes default margin */
+  position: absolute;
+  top: 100%;
+  left: 0; /* Aligns the dropdown to open from the left side of the button */
+  transform: translateX(-100%); /* Shifts the menu to open to the left of the button */
+  background-color: whitesmoke;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px; /* Adds rounded corners */
+  overflow: hidden; /* Ensures the border-radius is visible */
+}
