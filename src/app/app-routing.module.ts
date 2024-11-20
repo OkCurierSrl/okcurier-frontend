@@ -29,6 +29,7 @@ import {ShowComponent} from "./components/dashboard/show/show.component";
 import {TrackComponent} from "./components/dashboard/track/track.component";
 import {FileUploadComponent} from "./components/admin/file-upload/file-upload.component";
 import {OrderListRecheckedComponent} from "./components/dashboard/order-list-rechecked/order-list-rechecked.component";
+import {PaymentPortalComponent} from "./components/public/payment-portal/payment-portal.component";
 
 export const routes: Routes = [
 
@@ -160,6 +161,8 @@ export const routes: Routes = [
     children: [
       {path: '', component: LandingPageComponent},
       {path: 'netopia', component: NetopiaComponent},
+      { path: 'payment', component: PaymentPortalComponent },
+      { path: '', redirectTo: '/payment', pathMatch: 'full' },
       {path: 'oferta', component: RequestOfferComponent},
       {path: 'order', component: CreateOrderComponent},
       {path: '', component: CreateOrderComponent},

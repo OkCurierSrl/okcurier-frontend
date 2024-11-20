@@ -165,6 +165,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       const packagesData = this.courierPackages.map(pkg => pkg.form.getRawValue());
 
       const orderData: OrderData = {
+        email: expeditorData.email,
         pickupDate: undefined,
         price: undefined,
         expeditor: expeditorData,

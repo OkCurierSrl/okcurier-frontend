@@ -2,13 +2,40 @@
   <p-card>
     <h4>{{ title }}</h4>
     <form [formGroup]="orderForm">
-      <div class="p-col-6">
-        <select
-          formControlName="favoriteAddress" (change)="onFavoriteChange($event)">
-          <option value="" disabled selected>Adresa favorita</option>
-          <option *ngFor="let address of favoriteAddressSuggestionsShortNames" [ngValue]="address">{{ address }}</option>
-        </select>
+
+      <div *ngIf="auth.user$ | async as user; else emailField">
+        <div class="p-col-6">
+          <select
+            formControlName="favoriteAddress"
+            (change)="onFavoriteChange($event)"
+          >
+            <option value="" disabled selected>Adresa favorită</option>
+            <option
+              *ngFor="let address of favoriteAddressSuggestionsShortNames"
+              [ngValue]="address"
+            >
+              {{ address }}
+            </option>
+          </select>
+        </div>
       </div>
+
+      <!-- Email Field for Unauthenticated Users -->
+      <ng-template #emailField>
+        <div class="p-field" [ngClass]="{'invalid': orderForm.get('email').invalid && orderForm.get('email').touched}">
+          <label for="email">Adresa de Email</label>
+          <input
+            id="email"
+            pInputText
+            formControlName="email"
+            placeholder="Introdu adresa de email"
+          />
+          <div *ngIf="orderForm.get('email').invalid && orderForm.get('email').touched" class="error">
+            Adresa de email este obligatorie și trebuie să fie validă.
+          </div>
+        </div>
+      </ng-template>
+
 
       <div class="p-field" [ngClass]="{'invalid': orderForm.get('name').invalid && orderForm.get('name').touched}">
         <label for="name">Nume</label>

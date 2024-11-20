@@ -2,7 +2,7 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} f
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {CardModule} from "primeng/card";
 import {DropdownModule} from "primeng/dropdown";
-import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {AsyncPipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {ChipsModule} from "primeng/chips";
 import {ButtonDirective} from "primeng/button";
 import {PlacesService} from "../../../../services/places.service";
@@ -10,7 +10,7 @@ import {OrderService} from "../../../../services/order.service";
 import {StateCodeProjection} from "../../../../model/state-code.projection";
 import {map} from "rxjs/operators";
 import {Address} from "../../../../model/address";
-
+import {AuthService} from "@auth0/auth0-angular";
 
 /**
  * Represents the Order Form Component.
@@ -28,7 +28,8 @@ import {Address} from "../../../../model/address";
     ButtonDirective,
     NgClass,
     CardModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AsyncPipe
   ],
   styleUrls: ['./order-form.component.css']
 })
@@ -51,7 +52,9 @@ export class OrderFormComponent implements OnInit {
   protected isSavedAddress: boolean = false;
 
 
-  constructor(private fb: FormBuilder, private placesService: PlacesService, private orderService: OrderService) {}
+  constructor(public auth: AuthService, private fb: FormBuilder,
+              private placesService: PlacesService,
+              private orderService: OrderService) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -92,6 +95,7 @@ export class OrderFormComponent implements OnInit {
       streetInput: ['', Validators.required], // Input field for user typing
       number: ['', Validators.required],
       postalCode: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]], // Will only be used if unauthenticated
       block: [''],
       staircase: [''],
       floor: [''],

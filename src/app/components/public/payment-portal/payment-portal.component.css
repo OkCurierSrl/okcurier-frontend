@@ -1,0 +1,78 @@
+
+.full-screen-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.payment-container {
+  margin-top: -200px;
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: var(--spacing);
+  max-width: 60vh;
+  width: 100%;
+  text-align: center;
+}
+
+.payment-header {
+  margin-bottom: var(--spacing);
+}
+
+.logo {
+  max-width: 150px;
+  margin-bottom: var(--spacing);
+}
+
+.payment-header h2 {
+  color: var(--ok-primary-color);
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.payment-header p {
+  color: var(--ok-secondary-color);
+  font-size: 0.9rem;
+}
+
+.card-details {
+  margin: var(--spacing) 0;
+  padding: var(--spacing);
+  background-color: var(--ok-grey-colo-lightr);
+  border-radius: var(--radius);
+}
+
+.stripe-card {
+  background: white;
+  border: 1px solid var(--ok-grey-color);
+  border-radius: var(--radius);
+  padding: 12px;
+  font-size: 16px;
+}
+
+.error {
+  color: var(--ok-primary-color);
+  margin-top: var(--spacing);
+}
+
+.pay-button:hover {
+  background: var(--ok-primary-color-dark);
+}
+
+.pay-button {
+  background: var(--ok-primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 100%;
+}

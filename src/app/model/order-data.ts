@@ -1,6 +1,7 @@
 import {Address} from "./address";
 
 export interface OrderData {
+    email: string;
     expeditor: Address;
     destinatar: Address;
     pickupDate: Date

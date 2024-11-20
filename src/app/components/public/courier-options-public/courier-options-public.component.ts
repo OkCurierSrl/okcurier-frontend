@@ -4,7 +4,6 @@ import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {OrderService} from "../../../services/order.service";
 import {CourierOption} from "../../../model/courier.option";
 import {OrderData} from "../../../model/order-data";
-import {routes} from "../../../app-routing.module";
 
 @Component({
   selector: 'app-courier-options',
@@ -53,8 +52,8 @@ export class CourierOptionsPublicComponent implements OnInit {
         return 'assets/sameday-logo.png';
       case 'gls':
         return 'assets/gls-logo.png';
-      // case 'fan':
-      //   return 'assets/fan-logo.png';
+      case 'fan':
+        return 'assets/fan-logo.png';
       default:
         return '';
     }
@@ -64,27 +63,39 @@ export class CourierOptionsPublicComponent implements OnInit {
     this.callBackendWithPickup(true);
   }
 
-  private callBackendWithPickup(pickup: boolean) {
+  private callBackendWithPickup(pickup: boolean): void {
     const selectedCourier = this.couriers.find(courier => courier.selected);
     if (!selectedCourier) {
       console.error('No courier selected');
       return;
     }
+
     if (this.orderData.expeditor == null) {
-      this.router.navigate(["/order"]);
+      this.router.navigate(['/order']);
+      return;
     }
+
     this.orderData.price = selectedCourier.totalPrice;
+
     this.orderService.placeOrderFree(this.orderData, selectedCourier.courier, pickup).subscribe({
       next: (response) => {
-        this.router.navigate(["/netopia"]);
         console.log('AWB generated successfully:', response);
+
+        // Navigate to payment portal
+        this.router.navigate(['/payment'], {
+          queryParams: {
+            amount: this.orderData.price,
+            email: this.orderData.email,
+            description: 'Courier Order Payment',
+          },
+        });
       },
       error: (error) => {
         console.error('Error generating AWB:', error);
       },
       complete: () => {
         console.log('AWB generation completed');
-      }
+      },
     });
   }
 

@@ -1,0 +1,16 @@
+<section class="full-screen-section">
+<div class="payment-container">
+  <div class="payment-header">
+    <img src="/assets/logo.png" alt="Your Logo" class="logo" />
+    <h2>Complete Your Payment</h2>
+    <p>Securely enter your card details below.</p>
+  </div>
+
+  <div class="card-details">
+    <div id="card-element" class="stripe-card"></div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+  </div>
+
+  <button class="pay-button" (click)="handlePayment()">Pay Now</button>
+</div>
+</section>
