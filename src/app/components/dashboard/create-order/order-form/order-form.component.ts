@@ -95,7 +95,7 @@ export class OrderFormComponent implements OnInit {
       streetInput: ['', Validators.required], // Input field for user typing
       number: ['', Validators.required],
       postalCode: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]], // Will only be used if unauthenticated
+      email: [''], // Will only be used if unauthenticated
       block: [''],
       staircase: [''],
       floor: [''],
