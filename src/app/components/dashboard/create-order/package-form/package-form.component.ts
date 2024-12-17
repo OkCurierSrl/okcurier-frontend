@@ -28,6 +28,7 @@ export class PackageFormComponent implements OnInit {
   @Output() heightChange = new EventEmitter<void>();
 
   dimensionError: boolean = false;
+  dimensionErrorEach: boolean = false;
   weightError: boolean = false;
 
   constructor(private fb: FormBuilder) {}
@@ -60,6 +61,7 @@ export class PackageFormComponent implements OnInit {
 
     this.dimensionError = (length + width + height) > 180;
     this.weightError = weight > 31;
+    this.dimensionErrorEach = length >= 150 || width >= 150 || height >= 150
 
     const isValid = this.packageForm.valid && !this.dimensionError && !this.weightError;
     this.validityChange.emit(isValid);

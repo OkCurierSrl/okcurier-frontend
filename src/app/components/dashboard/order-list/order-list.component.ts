@@ -291,27 +291,68 @@ export class OrderListComponent implements OnInit {
 
   }
 
-  onDialogConfirm(pickupDate: string): void {
-    this.showDialog = false; // Hide the dialog
 
-    // Process the selected orders with the selected date
+  onDialogConfirm(pickupDate: string): void {
+    // Hide the dialog
+    this.showDialog = false;
+
+    // Format pickup date in Romanian locale for display in message
+    const formattedDate = new Date(pickupDate).toLocaleDateString('ro-RO', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    // Create the base message
+    let clientMessage = `Programarea pentru preluare pe data de ${formattedDate} a fost realizată pentru următoarele comenzi:\n`;
+
+    // Lists to collect successful and failed orders
+    const successfulOrders: string[] = [];
+    const failedOrders: string[] = [];
+
+    // Process each selected order
+    let processedOrders = 0; // Tracks the number of processed orders
     this.selectedOrders.forEach(order => {
-      const data: PickupData = {pickupDate};
+      const data: PickupData = { pickupDate };
       const courier = order.courier;
       const orderId = Number(order.orderNumber);
 
       this.orderService.pickupOrder(data, courier, orderId).subscribe(
+        // On success
         response => {
           console.log(`Order ${order.awb} pickup scheduled successfully.`);
-          // Update order status or provide feedback
+          successfulOrders.push(`- AWB: ${order.awb}, livrat de: ${courier}`);
         },
+
+        // On error
         error => {
           console.error(`Failed to schedule pickup for order ${order.awb}.`, error);
+          failedOrders.push(`- AWB: ${order.awb}`);
+        },
+
+        // Finalize after each request
+        () => {
+          processedOrders++;
+
+          // Finalize when all orders are processed
+          if (processedOrders === this.selectedOrders.length) {
+            // If there are successful pickups
+            if (successfulOrders.length > 0) {
+              clientMessage += successfulOrders.join('\n') + '\n';
+            }
+
+            // If there are failed pickups
+            if (failedOrders.length > 0) {
+              clientMessage += `Eroare la programare pentru:\n` + failedOrders.join('\n');
+            }
+
+            // Show a simple alert dialog for the final message
+            alert(clientMessage);
+          }
         }
       );
     });
   }
-
   onDialogCancel(): void {
     this.showDialog = false; // Hide the dialog
   }

@@ -10,13 +10,11 @@
     ></app-date-picker-dialog>
 
   </div>
-  <div class="table-responsive" style="overflow: visible; position: relative;">
-    <table class="order-list-table" style="overflow: visible; position: relative;">
+  <div class="table-responsive">
+    <table class="order-list-table">
       <thead>
       <tr>
-        <th>
-          Sel
-        </th>
+        <th>Sel</th>
         <th>Numar AWB</th>
         <th>Curier</th>
         <th>Nume Expeditor</th>
@@ -53,8 +51,7 @@
         <th><input type="text" [(ngModel)]="filter.weight"></th>
         <th><input type="text" [(ngModel)]="filter.cashOnDelivery"></th>
         <th><input type="text" [(ngModel)]="filter.status"></th>
-        <th><button (click)="filterChange()">filtreaza</button></th>
-
+        <th><button (click)="filterChange()">Filtreaza</button></th>
       </tr>
       </thead>
       <tbody>
@@ -79,8 +76,12 @@
           <td [ngClass]="getStatusClass(order.status)">{{ order.status }}</td>
           <td class="actions">
             <div class="action-buttons">
-              <button class="btn btn-action" (click)="downloadOrder(order)"><i class="fas fa-download"></i></button>
-              <button class="btn btn-action" (click)="viewOrder(order)"><i class="fas fa-eye"></i></button>
+              <button class="btn btn-action" (click)="downloadOrder(order)">
+                <i class="fas fa-download"></i>
+              </button>
+              <button class="btn btn-action" (click)="viewOrder(order)">
+                <i class="fas fa-eye"></i>
+              </button>
             </div>
           </td>
         </tr>
@@ -91,7 +92,9 @@
   <div class="pagination">
     <button class="btn btn-pagination" (click)="prevPage()">« Previous</button>
     <ng-container *ngFor="let page of getPagesArray()">
-      <button class="btn btn-pagination" [ngClass]="{'active': page === currentPage}" (click)="goToPage(page)">{{ page }}</button>
+      <button class="btn btn-pagination" [ngClass]="{'active': page === currentPage}" (click)="goToPage(page)">
+        {{ page }}
+      </button>
     </ng-container>
     <button class="btn btn-pagination" (click)="nextPage()">Next »</button>
   </div>
