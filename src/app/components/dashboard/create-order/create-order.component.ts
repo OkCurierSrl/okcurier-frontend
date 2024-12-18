@@ -34,6 +34,7 @@ import {OrderData} from "../../../model/order-data";
 export class CreateOrderComponent implements OnInit, AfterViewInit {
   @ViewChild('expeditorForm') expeditorFormComponent: OrderFormComponent;
   @ViewChild('destinatarForm') destinatarFormComponent: OrderFormComponent;
+
   @ViewChildren(PackageFormComponent) packageForms: QueryList<PackageFormComponent>;
   @ViewChildren(PackageOverviewComponent) packageOverviewComponents: QueryList<PackageOverviewComponent>;
 
@@ -41,6 +42,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
 
   expeditorFormValid: boolean = false;
   destinatarFormValid: boolean = false;
+
   courierPackages: { form: FormGroup, valid: boolean }[] = [];
   extraServices: { label: string, value: string }[] = [
     {label: 'Document la schimb', value: 'documentSchimb'},
@@ -87,21 +89,21 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.setPackagesHeight();
+    this.onExpeditorFormValidityChange(this.expeditorFormComponent.orderForm.valid);
+    this.onDestinatarFormValidityChange(this.destinatarFormComponent.orderForm.valid);
+    this.isFormValid();
   }
 
   onExpeditorFormValidityChange(isValid: boolean): void {
     this.expeditorFormValid = isValid;
-    this.checkFormsValidity();
   }
 
   onDestinatarFormValidityChange(isValid: boolean): void {
     this.destinatarFormValid = isValid;
-    this.checkFormsValidity();
   }
 
   onPackageValidityChange(index: number, isValid: boolean): void {
     this.courierPackages[index].valid = isValid;
-    this.checkFormsValidity();
   }
 
   setPackagesHeight(): void {
@@ -117,12 +119,18 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   addPackage(): void {
+    if (this.courierPackages.length >= 10) {
+      console.warn('Cannot add more than 10 packages');
+      return;
+    }
+
     const packageForm = this.fb.group({
       length: [0, [Validators.required, Validators.min(1)]],
       width: [0, [Validators.required, Validators.min(1)]],
       height: [0, [Validators.required, Validators.min(1)]],
       weight: [0, [Validators.required, Validators.min(1), Validators.max(31)]]
     });
+
 
     this.courierPackages.push({form: packageForm, valid: false});
     this.courierPackages = [...this.courierPackages]; // Trigger change detection
@@ -131,7 +139,6 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   removePackage(index: number): void {
     this.courierPackages.splice(index, 1);
     this.courierPackages = [...this.courierPackages]; // Trigger change detection
-    this.checkFormsValidity(); // Re-check validity after removing a package
   }
 
   toggleService(service: string): void {
@@ -151,12 +158,33 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     return this.extraServices;
   }
 
-  checkFormsValidity(): void {
-  }
 
   isFormValid(): boolean {
-    return this.expeditorFormValid && this.destinatarFormValid && (this.isPlicSelected || (this.courierPackages.length > 0 && this.courierPackages.every(pkg => pkg.valid)));
+    let packageValid =
+      this.isPlicSelected ||
+      (this.courierPackages.length > 0 && this.courierPackages.every(pkg => pkg.valid));
+    // Ensure expeditorFormComponent is defined before accessing formGroup
+    if (!this.expeditorFormComponent || !this.expeditorFormComponent.formGroup) {
+      console.error('expeditorFormComponent or formGroup is not initialized!');
+      return false;
+    }
+
+    const invalidControls = Object.keys(this.expeditorFormComponent.formGroup.controls).filter(
+      (controlName) => this.expeditorFormComponent.formGroup.get(controlName)?.invalid
+    );
+    console.log('Invalid Controls:', invalidControls);
+
+    const invalidControls2 = Object.keys(this.destinatarFormComponent.formGroup.controls).filter(
+      (controlName) => this.destinatarFormComponent.formGroup.get(controlName)?.invalid
+    );
+    console.log('Invalid Controls:', invalidControls2);
+    console.log("package valid : " + packageValid);
+    console.log("expeditor valid " + this.expeditorFormValid)
+    console.log("destinatar valid " + this.destinatarFormValid)
+
+    return this.expeditorFormValid && this.destinatarFormValid && packageValid;
   }
+
 
   onSubmit(): void {
     if (this.isFormValid()) {

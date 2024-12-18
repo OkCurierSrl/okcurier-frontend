@@ -83,18 +83,18 @@
       </div>
 
       <div class="p-field">
-        <label for="street">Street</label>
-        <input id="street" type="text" placeholder="Search for your street" #streetInput />
+        <label for="street">Strada</label>
+        <input id="street" type="text" formControlName="street" placeholder="Search for your street" #streetInput />
       </div>
 
       <div class="p-field">
-        <label for="number">Street Number</label>
-        <input id="number" type="text" placeholder="Street Number" #numberInput (input)="onNumberInput()" />
+        <label for="number">Numar Strada</label>
+        <input id="number" type="text" formControlName="number" placeholder="Street Number" #numberInput (input)="onNumberInput()" />
       </div>
 
       <div class="p-field">
         <label for="postalCode">Postal Code</label>
-        <input id="postalCode" type="text" placeholder="Postal Code" #postalCodeInput />
+        <input id="postalCode" type="text" formControlName="postalCode" placeholder="Postal Code" #postalCodeInput />
       </div>
 
       <div class="p-grid second-grid">

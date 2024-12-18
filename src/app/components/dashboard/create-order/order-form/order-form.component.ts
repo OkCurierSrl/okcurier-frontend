@@ -58,7 +58,22 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
     this.initForm();
     this.loadCounties();
     this.loadFavoriteAddresses();
-    this.orderForm.statusChanges.subscribe((status) => this.formValidityChange.emit(this.orderForm.valid));
+    const address: Address = {
+      shortName: "Geani Dumitrache",
+      name: "Geani Dumitrache",
+      phone1: "0731446895",
+      phone2: "",
+      county: "B",
+      city: "Sector 3",
+      street: "camil ressu",
+      number: "35",
+      postalCode: "0317415",
+      block: "",
+      staircase: "",
+      floor: "",
+      apartment: ""
+    };
+    this.selectFavoriteAddress(address);
   }
 
   ngAfterViewInit(): void {
@@ -93,13 +108,25 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
       if (status === google.maps.GeocoderStatus.OK && results[0]) {
         const postalCode = this.extractComponent(results[0], 'postal_code');
         this.postalCodeInput.nativeElement.value = postalCode || 'Postal code not found';
+        this.retriggerValidation();
       } else {
         console.warn('Geocoding failed:', status);
       }
     });
   }
 
-  // Extract a specific address component
+  private retriggerValidation() {
+    Object.keys(this.orderForm.controls).forEach(field => {
+      console.log(field)
+      const control = this.orderForm.get(field);
+      control.markAsTouched({onlySelf: true});
+      control.markAsDirty({onlySelf: true});
+    });
+    this.orderForm.updateValueAndValidity();
+    console.log(this.orderForm.valid);
+  }
+
+// Extract a specific address component
   private extractComponent(place: any, type: string): string {
     const component = place.address_components?.find((c) => c.types.includes(type));
     return component?.long_name || '';
@@ -149,14 +176,39 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
 
   // Handle Favorite Address Selection
   onFavoriteChange(event: Event): void {
-    const selectedShortName = (event.target as HTMLSelectElement).value;
-    const address = this.favoriteAddressSuggestions.find((a) => a.shortName === selectedShortName);
-    if (address) this.patchAddressForm(address);
+    const elem = event.target as HTMLSelectElement
+    const shortName = elem.value.split(': ').pop();  // This will get the part after ": "
+    this.favoriteAddressSuggestions.forEach(favoriteAddressSuggestion => {
+      if (favoriteAddressSuggestion.shortName == shortName) {
+        this.selectFavoriteAddress(favoriteAddressSuggestion);
+      }
+    });
   }
 
-  private patchAddressForm(address: Address): void {
+  selectFavoriteAddress(suggestion: Address): void {
     this.isSavedAddress = true;
-    this.orderForm.patchValue({ ...address });
-    Object.values(this.orderForm.controls).forEach((control) => control.markAsTouched());
+    this.orderForm.patchValue({
+      email: "dumitrachegeanigabriel@gmail.com",
+      name: suggestion.name,
+      phone1: suggestion.phone1,
+      phone2: suggestion.phone2 || '',
+      county: suggestion.county, // Use the county name if it matches
+      city: suggestion.city, // Ensure this is correctly mapped
+      street: suggestion.street || '', // Assuming street is a string
+      streetInput: suggestion.street || '', // Assuming you want to show the street in the input field as well
+      number: suggestion.number,
+      postalCode: suggestion.postalCode,
+      block: suggestion.block || '',
+      staircase: suggestion.staircase || '',
+      floor: suggestion.floor || '',
+      apartment: suggestion.apartment || '',
+    });
+
+    this.retriggerValidation()
   }
+
+  get formGroup(): FormGroup {
+    return this.orderForm;
+  }
+
 }
