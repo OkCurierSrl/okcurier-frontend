@@ -20,17 +20,7 @@ export class PlacesService {
       map((res: any) => res.map((city: any) => city.formattedName)) // Extract 'name' property from each city object
     );
   }
-
-  getAddressSuggestions(input: string, city: string): Observable<string[]> {
-    const url = this.baseUrl + `/api/place/street?street=${encodeURIComponent(input)}&city=${encodeURIComponent(city)}`;
-    return  this.http.get<string[]>(url);
-  }
 //
-  getPostalCode(number: string, street: string, city: string): Observable<any> {//u
-    const url = this.baseUrl + `/api/place/postal-code?number=${encodeURIComponent(number)}&street=${encodeURIComponent(street)}&city=${encodeURIComponent(city)}`;
-    return this.http.get<any>(url);
-  }
-
   getCities(county: string): Observable<any[]> {
     const url = `${this.baseUrl}/api/place/cities?countyCode=${encodeURIComponent(county)}`;
     return this.http.get<any[]>(url);

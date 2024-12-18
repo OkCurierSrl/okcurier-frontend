@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {CardModule} from "primeng/card";
 import {DropdownModule} from "primeng/dropdown";
@@ -12,13 +12,10 @@ import {map} from "rxjs/operators";
 import {Address} from "../../../../model/address";
 import {AuthService} from "@auth0/auth0-angular";
 
-/**
- * Represents the Order Form Component.
- * @class
- */
 @Component({
   selector: 'app-order-form',
   templateUrl: './order-form.component.html',
+  styleUrls: ['./order-form.component.css'],
   standalone: true,
   imports: [
     DropdownModule,
@@ -30,61 +27,86 @@ import {AuthService} from "@auth0/auth0-angular";
     CardModule,
     ReactiveFormsModule,
     AsyncPipe
-  ],
-  styleUrls: ['./order-form.component.css']
+  ]
 })
-
-export class OrderFormComponent implements OnInit {
+export class OrderFormComponent implements OnInit, AfterViewInit {
   @Input() title: string;
   @Output() formValidityChange = new EventEmitter<boolean>();
-  @ViewChild('cityInput') cityInput: ElementRef;
-  @ViewChild('streetInput') streetInput: ElementRef;
-  @ViewChild('numberInput') numberInput: ElementRef;
-  @ViewChild('postalCodeInput') postalCodeInput: ElementRef;
+
+  @ViewChild('streetInput') streetInput!: ElementRef;
+  @ViewChild('numberInput') numberInput!: ElementRef;
+  @ViewChild('postalCodeInput') postalCodeInput!: ElementRef;
 
   orderForm: FormGroup;
-  addressSuggestions: string[] = [];
-  numberSuggestions: any[] = [];
+  favoriteAddressSuggestions: Address[] = [];
+  favoriteAddressSuggestionsShortNames: string[] = [];
   counties: any[] = [];
   cities: any[] = [];
-  favoriteAddressSuggestions: Address[] = [];
-  favoriteAddressSuggestionsShortNames: String[] = [];
-  protected isSavedAddress: boolean = false;
+  isSavedAddress: boolean = false;
 
+  private geocoder = new google.maps.Geocoder();
+  private selectedStreet: string = '';
 
-  constructor(public auth: AuthService, private fb: FormBuilder,
-              private placesService: PlacesService,
-              private orderService: OrderService) {}
+  constructor(
+    public auth: AuthService,
+    private fb: FormBuilder,
+    private placesService: PlacesService,
+    private orderService: OrderService
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
     this.loadCounties();
     this.loadFavoriteAddresses();
-    this.orderForm.statusChanges.subscribe(status => {
-      this.formValidityChange.emit(this.orderForm.valid);
+    this.orderForm.statusChanges.subscribe((status) => this.formValidityChange.emit(this.orderForm.valid));
+  }
+
+  ngAfterViewInit(): void {
+    this.initStreetAutocomplete();
+  }
+
+  // Initialize Street Autocomplete
+  private initStreetAutocomplete(): void {
+    const autocomplete = new google.maps.places.Autocomplete(this.streetInput.nativeElement, {
+      types: ['address'],
+      componentRestrictions: { country: 'RO' },
     });
 
-    // Watch the streetInput field and validate it
-    this.orderForm.get('streetInput').valueChanges.subscribe(value => {
-      let suggestionValid = this.isSuggestionValid(value);
-      if (value && !suggestionValid) {
-        this.orderForm.get('street').setValue('');
-        this.orderForm.get('street').setErrors({ invalid: true });
-      } else if (value) {
-        this.orderForm.get('street').setErrors(null);
+    autocomplete.addListener('place_changed', () => {
+      const place = autocomplete.getPlace();
+      this.selectedStreet = this.extractComponent(place, 'route');
+      this.streetInput.nativeElement.value = this.selectedStreet || 'Street not found';
+    });
+  }
+
+  // On Street Number Input, fetch postal code
+  onNumberInput(): void {
+    const number = this.numberInput.nativeElement.value.trim();
+    if (this.selectedStreet && number) {
+      const fullAddress = `${this.selectedStreet} ${number}, Romania`;
+      this.geocodeAddress(fullAddress);
+    }
+  }
+
+  private geocodeAddress(address: string): void {
+    this.geocoder.geocode({ address }, (results, status) => {
+      if (status === google.maps.GeocoderStatus.OK && results[0]) {
+        const postalCode = this.extractComponent(results[0], 'postal_code');
+        this.postalCodeInput.nativeElement.value = postalCode || 'Postal code not found';
+      } else {
+        console.warn('Geocoding failed:', status);
       }
     });
   }
 
-  loadFavoriteAddresses(): void {
-    this.orderService.getAddresses().subscribe(addresses => {
-      this.favoriteAddressSuggestions = addresses;
-      this.favoriteAddressSuggestionsShortNames = addresses.map(e => e.shortName);
-    });
+  // Extract a specific address component
+  private extractComponent(place: any, type: string): string {
+    const component = place.address_components?.find((c) => c.types.includes(type));
+    return component?.long_name || '';
   }
 
-
-  initForm(): void {
+  // Form Initialization
+  private initForm(): void {
     this.orderForm = this.fb.group({
       name: ['', Validators.required],
       phone1: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
@@ -92,134 +114,49 @@ export class OrderFormComponent implements OnInit {
       county: ['', Validators.required],
       city: ['', Validators.required],
       street: ['', Validators.required],
-      streetInput: ['', Validators.required], // Input field for user typing
       number: ['', Validators.required],
-      postalCode: ['', [Validators.required]],
-      email: [''], // Will only be used if unauthenticated
+      postalCode: ['', Validators.required],
+      email: [''],
       block: [''],
       staircase: [''],
       floor: [''],
       apartment: [''],
-      favoriteAddress: [''] // Add a control for favorite address
+      favoriteAddress: [''],
     });
   }
 
-  loadCounties(): void {
-    this.placesService.getCounties().pipe(
-      map((counties: StateCodeProjection[]) =>
-        counties.map(county => {
-          const transformedStateName = county.stateName.replace('County', '').trim();
-          return {
-            ...county,
-            stateName: transformedStateName
-          };
-        })
-      )
-    ).subscribe((counties: StateCodeProjection[]) => {
-      this.counties = counties;
+  // Load Counties
+  private loadCounties(): void {
+    this.placesService.getCounties()
+      .pipe(map((counties) => counties.map((c) => ({ ...c, stateName: c.stateName.replace('County', '').trim() }))))
+      .subscribe((counties) => (this.counties = counties));
+  }
+
+  // Load Favorite Addresses
+  private loadFavoriteAddresses(): void {
+    this.orderService.getAddresses().subscribe((addresses) => {
+      this.favoriteAddressSuggestions = addresses;
+      this.favoriteAddressSuggestionsShortNames = addresses.map((e) => e.shortName);
     });
   }
 
+  // Handle County Change
   onCountyChange(event: any): void {
+    const county = event.target.value;
     this.isSavedAddress = false;
-    const aux = event.target as HTMLSelectElement;
-    const county = aux.value
-    this.placesService.getCities(county).subscribe(data => {
-      this.cities = data;
-    }, error => {``
-      console.error('Error loading cities: ', error);
-    });
+    this.placesService.getCities(county).subscribe((data) => (this.cities = data));
   }
 
-  onAddressInput(event: any): void {
-    const input = event.target.value;
-    const city = this.orderForm.get('county').value; // Get the city value from the form
-
-    if (input && city) {
-      this.placesService.getAddressSuggestions(input, city).subscribe(suggestions => {
-        // Assuming suggestions is a list of strings, map them to the desired format
-        this.addressSuggestions = suggestions;
-        })
-    } else {
-      this.addressSuggestions = [];
-    }
-  }
-
-  selectAddress(suggestion: string, streetInputField: HTMLInputElement) {
-    this.orderForm.patchValue({
-      street: suggestion, // Hidden field for validated street
-      streetInput: suggestion // Displayed input field
-    });
-    streetInputField.value = suggestion;
-    this.addressSuggestions = [];
-  }
-
-  isSuggestionValid(input: string): boolean {
-    return this.addressSuggestions.some(suggestion => suggestion === input) || this.isSavedAddress;
-  }
-
-
-  onNumberInput(event: any): void {
-    const number = event.target.value;
-    const street = this.orderForm.get('street').value;
-    const city = this.orderForm.get('city').value;
-
-    if (number && street && city) {
-      // Call the postal code service
-      this.placesService.getPostalCode(number, street, city).subscribe(response => {
-        if (response && response.postal_code) {
-          // Update the postal code field in the form
-          this.orderForm.patchValue({
-            postalCode: response.postal_code
-          });
-
-          // Optionally, you can also focus on the next input field (e.g., postal code input field)
-          this.postalCodeInput.nativeElement.focus();
-        }
-      }, error => {
-        console.error('Error fetching postal code: ', error);
-      });
-    }
-  }
-
-
-
+  // Handle Favorite Address Selection
   onFavoriteChange(event: Event): void {
-    const elem = event.target as HTMLSelectElement
-    const shortName = elem.value.split(': ').pop();  // This will get the part after ": "
-    this.favoriteAddressSuggestions.forEach(favoriteAddressSuggestion => {
-      if (favoriteAddressSuggestion.shortName == shortName) {
-        this.selectFavoriteAddress(favoriteAddressSuggestion);
-      }
-    });
+    const selectedShortName = (event.target as HTMLSelectElement).value;
+    const address = this.favoriteAddressSuggestions.find((a) => a.shortName === selectedShortName);
+    if (address) this.patchAddressForm(address);
   }
 
-  selectFavoriteAddress(suggestion: Address): void {
+  private patchAddressForm(address: Address): void {
     this.isSavedAddress = true;
-    this.orderForm.patchValue({
-      name: suggestion.name,
-      phone1: suggestion.phone1,
-      phone2: suggestion.phone2 || '',
-      county: suggestion.county, // Use the county name if it matches
-      city: suggestion.city, // Ensure this is correctly mapped
-      street: suggestion.street || '', // Assuming street is a string
-      streetInput: suggestion.street || '', // Assuming you want to show the street in the input field as well
-      number: suggestion.number,
-      postalCode: suggestion.postalCode,
-      block: suggestion.block || '',
-      staircase: suggestion.staircase || '',
-      floor: suggestion.floor || '',
-      apartment: suggestion.apartment || '',
-    });
-
-    // Mark all controls as touched and dirty
-    Object.keys(this.orderForm.controls).forEach(field => {
-      const control = this.orderForm.get(field);
-      control.markAsTouched({ onlySelf: true });
-      control.markAsDirty({ onlySelf: true });
-    });
-
-    // Trigger re-validation
-    this.orderForm.updateValueAndValidity();
+    this.orderForm.patchValue({ ...address });
+    Object.values(this.orderForm.controls).forEach((control) => control.markAsTouched());
   }
 }
