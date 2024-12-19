@@ -49,7 +49,6 @@ export class CourierOptionsComponent implements OnInit {
       case 'cargus': return 'assets/cargus-logo.png';
       case 'sameday': return 'assets/sameday-logo.png';
       case 'gls': return 'assets/gls-logo.png';
-      case 'fan': return 'assets/fan-logo.png';
       default: return '';
     }
   }

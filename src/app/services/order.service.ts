@@ -66,9 +66,9 @@ export class OrderService {
     );
   }
 
-  placeOrderFree(orderData : OrderData, courier: string, pickup: boolean): Observable<ApiDownloadResponse> {
-    let url = this.apiUrl + '/api/okcurier/place-order-free?courierCompany=' + courier
-    return  this.http.post<ApiDownloadResponse>(url, orderData);
+  placeOrderFree(orderData: OrderData, courier: string): Observable<ApiDownloadResponse> {
+    let url = this.apiUrl + '/api/okcurier/place-order-free?courierCompany=' + courier;
+    return this.http.post<ApiDownloadResponse>(url, orderData, {headers: this.addDefaultHeaders()});
   }
 
   downloadLabel(awb: string) {
@@ -106,6 +106,14 @@ export class OrderService {
         return [headers];
       })
     );
+  }
+
+
+  private addDefaultHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
   }
 
   saveAddress(data: any): Observable<any> {

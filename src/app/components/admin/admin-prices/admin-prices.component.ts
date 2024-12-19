@@ -22,7 +22,6 @@ export class AdminPricesComponent implements OnInit {
   couriers: Courier[] = [
     { logo: 'assets/dpd.png', name: 'DPD' },
     { logo: 'assets/cargus.png', name: 'CARGUS' },
-    { logo: 'assets/fan.png', name: 'FAN' },
     { logo: 'assets/sameday.png', name: 'SAMEDAY' },
     { logo: 'assets/gls.png', name: 'GLS' }
   ];

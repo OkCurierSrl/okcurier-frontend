@@ -91,7 +91,7 @@
   </div>
   <div class="pagination">
     <button class="btn btn-pagination" (click)="prevPage()">« Previous</button>
-    <ng-container *ngFor="let page of getPagesArray()">
+    <ng-container *ngFor="let page of getVisiblePages()">
       <button class="btn btn-pagination" [ngClass]="{'active': page === currentPage}" (click)="goToPage(page)">
         {{ page }}
       </button>

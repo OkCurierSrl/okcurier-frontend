@@ -18,7 +18,7 @@ import {TicketComponent} from "./components/dashboard/ticket/ticket.component";
 import {SavedAddressesComponent} from "./components/dashboard/saved-addresses/saved-addresses.component";
 import {LandingPageComponent} from "./pages/landing-page/landing-page.component";
 import {HeroComponent} from "./components/public/hero/hero.component";
-import {NetopiaComponent} from "./components/public/netopia-payment/netopia-payment.component";
+import {PaymentConfirmationComponent} from "./components/public/payment-confirmation/payment-confirmation.component";
 import {
   CourierOptionsPublicComponent
 } from "./components/public/courier-options-public/courier-options-public.component";
@@ -160,7 +160,7 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       {path: '', component: LandingPageComponent},
-      {path: 'netopia', component: NetopiaComponent},
+      {path: 'confirm-payment', component: PaymentConfirmationComponent},
       { path: 'payment', component: PaymentPortalComponent },
       { path: '', redirectTo: '/payment', pathMatch: 'full' },
       {path: 'oferta', component: RequestOfferComponent},

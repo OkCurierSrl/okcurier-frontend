@@ -22,8 +22,7 @@ export class CourierOptionsPublicComponent implements OnInit {
   private orderData: OrderData;
 
   constructor(private route: ActivatedRoute,
-              private router: Router,
-              private orderService: OrderService) {
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -52,53 +51,37 @@ export class CourierOptionsPublicComponent implements OnInit {
         return 'assets/sameday-logo.png';
       case 'gls':
         return 'assets/gls-logo.png';
-      case 'fan':
-        return 'assets/fan-logo.png';
       default:
         return '';
     }
   }
 
   orderCourier(): void {
-    this.callBackendWithPickup(true);
-  }
-
-  private callBackendWithPickup(pickup: boolean): void {
     const selectedCourier = this.couriers.find(courier => courier.selected);
     if (!selectedCourier) {
       console.error('No courier selected');
-      return;
+      return; // Prevent further execution if no courier is selected
     }
 
-    if (this.orderData.expeditor == null) {
+    if (!this.orderData) {
+      console.error('Order data is missing');
       this.router.navigate(['/order']);
       return;
     }
 
-    this.orderData.price = selectedCourier.totalPrice;
+    const paymentAmount = selectedCourier.totalPrice;
+    this.orderData.price = paymentAmount; // Set the order price for reference
 
-    this.orderService.placeOrderFree(this.orderData, selectedCourier.courier, pickup).subscribe({
-      next: (response) => {
-        console.log('AWB generated successfully:', response);
-
-        // Navigate to payment portal
-        this.router.navigate(['/payment'], {
-          queryParams: {
-            amount: this.orderData.price,
-            email: this.orderData.email,
-            description: 'Courier Order Payment',
-          },
-        });
-      },
-      error: (error) => {
-        console.error('Error generating AWB:', error);
-      },
-      complete: () => {
-        console.log('AWB generation completed');
-      },
+    // Navigate to the payment portal
+    this.router.navigate(['/payment'], {
+      queryParams: {
+        amount: paymentAmount,
+        email: this.orderData.email,
+        courier: selectedCourier.courier,
+        orderData: JSON.stringify(this.orderData)
+      }
     });
   }
-
 
   goBack(): void {
     this.router.navigate(['/order']);

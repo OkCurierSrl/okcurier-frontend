@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NetopiaPaymentComponent } from './netopia-payment.component';
+import { NetopiaPaymentComponent } from './payment-confirmation.component';
 
 describe('NetopiaPaymentComponent', () => {
   let component: NetopiaPaymentComponent;
@@ -11,7 +11,7 @@ describe('NetopiaPaymentComponent', () => {
       imports: [NetopiaPaymentComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(NetopiaPaymentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

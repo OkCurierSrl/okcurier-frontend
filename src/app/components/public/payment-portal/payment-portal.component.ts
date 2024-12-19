@@ -1,8 +1,11 @@
 import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { StripeService } from '../../../services/stripe.service';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../../environments/environment';
+import {OrderData} from "../../../model/order-data";
+import {OrderService} from "../../../services/order.service";
+import {DownloadService} from "../../../services/download.service";
 
 @Component({
   selector: 'app-payment-portal',
@@ -20,29 +23,31 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
   amount: number = 0;
   description: string = '';
   stripeInitialized: boolean = false;
-  private email: string;
+  email: string;
+  courier: string;
+  orderData: OrderData;
 
-  constructor(private stripeService: StripeService, private route: ActivatedRoute) {}
+  constructor(private stripeService: StripeService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private downloadService: DownloadService,
+              private orderService: OrderService) {}
 
   async ngOnInit(): Promise<void> {
     try {
-      console.log('Initializing Stripe...');
       await this.stripeService.initializeStripe(environment.stripe.publicKey);
-
       this.stripe = this.stripeService.getStripe();
-      console.log('Stripe instance:', this.stripe);
-
       if (!this.stripe) {
         throw new Error('Stripe initialization failed');
       }
-
       this.stripeInitialized = true;
-
       // Get query parameters
       this.route.queryParams.subscribe((params) => {
         this.amount = +params['amount'] || 0;
         this.description = params['description'] || 'Default description';
         this.email = params['email'] || 'default email';
+        this.orderData = params['orderData'];
+        this.courier = params['courier'];
       });
     } catch (error) {
       console.error('Error during Stripe initialization:', error);
@@ -52,7 +57,6 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
   async ngAfterViewInit(): Promise<void> {
     // Wait until Stripe is initialized
     if (!this.stripeInitialized) {
-      console.warn('Stripe is not initialized yet. Retrying...');
       const interval = setInterval(() => {
         if (this.stripe) {
           clearInterval(interval);
@@ -61,18 +65,13 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
       }, 100); // Retry every 100ms until initialized
       return;
     }
-
-    // Create card element immediately if already initialized
     this.createCardElement();
   }
 
   private createCardElement(): void {
     if (!this.stripe) {
-      console.error('Stripe is still not initialized');
       return;
     }
-
-    console.log('Creating Stripe elements...');
     this.elements = this.stripe.elements();
     this.card = this.elements.create('card');
     this.card.mount('#card-element');
@@ -80,8 +79,6 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
     this.card.on('change', (event: any) => {
       this.error = event.error ? event.error.message : null;
     });
-
-    console.log('Card element mounted successfully');
   }
 
   async handlePayment(): Promise<void> {
@@ -98,11 +95,32 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
       if (error) {
         this.error = error.message;
       } else {
-        alert('Payment successful! An invoice will be sent to your email.');
+        this.orderService.placeOrderFree(this.orderData, this.courier).subscribe({
+          next: (response) => {
+            // Navigate to confirmation page
+            this.downloadService.downloadLabel(response);
+            this.router.navigate(['/confirm-payment'], {
+              queryParams: {
+                email: this.orderData.email,
+                courier: this.courier,
+                orderData: JSON.stringify(this.orderData)
+              },
+            });
+          },
+          error: (error) => {
+            alert("A aparut o eroare necunoscuta, va rugam incercati din nou")
+            console.error('Error generating AWB:', error);
+          },
+          complete: () => {
+            console.log('AWB generation completed');
+          },
+        });
+
       }
     } catch (err) {
       this.error = 'An error occurred during payment processing. Please try again.';
       console.error(err);
+      alert(err);
     }
   }
 }

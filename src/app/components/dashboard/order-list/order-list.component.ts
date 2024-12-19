@@ -98,8 +98,6 @@ export class OrderListComponent implements OnInit {
         return 'assets/dpd-logo.png';
       case 'cargus':
         return 'assets/cargus-logo.png';
-      case 'fan':
-        return 'assets/fan-logo.png';
       case 'gls':
         return 'assets/gls-logo.png';
       case 'sameday':
@@ -241,6 +239,48 @@ export class OrderListComponent implements OnInit {
       this.filterOrders();
     }
   }
+
+  getVisiblePages(): (number | string)[] {
+    const totalPages = this.getPagesArray();
+    const maxVisible = 5; // Number of visible pages (excluding ellipses)
+    const totalPageCount = totalPages.length;
+    const visiblePages: (number | string)[] = [];
+
+    if (totalPageCount <= maxVisible) {
+      // If total pages are fewer than or equal to maxVisible, show all
+      return totalPages;
+    }
+
+    // Always show the first page
+    visiblePages.push(1);
+
+    // Add ellipses if the current page is far from the start
+    if (this.currentPage > Math.ceil(maxVisible / 2)) {
+      visiblePages.push('...');
+    }
+
+    // Calculate the range of visible pages around the current page
+    const startPage = Math.max(
+      2,
+      this.currentPage - Math.floor(maxVisible / 2) + 1
+    );
+    const endPage = Math.min(totalPageCount - 1, startPage + maxVisible - 2);
+
+    for (let i = startPage; i <= endPage; i++) {
+      visiblePages.push(i);
+    }
+
+    // Add ellipses if the current page is far from the end
+    if (endPage < totalPageCount - 1) {
+      visiblePages.push('...');
+    }
+
+    // Always show the last page
+    visiblePages.push(totalPageCount);
+
+    return visiblePages;
+  }
+
 
 
   goToPage(page: number): void {

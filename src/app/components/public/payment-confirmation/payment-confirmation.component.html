@@ -1,0 +1,53 @@
+<div class="payment-container">
+  <h2>Confirmare comanda</h2>
+
+  <!-- Show loading indicator -->
+  <div *ngIf="isLoading" class="loading">
+    <p>Se încarcă detaliile comenzii...</p>
+  </div>
+
+  <div *ngIf="!isLoading && orderData" class="order-summary">
+    <div class="order-header">
+      <div class="order-details">
+        <h3>Detalii Comandă</h3>
+        <p><strong>Curier:</strong> {{ courier }}</p>
+        <p><strong>Preț Total:</strong> {{ orderData?.price | number:'1.2-2' }} RON</p>
+      </div>
+      <div class="order-logo">
+        <img src="assets/logo-footer.png" alt="OKCurier Logo">
+      </div>
+    </div>
+
+    <div class="order-section">
+      <h3>Informații Expeditor</h3>
+      <p><strong>Nume:</strong> {{ orderData?.expeditor?.name }}</p>
+      <p><strong>Telefon:</strong> {{ orderData?.expeditor?.phone1 }}</p>
+      <p><strong>Adresă:</strong> {{ orderData?.expeditor?.street }}, {{ orderData?.expeditor?.number }},
+        {{ orderData?.expeditor?.city }}, {{ orderData?.expeditor?.county }}</p>
+      <p><strong>Cod Poștal:</strong> {{ orderData?.expeditor?.postalCode }}</p>
+    </div>
+
+    <div class="order-section">
+      <h3>Informații Destinatar</h3>
+      <p><strong>Nume:</strong> {{ orderData?.destinatar?.name }}</p>
+      <p><strong>Telefon:</strong> {{ orderData?.destinatar?.phone1 }}</p>
+      <p><strong>Adresă:</strong> {{ orderData?.destinatar?.street }}, {{ orderData?.destinatar?.number }},
+        {{ orderData?.destinatar?.city }}, {{ orderData?.destinatar?.county }}</p>
+      <p><strong>Cod Poștal:</strong> {{ orderData?.destinatar?.postalCode }}</p>
+    </div>
+
+    <div *ngIf="orderData.packages.length > 0" class="order-section">
+      <h3>Detalii Pachet</h3>
+      <div *ngFor="let colet of orderData?.packages; let i = index" class="package-details">
+        <p><strong>Pachet {{ i + 1 }}:</strong></p>
+        <p>Dimensiuni: {{ colet.length }} x {{ colet.width }} x {{ colet.height }} cm</p>
+        <p>Greutate: {{ colet.weight }} kg</p>
+      </div>
+    </div>
+
+    <div *ngIf="orderData.packages.length === 0" class="order-section">
+      <h3>Detalii Pachet</h3>
+      <p>Plic cu documente de până la 250g</p>
+    </div>
+  </div>
+</div>
