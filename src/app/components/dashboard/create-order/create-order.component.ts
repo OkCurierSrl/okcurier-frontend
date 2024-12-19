@@ -72,18 +72,25 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.clientService.isProfileCompleted().subscribe(
-      (isProfileCompleted: boolean) => {
-        this.isProfileComplete = isProfileCompleted;
-        if (!this.isProfileComplete) {
-          this.greyOutThePageAndDisplayInfoInDiv();
-        }
-      },
-      error => {
-        console.error('Error fetching client data', error);
+    // Check if the user is authenticated
+    this.auth.isAuthenticated$.subscribe((isAuthenticated) => {
+      if (isAuthenticated) {
+        // Only make the API call if the user is authenticated
+        this.clientService.isProfileCompleted().subscribe(
+          (isProfileCompleted: boolean) => {
+            this.isProfileComplete = isProfileCompleted;
+            if (!this.isProfileComplete) {
+              this.greyOutThePageAndDisplayInfoInDiv();
+            }
+          },
+          (error) => {
+            console.error('Error fetching client data', error);
+          }
+        );
+      } else {
+        console.log('User is not authenticated. Skipping isProfileCompleted check.');
       }
-    );
-
+    });
     this.addPackage(); // Initialize with one package
   }
 

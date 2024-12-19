@@ -3,7 +3,7 @@
     <h4>{{ title }}</h4>
     <form [formGroup]="orderForm">
 
-      <div *ngIf="auth.user$ | async as user; else emailField">
+      <ng-container *ngIf="auth.user$ | async as user; else emailField">
         <div class="p-col-6">
           <select
             formControlName="favoriteAddress"
@@ -18,7 +18,7 @@
             </option>
           </select>
         </div>
-      </div>
+      </ng-container>
 
       <!-- Email Field for Unauthenticated Users -->
       <ng-template #emailField>
