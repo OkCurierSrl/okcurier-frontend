@@ -32,7 +32,7 @@ export class PackageFormComponent implements OnInit {
   weightError: boolean = false;
   dimensionalWeightError: boolean = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor() {}
 
   ngOnInit(): void {
     this.packageForm.statusChanges.subscribe(() => {

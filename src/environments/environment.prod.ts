@@ -14,7 +14,7 @@ export const environment = {
   production: true,
   googleMapsApiKey: 'AIzaSyCO77ldStnRCjfZ3EThONj8F8X6d3EVWvI',
   stripe: {
-    publicKey: 'pk_test_51QMzzsBfqM9rVg7vvmRsH4gy7MnFExElwYhqfpZZVBAtQhVQuW6eZnV6Oxk3waYchJXHhdpFWw1iMCPbdLDcPZCG00pv3csnSB',
+    publicKey: 'pk_test_51QUZAiCtGSZI6BdqgOh2KPCcCmIO0cozyLC6EjUGDmTIrobdq3uUyPv0SHCudkatbWUudLIukYeClf12KyfnOyUk00C3elrOe6',
   },
   auth: {
     domain,

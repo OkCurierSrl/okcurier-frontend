@@ -22,6 +22,7 @@ import {map} from "rxjs/operators";
 import {Address} from "../../../../model/address";
 import {AuthService} from "@auth0/auth0-angular";
 import {environment} from "../../../../../environments/environment";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-order-form',
@@ -57,6 +58,8 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
 
   private geocoder = new google.maps.Geocoder();
   private selectedStreet: string = '';
+  private userSubscription: Subscription;
+  user: any | null = null; // Holds the authenticated user object or null
 
   constructor(
     public auth: AuthService,
@@ -70,6 +73,10 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
     this.initForm();
     this.loadCounties();
     this.loadFavoriteAddresses();
+    this.userSubscription = this.auth.user$.subscribe(user => {
+      this.user = user; // Safely update the user property
+    });
+
     const address: Address = {
       shortName: "Geani Dumitrache",
       name: "Geani Dumitrache",
