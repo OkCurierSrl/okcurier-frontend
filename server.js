@@ -16,15 +16,32 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         'default-src': ["'self'"],
-        'connect-src': ["'self'", 'https://*.auth0.com', 'https://maps.googleapis.com', authConfig.apiUri, 'https://okcurier-backend-0f6dc5b97bfd.herokuapp.com'],
-        'frame-src': ["'self'", 'https://*.auth0.com'],
-        'script-src': ["'self'", "'unsafe-inline'"], // Allow inline scripts
-        'base-uri': ["'self'"],
-        'block-all-mixed-content': [],
-        'font-src': ["'self'", 'https:', 'data:'],
-        'frame-ancestors': ["'self'"],
-        'img-src': ["'self'", 'data:', '*.gravatar.com'],
-        'style-src': ["'self'", 'https:', "'unsafe-inline'"],
+        'frame-src': ["'self'", 'https://okcurier-staging.eu.auth0.com', 'https://js.stripe.com'],
+        'connect-src': [
+          "'self'",
+          'https://okcurier-backend-0f6dc5b97bfd.herokuapp.com',
+          'https://maps.googleapis.com',
+          'https://js.stripe.com',
+          'https://okcurier-staging.eu.auth0.com',
+        ],
+        'script-src': [
+          "'self'",
+          "'unsafe-inline'", // Inline scripts
+          "'unsafe-eval'", // Allow eval in scripts
+          'https://maps.googleapis.com',
+          'https://js.stripe.com',
+        ],
+        'style-src': [
+          "'self'",
+          "'unsafe-inline'", // Inline styles
+          'https://cdn.auth0.com',
+          'https://stackpath.bootstrapcdn.com',
+        ],
+        'img-src': ["'self'", 'data:'], // Images from self and data URIs
+        'font-src': ["'self'", 'https://fonts.gstatic.com'], // Fonts from Google
+        'base-uri': ["'self'"], // Restrict <base> tag URIs
+        'block-all-mixed-content': [], // Block mixed content
+        'frame-ancestors': ["'self'"], // Disallow embedding as a frame
       },
     },
   })
