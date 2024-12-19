@@ -2,17 +2,19 @@
 <html lang="en" class="h-100">
 <head>
   <meta charset="utf-8"/>
-  <title>OkCurier</title>
+  <title>Ok Curier</title>
   <base href="/"/>
   <!-- Content Security Policy Meta Tag -->
   <meta http-equiv="Content-Security-Policy" content="
-script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googleapis.com https://*.gstatic.com *.google.com https://*.ggpht.com *.googleusercontent.com blob:;
-img-src 'self' https://*.googleapis.com https://*.gstatic.com *.google.com  *.googleusercontent.com data:;
-frame-src *.google.com;
-connect-src 'self' https://*.googleapis.com *.google.com https://*.gstatic.com  data: blob:;
-font-src https://fonts.gstatic.com;
-style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-worker-src blob:;">
+   default-src 'self';
+   frame-src 'self' https://okcurier-staging.eu.auth0.com https://js.stripe.com;
+   connect-src 'self' http://localhost:8080 https://maps.googleapis.com https://js.stripe.com https://okcurier-staging.eu.auth0.com;
+   script-src 'self' https://maps.googleapis.com https://js.stripe.com 'unsafe-inline';
+   script-src-elem 'self' https://maps.googleapis.com https://js.stripe.com;
+   style-src 'self' https://cdn.auth0.com https://stackpath.bootstrapcdn.com 'unsafe-inline';
+   img-src * 'self' data: https:;
+   font-src 'self' https://fonts.gstatic.com;
+">
 
   <meta name="robots" content="noindex, nofollow">
 
@@ -26,8 +28,7 @@ worker-src blob:;">
     href="https://cdn.auth0.com/js/auth0-samples-theme/1.0/css/auth0-theme.min.css"
   />
 
-  <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCO77ldStnRCjfZ3EThONj8F8X6d3EVWvI&libraries=places&loading=async"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCO77ldStnRCjfZ3EThONj8F8X6d3EVWvI&libraries=places&loading=async&"></script>
 
 </head>
 <body class="h-100">
