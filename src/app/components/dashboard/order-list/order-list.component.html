@@ -56,7 +56,9 @@
       </thead>
       <tbody>
       <ng-container *ngFor="let order of filteredOrders">
-        <tr>
+        <tr
+          [class.roll-green]="order.status === 'COMANDA_TRIMISA'"
+        >
           <td>
             <input *ngIf="awbGenerat(order.status)" type="checkbox" [(ngModel)]="order.isSelected" />
           </td>

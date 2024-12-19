@@ -8,6 +8,8 @@
       <div class="form-column" id="destinatarFormColumn">
         <app-order-form #destinatarForm title="Destinatar" (formValidityChange)="onDestinatarFormValidityChange($event)"></app-order-form>
       </div>
+
+      <!--       package form.         -->
       <div class="form-column package-section" id="packageSection">
         <div class="scrollable-content">
           <div class="toggle-buttons">
@@ -35,17 +37,18 @@
             </button>
           </div>
 
-
-
           <div *ngIf="isPlicSelected" class="plic-info">
             <p>Trimiți un singur plic de 250g cu documente.</p>
           </div>
           <div *ngIf="!isPlicSelected">
             <div *ngFor="let courierPackage of courierPackages; let i = index" class="package-form">
               <app-package-form [index]="i" [packageForm]="courierPackage.form"
-                                (remove)="removePackage(i)">
+                                (remove)="removePackage(i)"
+                                (validityChange)="onPackageValidityChange(i, $event)">
               </app-package-form>
             </div>
+
+
           </div>
           <div class="extra-services">
             <h5>Servicii Extra</h5>

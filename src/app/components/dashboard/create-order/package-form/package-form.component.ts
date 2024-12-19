@@ -30,6 +30,7 @@ export class PackageFormComponent implements OnInit {
   dimensionError: boolean = false;
   dimensionErrorEach: boolean = false;
   weightError: boolean = false;
+  dimensionalWeightError: boolean = false;
 
   constructor(private fb: FormBuilder) {}
 
@@ -59,6 +60,7 @@ export class PackageFormComponent implements OnInit {
     const height = this.packageForm.get('height').value;
     const weight = this.packageForm.get('weight').value;
 
+    this.dimensionalWeightError = (length * width * height) / 5000 > 31;
     this.dimensionError = (length + width + height) > 180;
     this.weightError = weight > 31;
     this.dimensionErrorEach = length >= 150 || width >= 150 || height >= 150

@@ -45,6 +45,7 @@ export class SavedAddressesComponent {
   onExpeditorFormValidityChange(isValid: boolean): void {
     this.expeditorFormValid = isValid;
   }
+
   onSubmit(): void {
     this.checkShortNameUnique();  // Check if the shortName is unique before submitting
 

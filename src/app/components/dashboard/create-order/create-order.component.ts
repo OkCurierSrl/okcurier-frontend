@@ -160,6 +160,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
 
 
   isFormValid(): boolean {
+    console.log('lenght: ' + this.courierPackages.length);
     let packageValid =
       this.isPlicSelected ||
       (this.courierPackages.length > 0 && this.courierPackages.every(pkg => pkg.valid));

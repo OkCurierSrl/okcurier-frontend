@@ -1,5 +1,11 @@
 import {ApiDownloadResponse} from "../components/dashboard/courier-options/api-download.response";
+import {Injectable} from "@angular/core";
 
+
+
+@Injectable({
+  providedIn: 'root'
+})
 export class DownloadService {
   public downloadLabel(response: ApiDownloadResponse): void {
     const labelData = response.label;

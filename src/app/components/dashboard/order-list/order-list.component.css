@@ -88,12 +88,15 @@
 }
 
 
-.order-list-table td {
+.order-list-table {
   background-color: var(--ok-grey-color);
+}
+
+.order-list-table td {
   border: 1px solid black;
 }
 
-.order-list-table tr:nth-child(even) td {
+.order-list-table tr:nth-child(even) {
   background-color: var(--ok-grey-colo-lightr);
 }
 
@@ -124,8 +127,10 @@
 }
 
 .order-list-table img {
-  width: 70px;
-  height: auto;
+  max-width: 100%; /* Ensure the image doesn't exceed the cell's width */
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Avoid inline gaps */
+  margin: auto; /* Center the image within the cell */
 }
 
 .filler-row {
@@ -254,4 +259,26 @@
   display: flex;
   justify-content: center;
   margin-top: 1rem;
+}
+
+
+@keyframes rollGreen {
+  0% {
+    background-size: 0% 100%; /* Start with no background */
+  }
+  100% {
+    background-size: 100% 100%; /* Expand background fully */
+  }
+}
+
+.roll-green  {
+  background: linear-gradient(to right, #529862, #529862); /* Green background */
+  backgxround-repeat: no-repeat;
+  background-size: 0% 100%; /* Start collapsed */
+  animation: rollGreen 2s forwards; /* Apply animation */
+}
+
+.order-list-table tr[data-status="COMANDA_TRIMISA"]  {
+  background-color: #529862 !important; /* Persistent green background */
+  color: white !important; /* Make text white for contrast */
 }

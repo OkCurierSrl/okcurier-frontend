@@ -9,6 +9,7 @@ import {PickupData} from "../../../services/pickupData";
 import {DatePickerDialogComponent} from "../date-picker-dialog/date-picker-dialog.component";
 import {ApiDownloadResponse} from "../courier-options/api-download.response";
 import {filter} from "rxjs/operators";
+import {DownloadService} from "../../../services/download.service";
 
 interface Package {
   number: string;
@@ -80,6 +81,7 @@ export class OrderListComponent implements OnInit {
 
   constructor(private router: Router,
               private cdr: ChangeDetectorRef,
+              private downloadService: DownloadService,
               private orderService: OrderService) {
   }
 
@@ -161,7 +163,7 @@ export class OrderListComponent implements OnInit {
     this.orderService.downloadLabel(order.awb).subscribe(
       response => {
         // Update order status or provide feedback
-        this.downloadLabel(response);
+        this.downloadService.downloadLabel(response);
       },
       error => {
         console.error(`Failed to download label for order ${order.awb}.`, error);
@@ -169,62 +171,6 @@ export class OrderListComponent implements OnInit {
     );
     console.log('Downloaded label');
   }
-  private downloadLabel(response: ApiDownloadResponse): void {
-    const labelData = response.label;
-
-    if (!labelData) {
-      console.error('No label data found in the response.');
-      return;
-    }
-
-    let labelBlob: Blob;
-
-    // Check the type of labelData
-    if (typeof labelData === 'string') {
-      // If labelData is a base64 string
-      labelBlob = this.base64ToBlob(labelData, 'application/pdf');
-    } else if (labelData instanceof Array) {
-      // If labelData is an array of numbers
-      const byteArray = new Uint8Array(labelData);
-      labelBlob = new Blob([byteArray], { type: 'application/pdf' });
-    } else {
-      console.error('Unexpected label format:', typeof labelData);
-      return;
-    }
-
-    // Create a URL for the Blob
-    const blobUrl = URL.createObjectURL(labelBlob);
-
-    // Create a link element and trigger the download
-    const link = document.createElement('a');
-    link.href = blobUrl;
-    link.download = 'label.pdf'; // You can set a dynamic filename if needed
-    link.click();
-
-    // Clean up
-    URL.revokeObjectURL(blobUrl);
-  }
-
-  private base64ToBlob(base64: string, contentType: string): Blob {
-    const byteCharacters = atob(base64);
-    const byteArrays = [];
-
-    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-      const slice = byteCharacters.slice(offset, offset + 512);
-
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-
-      const byteArray = new Uint8Array(byteNumbers);
-
-      byteArrays.push(byteArray);
-    }
-
-    return new Blob(byteArrays, { type: contentType });
-  }
-
 
   prevPage(): void {
     if (this.currentPage > 1) {
@@ -327,6 +273,7 @@ export class OrderListComponent implements OnInit {
     this.showDialog = true; // Show the custom dialog
   }
 
+
   exportExcel(): void {
 
   }
@@ -336,6 +283,7 @@ export class OrderListComponent implements OnInit {
     // Hide the dialog
     this.showDialog = false;
 
+
     // Format pickup date in Romanian locale for display in message
     const formattedDate = new Date(pickupDate).toLocaleDateString('ro-RO', {
       year: 'numeric',
@@ -343,52 +291,25 @@ export class OrderListComponent implements OnInit {
       day: 'numeric'
     });
 
-    // Create the base message
-    let clientMessage = `Programarea pentru preluare pe data de ${formattedDate} a fost realizată pentru următoarele comenzi:\n`;
-
-    // Lists to collect successful and failed orders
-    const successfulOrders: string[] = [];
-    const failedOrders: string[] = [];
-
     // Process each selected order
-    let processedOrders = 0; // Tracks the number of processed orders
     this.selectedOrders.forEach(order => {
       const data: PickupData = { pickupDate };
       const courier = order.courier;
       const orderId = Number(order.orderNumber);
 
       this.orderService.pickupOrder(data, courier, orderId).subscribe(
-        // On success
         response => {
-          console.log(`Order ${order.awb} pickup scheduled successfully.`);
-          successfulOrders.push(`- AWB: ${order.awb}, livrat de: ${courier}`);
+          order.status = 'COMANDA_TRIMISA';
+          order.pickupDate = formattedDate;
+          this.cdr.detectChanges(); // Ensure Angular updates the DOM
         },
-
-        // On error
         error => {
+          alert("A aparut o eroare. Va rugam reincercati, sau contactati-ne. Ne vom ocupa imediat! :)");
           console.error(`Failed to schedule pickup for order ${order.awb}.`, error);
-          failedOrders.push(`- AWB: ${order.awb}`);
         },
-
         // Finalize after each request
         () => {
-          processedOrders++;
 
-          // Finalize when all orders are processed
-          if (processedOrders === this.selectedOrders.length) {
-            // If there are successful pickups
-            if (successfulOrders.length > 0) {
-              clientMessage += successfulOrders.join('\n') + '\n';
-            }
-
-            // If there are failed pickups
-            if (failedOrders.length > 0) {
-              clientMessage += `Eroare la programare pentru:\n` + failedOrders.join('\n');
-            }
-
-            // Show a simple alert dialog for the final message
-            alert(clientMessage);
-          }
         }
       );
     });

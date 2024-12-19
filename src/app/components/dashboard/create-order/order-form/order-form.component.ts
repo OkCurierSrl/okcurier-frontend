@@ -64,7 +64,7 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
       phone1: "0731446895",
       phone2: "",
       county: "B",
-      city: "Sector 3",
+      locality: "Sector 3",
       street: "camil ressu",
       number: "35",
       postalCode: "0317415",
@@ -193,7 +193,7 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
       phone1: suggestion.phone1,
       phone2: suggestion.phone2 || '',
       county: suggestion.county, // Use the county name if it matches
-      city: suggestion.city, // Ensure this is correctly mapped
+      city: suggestion.locality, // Ensure this is correctly mapped
       street: suggestion.street || '', // Assuming street is a string
       streetInput: suggestion.street || '', // Assuming you want to show the street in the input field as well
       number: suggestion.number,
