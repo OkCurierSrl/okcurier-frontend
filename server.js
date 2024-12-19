@@ -37,7 +37,7 @@ app.use(
           'https://cdn.auth0.com',
           'https://stackpath.bootstrapcdn.com',
         ],
-        'img-src': ["'self'", 'data:'], // Images from self and data URIs
+        'img-src': ["'self'", 'data:', 'https:'], // Images from self and data URIs
         'font-src': ["'self'", 'https://fonts.gstatic.com'], // Fonts from Google
         'base-uri': ["'self'"], // Restrict <base> tag URIs
         'block-all-mixed-content': [], // Block mixed content
