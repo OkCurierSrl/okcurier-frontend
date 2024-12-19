@@ -15,6 +15,7 @@ const {domain, clientId, authorizationParams: {audience}, apiUri, errorPath} = c
 
 export const environment = {
   production: false,
+  googleMapsApiKey: 'AIzaSyCO77ldStnRCjfZ3EThONj8F8X6d3EVWvI',
   stripe: {
     publicKey: 'pk_test_51QMzzsBfqM9rVg7vvmRsH4gy7MnFExElwYhqfpZZVBAtQhVQuW6eZnV6Oxk3waYchJXHhdpFWw1iMCPbdLDcPZCG00pv3csnSB',
   },

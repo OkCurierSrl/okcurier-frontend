@@ -160,28 +160,26 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
 
 
   isFormValid(): boolean {
-    console.log('lenght: ' + this.courierPackages.length);
     let packageValid =
       this.isPlicSelected ||
       (this.courierPackages.length > 0 && this.courierPackages.every(pkg => pkg.valid));
     // Ensure expeditorFormComponent is defined before accessing formGroup
     if (!this.expeditorFormComponent || !this.expeditorFormComponent.formGroup) {
-      console.error('expeditorFormComponent or formGroup is not initialized!');
       return false;
     }
 
     const invalidControls = Object.keys(this.expeditorFormComponent.formGroup.controls).filter(
       (controlName) => this.expeditorFormComponent.formGroup.get(controlName)?.invalid
     );
-    console.log('Invalid Controls:', invalidControls);
+    // console.log('Invalid Controls:', invalidControls);
 
     const invalidControls2 = Object.keys(this.destinatarFormComponent.formGroup.controls).filter(
       (controlName) => this.destinatarFormComponent.formGroup.get(controlName)?.invalid
     );
-    console.log('Invalid Controls:', invalidControls2);
-    console.log("package valid : " + packageValid);
-    console.log("expeditor valid " + this.expeditorFormValid)
-    console.log("destinatar valid " + this.destinatarFormValid)
+    // console.log('Invalid Controls:', invalidControls2);
+    // console.log("package valid : " + packageValid);
+    // console.log("expeditor valid " + this.expeditorFormValid)
+    // console.log("destinatar valid " + this.destinatarFormValid)
 
     return this.expeditorFormValid && this.destinatarFormValid && packageValid;
   }

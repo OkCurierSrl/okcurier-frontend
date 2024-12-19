@@ -1,4 +1,14 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {CardModule} from "primeng/card";
 import {DropdownModule} from "primeng/dropdown";
@@ -11,6 +21,7 @@ import {StateCodeProjection} from "../../../../model/state-code.projection";
 import {map} from "rxjs/operators";
 import {Address} from "../../../../model/address";
 import {AuthService} from "@auth0/auth0-angular";
+import {environment} from "../../../../../environments/environment";
 
 @Component({
   selector: 'app-order-form',
@@ -51,7 +62,8 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
     public auth: AuthService,
     private fb: FormBuilder,
     private placesService: PlacesService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private renderer: Renderer2
   ) {}
 
   ngOnInit(): void {
@@ -117,13 +129,11 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
 
   private retriggerValidation() {
     Object.keys(this.orderForm.controls).forEach(field => {
-      console.log(field)
       const control = this.orderForm.get(field);
       control.markAsTouched({onlySelf: true});
       control.markAsDirty({onlySelf: true});
     });
     this.orderForm.updateValueAndValidity();
-    console.log(this.orderForm.valid);
   }
 
 // Extract a specific address component
