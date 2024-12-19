@@ -13,28 +13,4 @@ import {environment} from "../environments/environment";
   imports: [RouterOutlet, NavBarComponent, FooterComponent],
 })
 export class AppComponent {
-  title = 'Auth0 Angular SDK Sample';
-  private message: string;
-
-  constructor(private renderer: Renderer2) {}
-
-  ngOnInit(): void {
-    this.loadGoogleMaps();
-  }
-
-  loadGoogleMaps(): void {
-    const script = this.renderer.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}&libraries=places`;
-    script.async = true;
-    script.defer = true;
-    this.renderer.appendChild(document.body, script);
-
-    script.onload = () => {
-      console.log('Google Maps API loaded successfully!');
-      // Initialize Google Maps logic here if needed
-    };
-    script.onerror = () => {
-      console.error('Failed to load Google Maps API.');
-    };
-  }
 }
