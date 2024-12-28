@@ -52,7 +52,7 @@ export class PackageOverviewComponent implements OnInit, OnDestroy, OnChanges {
       const width = pkg.form.value.width || 0;
       const height = pkg.form.value.height || 0;
       const realWeight = pkg.form.value.weight || 0;
-      const dimensionalWeight = (length * width * height) / 5000;
+      const dimensionalWeight = Math.ceil((length * width * height) / 5000);
       const effectiveWeight = Math.max(realWeight, dimensionalWeight);
 
       return acc + effectiveWeight;

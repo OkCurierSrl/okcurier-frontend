@@ -211,48 +211,47 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
     street: string,
     number: string
   ): void {
-
-    this.fetchPostalCodeFallback(city, street, number);
-
-    // this.geocoder.geocode({ address }, (results, status) => {
-    //   if (status === google.maps.GeocoderStatus.OK && results[0]) {
-    //     const postalCode = this.extractComponent(results[0], 'postal_code');
-    //
-    //     if (postalCode) {
-    //       // We found a postal code from Google Geocoding
-    //       this.postalCodeInput.nativeElement.value = postalCode;
-    //       this.retriggerValidation();
-    //     } else {
-    //       // No postal code found in the geocoder result
-    //       this.fetchPostalCodeFallback(city, street, number);
-    //     }
-    //
-    //   } else {
-    //     // Geocoding failed altogether
-    //     console.warn('Geocoding failed:', status);
-    //     this.fetchPostalCodeFallback(city, street, number);
-    //   }
-    // });
-  }
-
-
-  private fetchPostalCodeFallback(city: string, street: string, number: string): void {
+    // Attempt the fallback first
     this.placesService.getPostalCode(city, street, number)
       .subscribe({
         next: (fallbackPostalCode: string) => {
           if (fallbackPostalCode) {
+            // We found a postal code via the fallback
             this.postalCodeInput.nativeElement.value = fallbackPostalCode;
+            this.retriggerValidation();
           } else {
-            this.postalCodeInput.nativeElement.value = 'Postal code not found';
+            // The fallback returned no postal code, use Google as a secondary attempt
+            this.geocodeWithGoogle(address);
           }
-          this.retriggerValidation();
         },
         error: (err) => {
+          // The fallback lookup failed, so we fallback to Google’s geocoding
           console.error('Fallback postal code lookup failed:', err);
-          this.postalCodeInput.nativeElement.value = 'Postal code not found';
-          this.retriggerValidation();
+          this.geocodeWithGoogle(address);
         }
       });
+  }
+
+  /**
+   * Uses Google Maps Geocoding API to find a postal code and sets the value if found
+   */
+  private geocodeWithGoogle(address: string): void {
+    // Make sure you have ‘this.geocoder’ properly instantiated
+    this.geocoder.geocode({ address }, (results, status) => {
+      if (status === google.maps.GeocoderStatus.OK && results[0]) {
+        const postalCode = this.extractComponent(results[0], 'postal_code');
+        if (postalCode) {
+          this.postalCodeInput.nativeElement.value = postalCode;
+        } else {
+          this.postalCodeInput.nativeElement.value = 'Postal code not found';
+        }
+      } else {
+        console.warn('Geocoding failed:', status);
+        this.postalCodeInput.nativeElement.value = 'Postal code not found';
+      }
+      // Always re-trigger validation
+      this.retriggerValidation();
+    });
   }
 
 
