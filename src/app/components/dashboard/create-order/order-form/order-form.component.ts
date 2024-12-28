@@ -185,6 +185,8 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
       const place = this.autocomplete?.getPlace();
       this.selectedStreet = this.extractComponent(place, 'route');
       this.streetInput.nativeElement.value = this.selectedStreet || 'Street not found';
+
+      this.orderForm.get('street')?.setValue(this.selectedStreet);
     });
   }
 
