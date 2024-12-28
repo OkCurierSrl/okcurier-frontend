@@ -65,7 +65,7 @@
         <div class="p-col-6">
           <select formControlName="county" (change)="onCountyChange($event)">
             <option value="" disabled selected>Judet</option>
-            <option *ngFor="let county of counties" [value]="county.stateCode">{{ county.stateName }}</option>
+            <option *ngFor="let county of counties" [value]="county.stateName">{{ county.stateName }}</option>
           </select>
         </div>
 

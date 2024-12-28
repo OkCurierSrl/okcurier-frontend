@@ -24,6 +24,11 @@ import {AuthService} from "@auth0/auth0-angular";
 import {environment} from "../../../../../environments/environment";
 import {Subscription} from "rxjs";
 
+interface County {
+  stateName: string;
+  stateCode: string;
+}
+
 @Component({
   selector: 'app-order-form',
   templateUrl: './order-form.component.html',
@@ -52,9 +57,10 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
   orderForm: FormGroup;
   favoriteAddressSuggestions: Address[] = [];
   favoriteAddressSuggestionsShortNames: string[] = [];
-  counties: any[] = [];
+  counties: County[] = [];
   cities: any[] = [];
   isSavedAddress: boolean = false;
+  private autocomplete: google.maps.places.Autocomplete | null = null;
 
   private geocoder = new google.maps.Geocoder();
   private selectedStreet: string = '';
@@ -77,12 +83,24 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
       this.user = user; // Safely update the user property
     });
 
+    // Listen for county changes -> load cities
+    this.orderForm.get('county')?.valueChanges.subscribe((county) => {
+      this.isSavedAddress = false;
+      this.placesService.getCities(county).subscribe((data) => (this.cities = data));
+    });
+
+    // Listen for city changes -> update street autocomplete bounds
+    this.orderForm.get('city')?.valueChanges.subscribe(() => {
+      this.updateAutocompleteBounds();
+    });
+
+
     const address: Address = {
       shortName: "Geani Dumitrache",
       name: "Geani Dumitrache",
       phone1: "0731446895",
       phone2: "",
-      county: "B",
+      county: "Bucuresti",
       locality: "Sector 3",
       street: "camil ressu",
       number: "35",
@@ -95,19 +113,76 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
     this.selectFavoriteAddress(address);
   }
 
+
+  private updateAutocompleteBounds(): void {
+    if (!this.autocomplete) return; // if not yet initialized
+
+    const city = this.orderForm.get('city')?.value;
+    const county = this.orderForm.get('county')?.value;
+
+    // Only proceed if both city & county are available
+    if (!city || !county) {
+      // Optionally clear bounds if city/county are missing
+      this.autocomplete.setBounds(undefined);
+      this.autocomplete.setOptions({ strictBounds: false });
+      return;
+    }
+
+    // Geocode "City, County, Romania"
+    const address = `${city}, ${county}, Romania`;
+    this.geocoder.geocode({ address }, (results, status) => {
+      if (status === google.maps.GeocoderStatus.OK && results[0]) {
+        // Get the bounding box (viewport)
+        const viewport = results[0].geometry.viewport;
+        if (viewport && this.autocomplete) {
+          this.autocomplete.setBounds(viewport);
+          // Setting strictBounds = true means user must pick from that bounding area
+          this.autocomplete.setOptions({ strictBounds: true });
+        }
+      } else {
+        console.warn(`Could not geocode city '${address}':`, status);
+      }
+    });
+  }
+
+
   ngAfterViewInit(): void {
     this.initStreetAutocomplete();
   }
 
   // Initialize Street Autocomplete
   private initStreetAutocomplete(): void {
-    const autocomplete = new google.maps.places.Autocomplete(this.streetInput.nativeElement, {
+    // Read the current city & county from the form
+    const city = this.orderForm.get('city')?.value;
+    const county = this.orderForm.get('county')?.value;
+
+    // Initialize the autocomplete restricted to country=RO
+    this.autocomplete = new google.maps.places.Autocomplete(this.streetInput.nativeElement, {
       types: ['address'],
       componentRestrictions: { country: 'RO' },
     });
 
-    autocomplete.addListener('place_changed', () => {
-      const place = autocomplete.getPlace();
+    // If city and county are set, geocode them to get a bounding box
+    if (city && county) {
+      const address = `${city}, ${county}, Romania`;
+      this.geocoder.geocode({ address }, (results, status) => {
+        if (status === google.maps.GeocoderStatus.OK && results[0]) {
+          const viewport = results[0].geometry.viewport;
+          if (viewport && this.autocomplete) {
+            // Restrict the autocomplete to the bounding box
+            this.autocomplete.setBounds(viewport);
+            // strictBounds = true means it won't suggest addresses outside that area
+            this.autocomplete.setOptions({ strictBounds: true });
+          }
+        } else {
+          console.warn(`Could not geocode city '${address}':`, status);
+        }
+      });
+    }
+
+    // Listen for the place_changed event
+    this.autocomplete.addListener('place_changed', () => {
+      const place = this.autocomplete?.getPlace();
       this.selectedStreet = this.extractComponent(place, 'route');
       this.streetInput.nativeElement.value = this.selectedStreet || 'Street not found';
     });
@@ -116,23 +191,74 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
   // On Street Number Input, fetch postal code
   onNumberInput(): void {
     const number = this.numberInput.nativeElement.value.trim();
-    if (this.selectedStreet && number) {
-      const fullAddress = `${this.selectedStreet} ${number}, Romania`;
-      this.geocodeAddress(fullAddress);
+
+    // Also fetch the city and county from the form
+    const city = this.orderForm.get('city')?.value;
+    const county = this.orderForm.get('county')?.value;
+
+    console.log(city, county);
+    if (this.selectedStreet && number && city && county) {
+      // Be sure to include city and county in the geocode query
+      const fullAddress = `${this.selectedStreet} ${number}, ${city}, ${county}, Romania`;
+      this.geocodeAddress(fullAddress, county, this.selectedStreet, number);
     }
   }
 
-  private geocodeAddress(address: string): void {
-    this.geocoder.geocode({ address }, (results, status) => {
-      if (status === google.maps.GeocoderStatus.OK && results[0]) {
-        const postalCode = this.extractComponent(results[0], 'postal_code');
-        this.postalCodeInput.nativeElement.value = postalCode || 'Postal code not found';
-        this.retriggerValidation();
-      } else {
-        console.warn('Geocoding failed:', status);
-      }
-    });
+
+  private geocodeAddress(
+    address: string,
+    city: string,
+    street: string,
+    number: string
+  ): void {
+
+    this.fetchPostalCodeFallback(city, street, number);
+
+    // this.geocoder.geocode({ address }, (results, status) => {
+    //   if (status === google.maps.GeocoderStatus.OK && results[0]) {
+    //     const postalCode = this.extractComponent(results[0], 'postal_code');
+    //
+    //     if (postalCode) {
+    //       // We found a postal code from Google Geocoding
+    //       this.postalCodeInput.nativeElement.value = postalCode;
+    //       this.retriggerValidation();
+    //     } else {
+    //       // No postal code found in the geocoder result
+    //       this.fetchPostalCodeFallback(city, street, number);
+    //     }
+    //
+    //   } else {
+    //     // Geocoding failed altogether
+    //     console.warn('Geocoding failed:', status);
+    //     this.fetchPostalCodeFallback(city, street, number);
+    //   }
+    // });
   }
+
+
+  private fetchPostalCodeFallback(city: string, street: string, number: string): void {
+    this.placesService.getPostalCode(city, street, number)
+      .subscribe({
+        next: (fallbackPostalCode: string) => {
+          if (fallbackPostalCode) {
+            this.postalCodeInput.nativeElement.value = fallbackPostalCode;
+          } else {
+            this.postalCodeInput.nativeElement.value = 'Postal code not found';
+          }
+          this.retriggerValidation();
+        },
+        error: (err) => {
+          console.error('Fallback postal code lookup failed:', err);
+          this.postalCodeInput.nativeElement.value = 'Postal code not found';
+          this.retriggerValidation();
+        }
+      });
+  }
+
+
+
+
+
 
   private retriggerValidation() {
     Object.keys(this.orderForm.controls).forEach(field => {

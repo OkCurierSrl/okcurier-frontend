@@ -22,7 +22,7 @@ export class PlacesService {
   }
 //
   getCities(county: string): Observable<any[]> {
-    const url = `${this.baseUrl}/api/place/cities?countyCode=${encodeURIComponent(county)}`;
+    const url = `${this.baseUrl}/api/place/cities?countyName=${county}`;
     return this.http.get<any[]>(url);
   }
 
@@ -30,5 +30,10 @@ export class PlacesService {
   getCounties(): Observable<StateCodeProjection[]> {
     const url = `${this.baseUrl}/api/place/counties`;
     return this.http.get<StateCodeProjection[]>(url);
+  }
+
+  getPostalCode(city, street, number): Observable<String> {
+    const url = this.baseUrl + `/api/place/postal-code?city=${encodeURIComponent(city)}&street=${encodeURIComponent(street)}&number=${number}`;
+    return this.http.get<String>(url);
   }
 }
