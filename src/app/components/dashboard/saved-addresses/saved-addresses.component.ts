@@ -27,7 +27,23 @@ export class SavedAddressesComponent {
   constructor(private orderService: OrderService, private router: Router) {}
 
   isFormValid(): boolean {
-    return this.expeditorFormValid && !!this.shortName && !this.shortNameError;  // Include shortName in validation and check for errors
+
+    if (!this.expeditorFormComponent || !this.expeditorFormComponent.formGroup) {
+      return false;
+    }
+
+    const invalidControls = Object.keys(this.expeditorFormComponent.formGroup.controls).filter(
+      (controlName) => this.expeditorFormComponent.formGroup.get(controlName)?.invalid
+    );
+    console.log('Invalid Controls:', invalidControls);
+
+    let b = !!this.shortName;
+    let b1 = !this.shortNameError;
+    let valid = this.expeditorFormComponent.orderForm.valid;
+
+    console.log("short name and error : " + (b && b1))
+    console.log("form valid : " + valid)
+    return valid && b && b1;  // Include shortName in validation and check for errors
   }
 
   checkShortNameUnique(): void {

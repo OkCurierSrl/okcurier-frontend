@@ -32,8 +32,8 @@ export class PlacesService {
     return this.http.get<StateCodeProjection[]>(url);
   }
 
-  getPostalCode(city, street, number): Observable<String> {
+  getPostalCode(city: string, street: string, number: string): Observable<string> {
     const url = this.baseUrl + `/api/place/postal-code?city=${encodeURIComponent(city)}&street=${encodeURIComponent(street)}&number=${number}`;
-    return this.http.get<String>(url);
+    return this.http.get(url, { responseType: 'text' });
   }
 }

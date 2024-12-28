@@ -134,6 +134,8 @@ export class OrderService {
 
   deleteAddress(shortName: string): Observable<any> {
     let url = this.apiUrl + '/api/address/' + shortName;
-    return this.http.delete<void>(url)
+    return this.addAuthHeader().pipe(
+      switchMap(headers => this.http.delete<void>(url, { headers }))
+    );
   }
 }
