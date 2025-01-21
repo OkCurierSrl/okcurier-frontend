@@ -218,9 +218,7 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
       .subscribe({
         next: (fallbackPostalCode: string) => {
           if (fallbackPostalCode) {
-            // We found a postal code via the fallback
-            this.postalCodeInput.nativeElement.value = fallbackPostalCode;
-            this.retriggerValidation();
+            this.updatePostalCode(fallbackPostalCode);
           } else {
             // The fallback returned no postal code, use Google as a secondary attempt
             this.geocodeWithGoogle(address);
@@ -234,6 +232,13 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
       });
   }
 
+  private updatePostalCode(fallbackPostalCode: string) {
+    // We found a postal code via the fallback
+    this.postalCodeInput.nativeElement.value = fallbackPostalCode;
+    this.orderForm.get('postalCode')?.setValue(fallbackPostalCode, {emitEvent: true});
+    this.retriggerValidation();
+  }
+
   /**
    * Uses Google Maps Geocoding API to find a postal code and sets the value if found
    */
@@ -243,9 +248,9 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
       if (status === google.maps.GeocoderStatus.OK && results[0]) {
         const postalCode = this.extractComponent(results[0], 'postal_code');
         if (postalCode) {
-          this.postalCodeInput.nativeElement.value = postalCode;
+          this.updatePostalCode(postalCode)
         } else {
-          this.postalCodeInput.nativeElement.value = 'Postal code not found';
+          this.updatePostalCode('Postal code not found');
         }
       } else {
         console.warn('Geocoding failed:', status);
