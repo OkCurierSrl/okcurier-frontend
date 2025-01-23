@@ -104,22 +104,6 @@ export class OrderFormComponent implements OnInit {
     });
 
 
-    const address: Address = {
-      shortName: "Geani Dumitrache",
-      name: "Geani Dumitrache",
-      phone1: "0731446895",
-      phone2: "",
-      county: "Bucuresti",
-      city: "Sector 3",
-      street: "camil ressu",
-      number: "35",
-      postalCode: "0317415",
-      block: "",
-      staircase: "",
-      floor: "",
-      apartment: ""
-    };
-    this.selectFavoriteAddress(address);
   }
 
 
@@ -178,17 +162,13 @@ export class OrderFormComponent implements OnInit {
       this.geocoder.geocode({ address }, (results, status) => {
         if (status === google.maps.GeocoderStatus.OK && results[0]) {
           const viewport = results[0].geometry.viewport;
-          if (results[0]?.geometry?.viewport && this.autocomplete) {
-            const location = results[0].geometry.location;
-
-            // Restrict the autocomplete to the bounding box (viewport)
+          if (viewport && this.autocomplete) {
+            // Apply bounds to the autocomplete object
             this.autocomplete.setBounds(viewport);
             this.autocomplete.setOptions({
               strictBounds: true, // Enforce bounds
             });
-
-            // Set the viewport bounds for further refinement
-            this.autocomplete.setBounds(viewport);
+            console.log("Bounds applied to autocomplete:", viewport);
           }
         } else {
           console.warn(`Could not geocode city '${address}':`, status);
@@ -202,8 +182,8 @@ export class OrderFormComponent implements OnInit {
 
       let selectedCounty = this.orderForm.get('county')?.value;
       let administrativeArea = this.extractComponent(place, 'administrative_area_level_1');
-      administrativeArea= administrativeArea.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-      selectedCounty = selectedCounty.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      administrativeArea = administrativeArea.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      selectedCounty = selectedCounty.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
       console.log("selected county: " + selectedCounty);
       console.log("extracted county: " + administrativeArea);
