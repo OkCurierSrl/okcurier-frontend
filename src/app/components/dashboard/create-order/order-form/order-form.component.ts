@@ -46,7 +46,7 @@ interface County {
     AsyncPipe
   ]
 })
-export class OrderFormComponent implements OnInit, AfterViewInit {
+export class OrderFormComponent implements OnInit {
   @Input() title: string;
   @Output() formValidityChange = new EventEmitter<boolean>();
 
@@ -86,7 +86,11 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
     // Listen for county changes -> load cities
     this.orderForm.get('county')?.valueChanges.subscribe((county) => {
       this.isSavedAddress = false;
-      this.placesService.getCities(county).subscribe((data) => (this.cities = data));
+      this.placesService.getCities(county).subscribe((data) => {
+        this.cities = data;
+        this.initStreetAutocomplete(county, this.cities[0])
+        return true;
+      });
     });
 
     // Listen for city changes -> update street autocomplete bounds
@@ -95,22 +99,22 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
     });
 
 
-    const address: Address = {
-      shortName: "Geani Dumitrache",
-      name: "Geani Dumitrache",
-      phone1: "0731446895",
-      phone2: "",
-      county: "Bucuresti",
-      city: "Sector 3",
-      street: "camil ressu",
-      number: "35",
-      postalCode: "0317415",
-      block: "",
-      staircase: "",
-      floor: "",
-      apartment: ""
-    };
-    this.selectFavoriteAddress(address);
+    // const address: Address = {
+    //   shortName: "Geani Dumitrache",
+    //   name: "Geani Dumitrache",
+    //   phone1: "0731446895",
+    //   phone2: "",
+    //   county: "Bucuresti",
+    //   city: "Sector 3",
+    //   street: "camil ressu",
+    //   number: "35",
+    //   postalCode: "0317415",
+    //   block: "",
+    //   staircase: "",
+    //   floor: "",
+    //   apartment: ""
+    // };
+    // this.selectFavoriteAddress(address);
   }
 
 
@@ -146,15 +150,13 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
   }
 
 
-  ngAfterViewInit(): void {
-    this.initStreetAutocomplete();
-  }
-
   // Initialize Street Autocomplete
-  private initStreetAutocomplete(): void {
+  private initStreetAutocomplete(city: string, county: string): void {
     // Read the current city & county from the form
-    const city = this.orderForm.get('city')?.value;
-    const county = this.orderForm.get('county')?.value;
+    console.log("Initializing street autocomplete for")
+    console.log("city", city)
+    console.log("county", county)
+
 
     // Initialize the autocomplete restricted to country=RO
     this.autocomplete = new google.maps.places.Autocomplete(this.streetInput.nativeElement, {
@@ -188,6 +190,8 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
 
       this.orderForm.get('street')?.setValue(this.selectedStreet);
     });
+
+    this.triggerValidation()
   }
 
   // On Street Number Input, fetch postal code
@@ -204,6 +208,8 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
       const fullAddress = `${this.selectedStreet} ${number}, ${city}, ${county}, Romania`;
       this.geocodeAddress(fullAddress, county, this.selectedStreet, number);
     }
+
+    this.triggerValidation()
   }
 
 
@@ -236,7 +242,7 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
     // We found a postal code via the fallback
     this.postalCodeInput.nativeElement.value = fallbackPostalCode;
     this.orderForm.get('postalCode')?.setValue(fallbackPostalCode, {emitEvent: true});
-    this.retriggerValidation();
+    this.triggerValidation();
   }
 
   /**
@@ -257,7 +263,7 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
         this.postalCodeInput.nativeElement.value = 'Postal code not found';
       }
       // Always re-trigger validation
-      this.retriggerValidation();
+      this.triggerValidation();
     });
   }
 
@@ -266,7 +272,7 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
 
 
 
-  private retriggerValidation() {
+  private triggerValidation() {
     Object.keys(this.orderForm.controls).forEach(field => {
       const control = this.orderForm.get(field);
       control.markAsTouched({onlySelf: true});
@@ -353,7 +359,7 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
       apartment: suggestion.apartment || '',
     });
 
-    this.retriggerValidation()
+    this.triggerValidation()
   }
 
   get formGroup(): FormGroup {

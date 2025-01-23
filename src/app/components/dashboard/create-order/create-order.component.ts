@@ -175,25 +175,31 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       return false;
     }
 
-    const invalidControls = Object.keys(this.expeditorFormComponent.formGroup.controls).filter(
+    const expeditorControls = Object.keys(this.expeditorFormComponent.formGroup.controls).filter(
       (controlName) => this.expeditorFormComponent.formGroup.get(controlName)?.invalid
     );
-    // console.log('Invalid Controls:', invalidControls);
-
-    const invalidControls2 = Object.keys(this.destinatarFormComponent.formGroup.controls).filter(
+    const destinatarControls = Object.keys(this.destinatarFormComponent.formGroup.controls).filter(
       (controlName) => this.destinatarFormComponent.formGroup.get(controlName)?.invalid
     );
-    // console.log('Invalid Controls:', invalidControls2);
+    let expeditorLength = expeditorControls.length;
+    let destinatarL = destinatarControls.length;
+
+    // console.log('Invalid Controls:', destinatarControls);
+    // console.log('Invalid Controls:', expeditorControls);
     // console.log("package valid : " + packageValid);
     // console.log("expeditor valid " + this.expeditorFormValid)
     // console.log("destinatar valid " + this.destinatarFormValid)
+    // console.log('destinatar length : ' + destinatarControls)
+    // console.log('expeditor length : ' + expeditorLength)
 
-    return this.expeditorFormValid && this.destinatarFormValid && packageValid;
+    let isvalid = expeditorLength == 0 && destinatarL == 0 && packageValid;
+    console.log('Everything is valid', isvalid)
+    return  isvalid;
   }
 
 
   onSubmit(): void {
-    if (this.isFormValid()) {
+    // if (this.isFormValid()) {
       const expeditorData = this.expeditorFormComponent.orderForm.getRawValue();
       const destinatarData = this.destinatarFormComponent.orderForm.getRawValue();
       const packagesData = this.courierPackages.map(pkg => pkg.form.getRawValue());
@@ -239,7 +245,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
                 }
               });
           })
-      }
+      // }
     }
   }
 

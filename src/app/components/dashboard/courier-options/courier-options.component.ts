@@ -74,6 +74,7 @@ export class CourierOptionsComponent implements OnInit {
         this.router.navigate(['/dashboard/order-list']); // Redirect to order list
       },
       error: (error) => {
+        alert("A aparut o eroare neasteptata, incercati alt curier sau contactati-ne")
         console.error('Error generating AWB:', error);
       },
       complete: () => {

@@ -94,7 +94,7 @@
 
       <div class="p-field">
         <label for="postalCode">Postal Code</label>
-        <input id="postalCode" type="text" formControlName="postalCode" placeholder="Postal Code" #postalCodeInput />
+        <input id="postalCode" type="text"  [maxLength]="6" formControlName="postalCode" placeholder="Postal Code" #postalCodeInput />
       </div>
 
       <div class="p-grid second-grid">
