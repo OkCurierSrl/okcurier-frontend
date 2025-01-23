@@ -46,7 +46,7 @@ interface County {
     AsyncPipe
   ]
 })
-export class OrderFormComponent implements OnInit, AfterViewInit {
+export class OrderFormComponent implements OnInit {
   @Input() title: string;
   @Output() formValidityChange = new EventEmitter<boolean>();
 
@@ -85,13 +85,22 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
 
     // Listen for county changes -> load cities
     this.orderForm.get('county')?.valueChanges.subscribe((county) => {
+      console.log('Updated county:', county);
+
       this.isSavedAddress = false;
-      this.placesService.getCities(county).subscribe((data) => (this.cities = data));
+      this.placesService.getCities(county).subscribe((data) => {
+        this.cities = data;
+        this.initStreetAutocomplete(this.cities[0], county); // Reinitialize autocomplete
+        return;
+      });
+      this.updateAutocompleteBounds(); // Recalculate bounds when county changes
     });
 
-    // Listen for city changes -> update street autocomplete bounds
-    this.orderForm.get('city')?.valueChanges.subscribe(() => {
-      this.updateAutocompleteBounds();
+    // Listen for city changes
+    this.orderForm.get('city')?.valueChanges.subscribe((city) => {
+      const county = this.orderForm.get('county')?.value || ''; // Fetch latest county
+      console.log('Updated city:', city);
+      this.initStreetAutocomplete(city, county); // Reinitialize autocomplete
     });
 
 
@@ -146,16 +155,17 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
   }
 
 
-  ngAfterViewInit(): void {
-    this.initStreetAutocomplete();
-  }
-
   // Initialize Street Autocomplete
-  private initStreetAutocomplete(): void {
-    // Read the current city & county from the form
-    const city = this.orderForm.get('city')?.value;
-    const county = this.orderForm.get('county')?.value;
+  private initStreetAutocomplete(city: string, county: string): void {
+    // Ensure streetInput is available before using it
+    if (!this.streetInput || !this.streetInput.nativeElement) {
+      console.warn('streetInput is not initialized yet.');
+      return;
+    }
 
+    console.log("Initializing autocomplete with:");
+    console.log("City:", city);
+    console.log("County:", county)
     // Initialize the autocomplete restricted to country=RO
     this.autocomplete = new google.maps.places.Autocomplete(this.streetInput.nativeElement, {
       types: ['address'],
@@ -168,11 +178,17 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
       this.geocoder.geocode({ address }, (results, status) => {
         if (status === google.maps.GeocoderStatus.OK && results[0]) {
           const viewport = results[0].geometry.viewport;
-          if (viewport && this.autocomplete) {
-            // Restrict the autocomplete to the bounding box
+          if (results[0]?.geometry?.viewport && this.autocomplete) {
+            const location = results[0].geometry.location;
+
+            // Restrict the autocomplete to the bounding box (viewport)
             this.autocomplete.setBounds(viewport);
-            // strictBounds = true means it won't suggest addresses outside that area
-            this.autocomplete.setOptions({ strictBounds: true });
+            this.autocomplete.setOptions({
+              strictBounds: true, // Enforce bounds
+            });
+
+            // Set the viewport bounds for further refinement
+            this.autocomplete.setBounds(viewport);
           }
         } else {
           console.warn(`Could not geocode city '${address}':`, status);
@@ -183,10 +199,24 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
     // Listen for the place_changed event
     this.autocomplete.addListener('place_changed', () => {
       const place = this.autocomplete?.getPlace();
-      this.selectedStreet = this.extractComponent(place, 'route');
-      this.streetInput.nativeElement.value = this.selectedStreet || 'Street not found';
 
-      this.orderForm.get('street')?.setValue(this.selectedStreet);
+      let selectedCounty = this.orderForm.get('county')?.value;
+      let administrativeArea = this.extractComponent(place, 'administrative_area_level_1');
+      administrativeArea= administrativeArea.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      selectedCounty = selectedCounty.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+
+      console.log("selected county: " + selectedCounty);
+      console.log("extracted county: " + administrativeArea);
+
+      if (administrativeArea === selectedCounty) {
+        this.selectedStreet = this.extractComponent(place, 'route');
+        this.streetInput.nativeElement.value = this.selectedStreet || 'Street not found';
+        this.orderForm.get('street')?.setValue(this.selectedStreet);
+      } else {
+        console.warn(`Selected address does not match the current city: ${administrativeArea}`);
+        this.streetInput.nativeElement.value = '';
+        this.orderForm.get('street')?.setValue('');
+      }
     });
   }
 
@@ -320,8 +350,12 @@ export class OrderFormComponent implements OnInit, AfterViewInit {
   onCountyChange(event: any): void {
     const county = event.target.value;
     this.isSavedAddress = false;
-    this.placesService.getCities(county).subscribe((data) => (this.cities = data));
-  }
+    this.placesService.getCities(county).subscribe((data) =>
+    {
+      this.cities = data;
+      this.updateAutocompleteBounds();
+    });
+}
 
   // Handle Favorite Address Selection
   onFavoriteChange(event: Event): void {
