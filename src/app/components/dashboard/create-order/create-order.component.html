@@ -53,13 +53,32 @@
           <div class="extra-services">
             <h5>Servicii Extra</h5>
             <div *ngFor="let service of filteredExtraServices" class="extra-service-item">
-              <input type="checkbox" id="{{service.value}}" [checked]="selectedServices[service.value]" (change)="toggleService(service.value)">
+              <input
+                type="checkbox"
+                id="{{service.value}}"
+                [checked]="selectedServices[service.value]"
+                (change)="toggleService(service.value)">
               <label for="{{service.value}}">{{service.label}}</label>
+
               <div *ngIf="service.value === 'asigurare' && selectedServices[service.value]" class="extra-input">
-                <input type="number" min="0" [(ngModel)]="asigurare" placeholder="Valoare asigurată" class="styled-input"/>
+                <input
+                  pInputText
+                  type="number"
+                  min="0"
+                  [(ngModel)]="asigurare"
+                  placeholder="Valoare asigurată"
+                  class="styled-input"
+                />
               </div>
               <div *ngIf="service.value === 'rambursCont' && selectedServices[service.value]" class="extra-input">
-                <input type="number" min="0" [(ngModel)]="rambursCont" placeholder="Valoare ramburs în cont" class="styled-input"/>
+                <input
+                  pInputText
+                  type="number"
+                  min="0"
+                  [(ngModel)]="rambursCont"
+                  placeholder="Ramburs"
+                  class="styled-input"
+                />
               </div>
             </div>
           </div>

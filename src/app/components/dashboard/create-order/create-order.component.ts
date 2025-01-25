@@ -149,6 +149,12 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   }
 
   toggleService(service: string): void {
+    if (service === 'documentSchimb' && this.selectedServices['coletSchimb']) {
+      this.selectedServices['coletSchimb'] = false; // Uncheck 'coletSchimb'
+    } else if (service === 'coletSchimb' && this.selectedServices['documentSchimb']) {
+      this.selectedServices['documentSchimb'] = false; // Uncheck 'documentSchimb'
+    }
+
     this.selectedServices[service] = !this.selectedServices[service];
     if (!this.selectedServices['asigurare']) {
       this.asigurare = null;
