@@ -58,6 +58,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   isPlicSelected: boolean = false;
   client: Client;
   isProfileComplete: boolean = true;
+  iban: any;
+  detinatorIban: any;
 
   constructor(private fb: FormBuilder,
               private renderer: Renderer2,

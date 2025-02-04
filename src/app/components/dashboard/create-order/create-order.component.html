@@ -80,6 +80,24 @@
                   class="styled-input"
                 />
               </div>
+              <div *ngIf="service.value === 'rambursCont' && selectedServices[service.value]" class="extra-input">
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="iban"
+                  placeholder="iban"
+                  class="styled-input"
+                />
+              </div>
+              <div *ngIf="service.value === 'rambursCont' && selectedServices[service.value]" class="extra-input">
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="iban"
+                  placeholder= "Nume"
+                  class="styled-input"
+                />
+              </div>
             </div>
           </div>
 

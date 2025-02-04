@@ -50,4 +50,14 @@
       <p>Plic cu documente de până la 250g</p>
     </div>
   </div>
+
+  <div class="order-section">
+    <h3>Servicii extra</h3>
+  <p>Document la schimb: {{ orderData.extraServices.documentSchimb == true ? "DA" : "NU" }} </p>
+  <p>Colet la schimb: {{ orderData.extraServices.coletSchimb == true ? "DA" : "NU" }} </p>
+  <p>Deschidere Colet: {{ orderData.extraServices.deschidereColet == true ? "DA" : "NU" }} </p>
+  <p>Asigurare: {{ orderData.extraServices.asigurare }} </p>
+  <p>Adauga pretul transportului in ramburs: {{ orderData.extraServices.transportRamburs == true ? "DA" : "NU" }} </p>
+  <p>Ramburs in cont: {{ orderData.extraServices.rambursCont }} </p>
+  </div>
 </div>
