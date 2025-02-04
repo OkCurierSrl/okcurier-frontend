@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {ButtonDirective} from "primeng/button";
 import {OrderFormComponent} from "../create-order/order-form/order-form.component";
 import {PackageFormComponent} from "../create-order/package-form/package-form.component";
@@ -21,8 +21,7 @@ export class SavedAddressesComponent {
   @ViewChild(TableComponent) tableComponent: TableComponent;  // Access the TableComponent
 
   expeditorFormValid: boolean = false;
-  shortName: string;  // New property for shortName
-  shortNameError: string = '';  // Error message for shortName
+  shortName: string;
 
   constructor(private orderService: OrderService, private router: Router) {}
 
@@ -35,36 +34,14 @@ export class SavedAddressesComponent {
     const invalidControls = Object.keys(this.expeditorFormComponent.formGroup.controls).filter(
       (controlName) => this.expeditorFormComponent.formGroup.get(controlName)?.invalid
     );
-    console.log('Invalid Controls:', invalidControls);
-
-    let b = !!this.shortName;
-    let b1 = !this.shortNameError;
-    let valid = this.expeditorFormComponent.orderForm.valid;
-
-    console.log("short name and error : " + (b && b1))
-    console.log("form valid : " + valid)
-    return valid && b && b1;  // Include shortName in validation and check for errors
+    return this.expeditorFormComponent.orderForm.valid;
   }
-
-  checkShortNameUnique(): void {
-    this.orderService.getAddresses().subscribe(addresses => {
-      const addressWithSameShortName = addresses.find(address => address.shortName === this.shortName);
-      if (addressWithSameShortName) {
-        this.shortNameError = 'This short name is already in use. Please choose another one.';
-      } else {
-        this.shortNameError = '';
-      }
-    });
-  }
-
 
   onExpeditorFormValidityChange(isValid: boolean): void {
     this.expeditorFormValid = isValid;
   }
 
   onSubmit(): void {
-    this.checkShortNameUnique();  // Check if the shortName is unique before submitting
-
     if (this.isFormValid()) {
       const data = this.expeditorFormComponent.orderForm.getRawValue();
       data.shortName = this.shortName;  // Add shortName to the data object
@@ -76,7 +53,7 @@ export class SavedAddressesComponent {
         },
         error => {
           console.error('Error saving address:', error);
-
+          alert('Adresa nu a putut fi salvata.\nAsigurati-va ca este unica')
         }
       );
     } else {
