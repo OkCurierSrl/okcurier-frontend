@@ -10,8 +10,8 @@
           type="number"
           min="0"
           formControlName="length"
-          placeholder="0"
-          [value]="packageForm.get('length').value"
+          placeholder="L"
+          (focus)="clearZero('length')"
         />
       </div>
       <div class="small-field p-field" [ngClass]="{'invalid': packageForm.get('width').invalid && packageForm.get('width').touched}">
@@ -20,10 +20,10 @@
           id="width"
           pInputText
           type="number"
-          min="0"
+          min="1"
           formControlName="width"
-          placeholder="0"
-          [value]="packageForm.get('width').value"
+          placeholder="l"
+          (focus)="clearZero('width')"
         />
       </div>
       <div class="small-field p-field" [ngClass]="{'invalid': packageForm.get('height').invalid && packageForm.get('height').touched}">
@@ -34,8 +34,8 @@
           type="number"
           min="0"
           formControlName="height"
-          placeholder="0"
-          [value]="packageForm.get('height').value"
+          placeholder="H"
+          (focus)="clearZero('height')"
         />
       </div>
       <div class="small-field p-field" [ngClass]="{'invalid': packageForm.get('weight').invalid && packageForm.get('weight').touched}">
@@ -46,13 +46,11 @@
           type="number"
           min="0"
           formControlName="weight"
-          placeholder="0"
-          [value]="packageForm.get('weight').value"
+          placeholder="W"
+          (focus)="clearZero('weight')"
         />
       </div>
-      <div class="small-field p-field">
-        <i class="fas fa-trash-alt remove-icon" (click)="removePackage()"></i>
-      </div>
+
     </div>
 
     <div class="p-field p-grid">
@@ -71,3 +69,4 @@
     </div>
   </form>
 </div>
+

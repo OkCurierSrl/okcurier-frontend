@@ -31,10 +31,17 @@ export class PackageFormComponent implements OnInit {
   dimensionErrorEach: boolean = false;
   weightError: boolean = false;
   dimensionalWeightError: boolean = false;
+  clearZero(controlName: string): void {
+    const control = this.packageForm.get(controlName);
+    if (control && control.value === 0) {
+      control.setValue(null);
+    }
+  }
 
   constructor() {}
 
   ngOnInit(): void {
+
     this.packageForm.statusChanges.subscribe(() => {
       this.checkValidity();
     });

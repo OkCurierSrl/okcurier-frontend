@@ -53,8 +53,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     {label: 'Ramburs in cont', value: 'rambursCont'},
   ];
   selectedServices: { [key: string]: boolean } = {};
-  asigurare: number | null = 0;
-  rambursCont: number | null = 0;
+  asigurare: number | null;
+  rambursCont: number | null;
   isPlicSelected: boolean = false;
   client: Client;
   isProfileComplete: boolean = true;
