@@ -289,6 +289,14 @@ export class OrderFormComponent implements OnInit {
 
   // Form Initialization
   private initForm(): void {
+
+    let required
+    if (!this.user)
+      required = Validators.required;
+    else
+      required = '';
+
+
     this.orderForm = this.fb.group({
       name: ['', Validators.required],
       phone1: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
@@ -298,7 +306,7 @@ export class OrderFormComponent implements OnInit {
       street: ['', Validators.required],
       number: ['', Validators.required],
       postalCode: ['', Validators.required],
-      email: [''],
+      email: ['', required],
       block: [''],
       staircase: [''],
       floor: [''],

@@ -116,6 +116,13 @@ h3 {
   margin-left: var(--spacing);
 }
 
+.extra-inputs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* optional spacing between the inputs */
+}
+
+
 .styled-input {
   width: 100%;
   padding: 0.5rem;

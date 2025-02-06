@@ -60,19 +60,19 @@
       </div>
       <div class="field-2">
         <label for="greutate">Greutate (kg)</label>
-        <input type="text" id="greutate" placeholder="Greutate (kg)" [(ngModel)]="weight">
+        <input type="text" id="greutate" placeholder="Greutate (kg)" [(ngModel)]="weight" [disabled]="selectedPackageType === 'plic'">
       </div>
       <div class="field-2">
         <label for="lungime">Lungime (cm)</label>
-        <input type="text" id="lungime" placeholder="Lungime (cm)" [(ngModel)]="length">
+        <input type="text" id="lungime" placeholder="Lungime (cm)" [(ngModel)]="length" [disabled]="selectedPackageType === 'plic'">
       </div>
       <div class="field-2">
         <label for="latime">Latime (cm)</label>
-        <input type="text" id="latime" placeholder="Latime (cm)" [(ngModel)]="width">
+        <input type="text" id="latime" placeholder="Latime (cm)" [(ngModel)]="width" [disabled]="selectedPackageType === 'plic'">
       </div>
       <div class="field-2">
         <label for="inaltime">Inaltime (cm)</label>
-        <input type="text" id="inaltime" placeholder="Inaltime (cm)" [(ngModel)]="height">
+        <input type="text" id="inaltime" placeholder="Inaltime (cm)" [(ngModel)]="height" [disabled]="selectedPackageType === 'plic'">
       </div>
     </div>
     <button class="calculate-btn" (click)="calculateTariff()">CALCULEAZA</button>

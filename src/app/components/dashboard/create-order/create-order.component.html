@@ -70,34 +70,21 @@
                   class="styled-input"
                 />
               </div>
-              <div *ngIf="service.value === 'rambursCont' && selectedServices[service.value]" class="extra-input">
-                <input
-                  pInputText
-                  type="number"
-                  min="0"
-                  [(ngModel)]="rambursCont"
-                  placeholder="Ramburs"
-                  class="styled-input"
-                />
+
+
+              <div *ngIf="service.value === 'rambursCont' && selectedServices[service.value]" class="extra-inputs-container">
+                <div class="extra-input">
+                  <input pInputText type="number" min="0" [(ngModel)]="rambursCont" placeholder="RON" class="styled-input">
+                </div>
+                <div *ngIf="!isLoggedIn" class="extra-input">
+                  <input pInputText type="text" [(ngModel)]="iban"   placeholder="RO49AAAA1B31007593840000"
+                         class="styled-input">
+                </div>
+                <div *ngIf="!isLoggedIn" class="extra-input">
+                  <input pInputText type="text" [(ngModel)]="detinatorIban" placeholder="Detinator iban" class="styled-input">
+                </div>
               </div>
-              <div *ngIf="service.value === 'rambursCont' && selectedServices[service.value]" class="extra-input">
-                <input
-                  pInputText
-                  type="text"
-                  [(ngModel)]="iban"
-                  placeholder="iban"
-                  class="styled-input"
-                />
-              </div>
-              <div *ngIf="service.value === 'rambursCont' && selectedServices[service.value]" class="extra-input">
-                <input
-                  pInputText
-                  type="text"
-                  [(ngModel)]="iban"
-                  placeholder= "Nume"
-                  class="styled-input"
-                />
-              </div>
+
             </div>
           </div>
 

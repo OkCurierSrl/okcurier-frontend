@@ -22,4 +22,6 @@ export interface OrderData {
         rambursCont?: number;
     };
     isPlicSelected: boolean;
+    iban: string;
+    detinatorIban: string;
 }

@@ -38,7 +38,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   @ViewChildren(PackageFormComponent) packageForms: QueryList<PackageFormComponent>;
   @ViewChildren(PackageOverviewComponent) packageOverviewComponents: QueryList<PackageOverviewComponent>;
 
-  private isLoggedIn: boolean;
+  protected isLoggedIn: boolean;
 
   expeditorFormValid: boolean = false;
   destinatarFormValid: boolean = false;
@@ -228,7 +228,9 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
           transportRamburs: this.selectedServices['transportRamburs'],
           rambursCont: this.isPlicSelected ? 0 : this.rambursCont,
         },
-        isPlicSelected: this.isPlicSelected
+        isPlicSelected: this.isPlicSelected,
+        iban: this.iban,
+        detinatorIban : this.detinatorIban
       };
 
       if (this.isLoggedIn) {
