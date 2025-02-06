@@ -1,4 +1,4 @@
-import {ApiDownloadResponse} from "../components/dashboard/courier-options/api-download.response";
+import {ApiDownloadResponse} from "../model/api-download.response";
 import {Injectable} from "@angular/core";
 
 

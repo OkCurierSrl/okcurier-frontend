@@ -95,11 +95,22 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
       if (error) {
         this.error = error.message;
       } else {
-        this.orderService.placeOrderFree(this.orderData, this.courier).subscribe({
+        const currentUrl = this.router.url;
+        let paymentRoute: string;
+        if (currentUrl.startsWith('/dashboard')) {
+          paymentRoute = '/dashboard/confirm-payment';
+        } else if (currentUrl.startsWith('/admin')) {
+          paymentRoute = '/admin/confirm-payment';
+        } else {
+          paymentRoute = '/confirm-payment';
+        }
+        console.log("placing order...")
+
+        this.orderService.placeOrder(this.orderData, this.courier, true).subscribe({
           next: (response) => {
             // Navigate to confirmation page
             this.downloadService.downloadLabel(response);
-            this.router.navigate(['/confirm-payment'], {
+            this.router.navigate([paymentRoute], {
               queryParams: {
                 email: this.orderData.email,
                 courier: this.courier,

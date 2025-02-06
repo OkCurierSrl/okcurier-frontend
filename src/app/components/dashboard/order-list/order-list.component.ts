@@ -7,8 +7,6 @@ import {FlatShipment} from "../../../model/flatShipment";
 import {OrderService} from "../../../services/order.service";
 import {PickupData} from "../../../services/pickupData";
 import {DatePickerDialogComponent} from "../date-picker-dialog/date-picker-dialog.component";
-import {ApiDownloadResponse} from "../courier-options/api-download.response";
-import {filter} from "rxjs/operators";
 import {DownloadService} from "../../../services/download.service";
 
 interface Package {

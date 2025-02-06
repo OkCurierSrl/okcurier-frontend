@@ -1,14 +1,10 @@
-import {
-  Routes,
-} from '@angular/router';
-import {HomeComponent} from './pages/home/home.component';
+import {Routes,} from '@angular/router';
 import {ProfileComponent} from './pages/profile/profile.component';
 import {authGuardFn} from '@auth0/auth0-angular';
 import {MainLayoutComponent} from "./components/public/main-layout/main-layout.component";
 import {AdminLayoutComponent} from "./components/admin/admin-layout/admin-layout.component";
 import {AdminPricesComponent} from "./components/admin/admin-prices/admin-prices.component";
 import {CreateOrderComponent} from "./components/dashboard/create-order/create-order.component";
-import {CourierOptionsComponent} from "./components/dashboard/courier-options/courier-options.component";
 import {OrderListComponent} from "./components/dashboard/order-list/order-list.component";
 import {DashboardLayoutComponent} from "./components/dashboard/dashboard-layout/dashboard-layout.component";
 import {RequestMaterialsComponent} from "./components/public/request-materials/request-materials.component";
@@ -17,11 +13,7 @@ import {HowToOrderComponent} from "./components/public/how-to-order/how-to-order
 import {TicketComponent} from "./components/dashboard/ticket/ticket.component";
 import {SavedAddressesComponent} from "./components/dashboard/saved-addresses/saved-addresses.component";
 import {LandingPageComponent} from "./pages/landing-page/landing-page.component";
-import {HeroComponent} from "./components/public/hero/hero.component";
 import {PaymentConfirmationComponent} from "./components/public/payment-confirmation/payment-confirmation.component";
-import {
-  CourierOptionsPublicComponent
-} from "./components/public/courier-options-public/courier-options-public.component";
 import {RoleGuard} from "./components/role-guard/role-guard.component";
 import {ClientsComponent} from "./components/admin/clients-component/clients.component";
 import {ClientViewComponent} from "./components/admin/client-view/client-view.component";
@@ -30,6 +22,7 @@ import {TrackComponent} from "./components/dashboard/track/track.component";
 import {FileUploadComponent} from "./components/admin/file-upload/file-upload.component";
 import {OrderListRecheckedComponent} from "./components/dashboard/order-list-rechecked/order-list-rechecked.component";
 import {PaymentPortalComponent} from "./components/public/payment-portal/payment-portal.component";
+import {CourierOptionsNewComponent} from "./components/public/courier-options-new/courier-options-new.component";
 
 export const routes: Routes = [
 
@@ -54,7 +47,7 @@ export const routes: Routes = [
       },
       {
         path: 'courier-options',
-        component: CourierOptionsComponent,
+        component: CourierOptionsNewComponent,
       },
       {
         path: 'order-list',
@@ -83,7 +76,12 @@ export const routes: Routes = [
       {
         path: 'ticketing',
         component: TicketComponent,
-      }
+      },
+      {
+        path: 'payment',
+        component: PaymentPortalComponent,
+      },
+      {path: 'confirm-payment', component: PaymentConfirmationComponent},
     ]
   },
 
@@ -117,7 +115,7 @@ export const routes: Routes = [
       },
       {
         path: 'courier-options',
-        component: CourierOptionsComponent,
+        component: CourierOptionsNewComponent,
       },
       {
         path: 'order-list',
@@ -147,12 +145,19 @@ export const routes: Routes = [
         path: 'track',
         component: TrackComponent,
       },
-      { path: 'client-view',
+      {
+        path: 'client-view',
         component: ClientViewComponent
       },
-      { path: 'ramburs',
+      {
+        path: 'ramburs',
         component: FileUploadComponent
-      }
+      },
+      {
+        path: 'payment',
+        component: PaymentPortalComponent,
+      },
+      {path: 'confirm-payment', component: PaymentConfirmationComponent}
     ]
   },
   {
@@ -161,12 +166,12 @@ export const routes: Routes = [
     children: [
       {path: '', component: LandingPageComponent},
       {path: 'confirm-payment', component: PaymentConfirmationComponent},
-      { path: 'payment', component: PaymentPortalComponent },
-      { path: '', redirectTo: '/payment', pathMatch: 'full' },
+      {path: 'payment', component: PaymentPortalComponent},
+      {path: '', redirectTo: '/payment', pathMatch: 'full'},
       {path: 'oferta', component: RequestOfferComponent},
       {path: 'order', component: CreateOrderComponent},
       {path: '', component: CreateOrderComponent},
-      {path: 'courier-options', component: CourierOptionsPublicComponent},
+      {path: 'courier-options', component: CourierOptionsNewComponent},
       {path: 'info', component: HowToOrderComponent},
       {path: 'track/:awb', component: ShowComponent,},
       {path: 'track', component: TrackComponent,},

@@ -94,17 +94,17 @@ export class HeroComponent implements OnInit {
       }]
     };
 
-    this.priceCalculationService.getPricesFree(orderData).subscribe(
-      response => {
-        console.log(response);
-        this.router.navigate(['/courier-options'],
-          {
-            queryParams: {
-              couriers: JSON.stringify(response),
-              orderData: JSON.stringify(orderData)
-            }
-          });
+    this.priceCalculationService.getPricesFree(orderData).subscribe(response => {
+      console.log(response);
+      // Note the extra query parameter 'origin=hero'
+      this.router.navigate(['/courier-options'], {
+        queryParams: {
+          couriers: JSON.stringify(response),
+          orderData: JSON.stringify(orderData),
+          origin: 'hero'
+        }
       });
+    });
   }
 
   onCitySearch(type: string): void {

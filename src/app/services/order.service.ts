@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {map, switchMap} from "rxjs/operators";
@@ -9,15 +9,21 @@ import {Address} from "../model/address";
 import {FlatShipment} from "../model/flatShipment";
 import {TrackingResponse} from "../components/dashboard/show/show.component";
 import {PickupData} from "./pickupData";
-import {ApiDownloadResponse} from "../components/dashboard/courier-options/api-download.response";
+import {ApiDownloadResponse} from "../model/api-download.response";
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
   private apiUrl = environment.apiUrl;
+  private isLoggedIn: boolean;
 
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(private http: HttpClient, private auth: AuthService) {
+    this.auth.isAuthenticated$.subscribe((loggedIn,) => {
+      this.isLoggedIn = loggedIn;
+    });
+
+  }
 
   trackOrder(awbNumber: string): Observable<TrackingResponse> {
     let url = this.apiUrl + '/api/okcurier/track-order?awb=' + awbNumber;
@@ -61,14 +67,19 @@ export class OrderService {
 
   placeOrder(orderData : OrderData, courier: string, pickup: boolean): Observable<ApiDownloadResponse> {
     let url = this.apiUrl + '/api/okcurier/place-order?courierCompany=' + courier + '&alsoPickup=' + pickup;
-    return this.addAuthHeader().pipe(
+    return this.getHeadersObservable().pipe(
       switchMap(headers => this.http.post<ApiDownloadResponse>(url, orderData, { headers }))
     );
   }
 
-  placeOrderFree(orderData: OrderData, courier: string): Observable<ApiDownloadResponse> {
-    let url = this.apiUrl + '/api/okcurier/place-order-free?courierCompany=' + courier;
-    return this.http.post<ApiDownloadResponse>(url, orderData, {headers: this.addDefaultHeaders()});
+  private getHeadersObservable() {
+    if (this.isLoggedIn) {
+      console.log("putting auth headers...")
+      return this.addAuthHeader();
+    } else {
+      console.log("putting non headers...")
+      return this.addDefaultHeaders()
+    }
   }
 
   downloadLabel(awb: string) {
@@ -109,11 +120,11 @@ export class OrderService {
   }
 
 
-  private addDefaultHeaders(): HttpHeaders {
-    return new HttpHeaders({
+  private addDefaultHeaders(): Observable<HttpHeaders> {
+    return of(new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json'
-    });
+    }));
   }
 
   saveAddress(data: any): Observable<any> {

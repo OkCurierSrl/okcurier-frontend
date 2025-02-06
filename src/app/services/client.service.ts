@@ -86,4 +86,10 @@ export class ClientService {
       switchMap(headers => this.http.get<boolean>(`${this.apiUrl}/api/private/client/completed-profile`, {headers}))
     );
   }
+
+  hasContract() {
+    return this.addAuthHeader().pipe(
+      switchMap(headers => this.http.get<boolean>(`${this.apiUrl}/api/private/client/has-contract`, {headers}))
+    );
+  }
 }
