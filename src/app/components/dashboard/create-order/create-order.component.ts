@@ -168,7 +168,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
 
   get filteredExtraServices() {
     if (this.isPlicSelected) {
-      return this.extraServices.filter(service => service.value !== 'rambursCont');
+      return this.extraServices
+        .filter(service => service.value !== 'rambursCont' && service.value !== 'transportRamburs');
     }
     return this.extraServices;
   }
