@@ -306,7 +306,7 @@ export class OrderFormComponent implements OnInit {
       street: ['', Validators.required],
       number: ['', Validators.required],
       postalCode: ['', Validators.required],
-      email: ['', required],
+      email: [''],
       block: [''],
       staircase: [''],
       floor: [''],
