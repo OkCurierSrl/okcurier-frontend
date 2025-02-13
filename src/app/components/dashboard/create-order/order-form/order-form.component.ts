@@ -1,3 +1,5 @@
+declare const google: any;
+
 import {
   AfterViewInit,
   Component,

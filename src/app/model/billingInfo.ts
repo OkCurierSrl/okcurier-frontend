@@ -1,6 +1,13 @@
 import {Discount} from "./discount";
 
 export interface BillingInfo {
+  adresa: string;
+  oras: string;
+  judet: string;
+  cnp: string;
+  lastName: string;
+  firstName: string;
+  clientType: string;
   phone_number: string;
   name: string;
   id: number;

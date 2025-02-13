@@ -19,6 +19,6 @@ export interface Client {
   last_ip: string;
   logins_count: number;
   identities: Identity[];
-  roles?: Role[];  // Optional, since roles might be fetched separately
-  billing_info?: BillingInfo; // Optional to reflect the backend structure
+  roles?: Role[];
+  billing_info?: BillingInfo;
 }

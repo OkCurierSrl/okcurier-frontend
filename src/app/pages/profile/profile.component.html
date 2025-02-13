@@ -2,124 +2,114 @@
   <div class="card profile-card">
     <div class="card-body">
       <div class="row align-items-center profile-header">
-        <div class="col-md-9">
-          <h2>{{ user.name }}</h2>
+        <div class="col-md-9"><h2>{{ user.name }}</h2>
           <p class="lead text-muted">{{ user.email }}</p>
           <p *ngIf="user.nickname"><strong>username:</strong> {{ user.nickname }}</p>
-          <p *ngIf="user.updated_at"><strong>Ultima actualizare:</strong> {{ user.updated_at | date }}</p>
-        </div>
+          <p *ngIf="user.updated_at"><strong>Ultima actualizare:</strong> {{ user.updated_at | date }}</p></div>
       </div>
     </div>
   </div>
-
   <div class="card mt-4">
-    <button class="btn btn-primary mt-3" (click)="editMode = !editMode">
-      {{ editMode ? 'Anulează' : 'Editează Profil' }}
+    <button class="btn btn-primary mt-3" (click)="toggleEditMode()"> {{ editMode ? 'Anulează' : 'Editează Profil' }}
     </button>
-    <div class="card-body">
-      <h4>Detalii Profil</h4>
-      <form *ngIf="editMode" (ngSubmit)="saveProfile()">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="businessName">Nume Firmă</label>
-              <input
-                id="businessName"
-                [(ngModel)]="client?.billing_info.company_name"
-                name="businessName"
-                class="form-control"
-              />
-              <i
-                *ngIf="!client?.billing_info.company_name || client?.billing_info.company_name === 'None'"
-                class="fas fa-exclamation-circle text-danger"
-                title="Informatii obligatorii pentru trimiterea de colete"
-                style="margin-left: 5px; cursor: pointer;"
-              ></i>
+    <div class="card-body"><h4>Detalii Profil</h4>
+      <form *ngIf="editMode" (ngSubmit)="saveProfile()"> <!-- Client Type Selection -->
+        <div class="form-group mb-3"><label> <input type="radio" name="clientType" [(ngModel)]="clientType"
+                                                    value="fizica" (change)="onClientTypeChange()"> Persoana Fizica
+        </label> &nbsp;&nbsp; <label> <input type="radio" name="clientType" [(ngModel)]="clientType" value="juridica"
+                                             (change)="onClientTypeChange()"> Persoana Juridica </label>
+        </div>
+        <!-- Persoana Juridica Fields -->
+        <div *ngIf="clientType==='juridica'">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="businessName">Nume Firmă</label>
+                <input id="businessName" [(ngModel)]="client.billing_info.company_name" name="businessName"
+                       class="form-control"/>
+              </div>
+              <div class="form-group mb-3">
+                <label for="cui">CUI</label>
+                <input id="cui" [(ngModel)]="client.billing_info.cui" name="cui" class="form-control"/>
+              </div>
+              <div class="form-group mb-3">
+                <label for="registrationNumber">Numar de inregistrare (J)</label>
+                <input id="registrationNumber" [(ngModel)]="client.billing_info.registration_number"
+                       name="registrationNumber" class="form-control"/>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="cui">CUI</label>
-              <input
-                id="cui"
-                [(ngModel)]="client?.billing_info.cui"
-                name="cui"
-                class="form-control"
-              />
-              <i
-                *ngIf="!client?.billing_info.cui || client?.billing_info.cui === 'None'"
-                class="fas fa-exclamation-circle text-danger"
-                title="Informatii obligatorii pentru trimiterea de colete"
-                style="margin-left: 5px; cursor: pointer;"
-              ></i>
-            </div>
-            <div class="form-group">
-              <label for="registrationNumber">Numar de inregistrare(J)</label>
-              <input
-                id="registrationNumber"
-                [(ngModel)]="client?.billing_info.registration_number"
-                name="registrationNumber"
-                class="form-control"
-              />
-              <i
-                *ngIf="!client?.billing_info.registration_number || client?.billing_info.registration_number === 'None'"
-                class="fas fa-exclamation-circle text-danger"
-                title="Informatii obligatorii pentru trimiterea de colete"
-                style="margin-left: 5px; cursor: pointer;"
-              ></i>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="nume">Nume detinator IBAN</label>
-              <input
-                id="nume"
-                [(ngModel)]="client?.billing_info.name"
-                name="name"
-                class="form-control"
-              />
-              <i
-                *ngIf="!client?.billing_info.name || client?.billing_info.name === 'None'"
-                class="fas fa-exclamation-circle text-danger"
-                title="Informatii obligatorii pentru trimiterea de colete"
-                style="margin-left: 5px; cursor: pointer;"
-              ></i>
-            </div>
-            <div class="form-group">
-              <label for="iban">IBAN</label>
-              <input
-                id="iban"
-                [(ngModel)]="client?.billing_info.iban"
-                name="iban"
-                class="form-control"
-              />
-              <i
-                *ngIf="!client?.billing_info.iban || client?.billing_info.iban === 'None'"
-                class="fas fa-exclamation-circle text-danger"
-                title="Informatii obligatorii pentru trimiterea de colete"
-                style="margin-left: 5px; cursor: pointer;"
-              ></i>
-            </div>
-
-            <div class="form-group">
-              <label for="phoneNumber">Număr de Telefon</label>
-              <input
-                id="phoneNumber"
-                [(ngModel)]="client?.billing_info.phone_number"
-                name="phoneNumber"
-                class="form-control"
-              />
-              <i
-                *ngIf="!client?.billing_info.phone_number || client?.billing_info.phone_number === 'None'"
-                class="fas fa-exclamation-circle text-danger"
-                title="Informatii obligatorii pentru trimiterea de colete"
-                style="margin-left: 5px; cursor: pointer;"
-              ></i>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="iban">IBAN</label>
+                <input id="iban" [(ngModel)]="client.billing_info.iban" name="iban" class="form-control"/>
+              </div>
+              <div class="form-group mb-3">
+                <label for="phoneNumber">Număr de Telefon</label>
+                <input id="phoneNumber" [(ngModel)]="client.billing_info.phone_number" name="phoneNumber"
+                       class="form-control"/>
+              </div>
+              <div class="form-group mb-3">
+                <label for="ibanHolder">Nume detinator IBAN</label>
+                <input id="ibanHolder" [(ngModel)]="client.billing_info.name" name="ibanHolder" class="form-control"/>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- Persoana Fizica Fields -->
+        <div *ngIf="clientType==='fizica'">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="firstName">Prenume</label>
+                <input id="firstName" [(ngModel)]="client.billing_info.firstName" name="firstName"
+                       class="form-control"/>
+              </div>
+              <div class="form-group mb-3">
+                <label for="lastName">Nume</label>
+                <input id="lastName" [(ngModel)]="client.billing_info.lastName" name="lastName" class="form-control"/>
+              </div>
+              <div class="form-group mb-3">
+                <label for="cnp">CNP</label>
+                <input id="cnp" [(ngModel)]="client.billing_info.cnp" name="cnp" class="form-control"/>
+              </div>
+              <div class="form-group mb-3">
+                <label for="judet">Judet</label>
+                <input id="judet" [(ngModel)]="client.billing_info.judet" name="judet" class="form-control"/>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="oras">Oras</label>
+                <input id="oras" [(ngModel)]="client.billing_info.oras" name="oras" class="form-control"/>
+              </div>
+              <div class="form-group mb-3">
+                <label for="adresa">Adresa</label>
+                <input id="adresa" [(ngModel)]="client.billing_info.adresa" name="adresa" class="form-control"/>
+              </div>
+              <div class="form-group mb-3">
+                <label for="ibanFizica">IBAN</label>
+                <input id="ibanFizica" [(ngModel)]="client.billing_info.iban" name="ibanFizica" class="form-control"/>
+              </div>
+              <div class="form-group mb-3">
+                <label for="phoneNumberFizica">Număr de Telefon</label>
+                <input id="phoneNumberFizica" [(ngModel)]="client.billing_info.phone_number" name="phoneNumberFizica"
+                       class="form-control"/>
+              </div>
+              <div class="form-group mb-3">
+                <label for="ibanHolderFizica">Nume detinator IBAN</label>
+                <input id="ibanHolderFizica" [(ngModel)]="client.billing_info.name" name="ibanHolderFizica"
+                       class="form-control"/>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="text-center mt-3">
           <button type="submit" class="btn btn-success">Salvează</button>
         </div>
-        <!-- Add this to display the list of error messages -->
+
+        <!-- Error messages -->
         <div *ngIf="errorMessages && errorMessages.length > 0" class="alert alert-danger mt-3">
           <ul>
             <li *ngFor="let errorMessage of errorMessages">{{ errorMessage }}</li>
@@ -128,68 +118,37 @@
 
       </form>
 
+      <!-- Non-editable Profile Display -->
       <div *ngIf="!editMode">
-        <div class="row">
-          <div class="col-md-6">
-            <p>
-              <strong>Nume Firmă:</strong> {{ client?.billing_info?.company_name }}
-              <i
-                *ngIf="!client?.billing_info.company_name || client?.billing_info.company_name === 'None'"
-                class="fas fa-exclamation-circle text-danger"
-                title="Informatii obligatorii pentru trimiterea de colete"
-                style="margin-left: 5px; cursor: pointer;"
-              ></i>
-            </p>
-            <p>
-              <strong>CUI:</strong> {{ client?.billing_info.cui }}
-              <i
-                *ngIf="!client?.billing_info.cui || client?.billing_info.cui === 'None'"
-                class="fas fa-exclamation-circle text-danger"
-                title="Informatii obligatorii pentru trimiterea de colete"
-                style="margin-left: 5px; cursor: pointer;"
-              ></i>
-            </p>
-            <p>
-              <strong>Numar de inregistrare (J):</strong> {{ client?.billing_info.registration_number }}
-              <i
-                *ngIf="!client?.billing_info.registration_number || client?.billing_info.registration_number === 'None'"
-                class="fas fa-exclamation-circle text-danger"
-                title="Informatii obligatorii pentru trimiterea de colete"
-                style="margin-left: 5px; cursor: pointer;"
-              ></i>
-            </p>
-            <p><strong>Contract:</strong> {{ client?.billing_info.contract_number }}</p>
+        <div *ngIf="client.billing_info.clientType === 'juridica'">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Nume Firmă:</strong> {{ client.billing_info.company_name }}</p>
+              <p><strong>CUI:</strong> {{ client.billing_info.cui }}</p>
+              <p><strong>Numar de inregistrare (J):</strong> {{ client.billing_info.registration_number }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>IBAN:</strong> {{ client.billing_info.iban }}</p>
+              <p><strong>Număr de Telefon:</strong> {{ client.billing_info.phone_number }}</p>
+              <p><strong>Nume detinator IBAN:</strong> {{ client.billing_info.name }}</p>
+            </div>
           </div>
-          <div class="col-md-6">
-            <p>
-              <strong>Număr de Telefon:</strong> {{ client?.billing_info.phone_number }}
-              <i
-                *ngIf="!client?.billing_info.phone_number || client?.billing_info.phone_number === 'None'"
-                class="fas fa-exclamation-circle text-danger"
-                title="Informatii obligatorii pentru trimiterea de colete"
-                style="margin-left: 5px; cursor: pointer;"
-              ></i>
-            </p>
-            <p>
-              <strong>IBAN:</strong> {{ client?.billing_info.iban }}
-              <i
-                *ngIf="!client?.billing_info.iban || client?.billing_info.iban === 'None'"
-                class="fas fa-exclamation-circle text-danger"
-                title="Informatii obligatorii pentru trimiterea de colete"
-                style="margin-left: 5px; cursor: pointer;"
-              ></i>
-            </p>
-            <p>
-              <strong>Nume detinator IBAN:</strong> {{ client?.billing_info.name }}
-              <i
-                *ngIf="!client?.billing_info.name || client?.billing_info.name === 'None'"
-                class="fas fa-exclamation-circle text-danger"
-                title="Informatii obligatorii pentru trimiterea de colete"
-                style="margin-left: 5px; cursor: pointer;"
-              ></i>
-            </p>
-
-            <p><strong>Rol:</strong> {{ client?.roles?.slice(-1)[0]?.name || 'N/A' }}</p>
+        </div>
+        <div *ngIf="client.billing_info.clientType === 'fizica'">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Prenume:</strong> {{ client.billing_info.firstName }}</p>
+              <p><strong>Nume:</strong> {{ client.billing_info.lastName }}</p>
+              <p><strong>CNP:</strong> {{ client.billing_info.cnp }}</p>
+              <p><strong>Judet:</strong> {{ client.billing_info.judet }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Oras:</strong> {{ client.billing_info.oras }}</p>
+              <p><strong>Adresa:</strong> {{ client.billing_info.adresa }}</p>
+              <p><strong>IBAN:</strong> {{ client.billing_info.iban }}</p>
+              <p><strong>Număr de Telefon:</strong> {{ client.billing_info.phone_number }}</p>
+              <p><strong>Nume detinator IBAN:</strong> {{ client.billing_info.name }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -198,5 +157,8 @@
         <button class="btn btn-danger" (click)="logout()">Deconectează-te</button>
       </div>
     </div>
+
   </div>
 </div>
+
+

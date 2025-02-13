@@ -26,7 +26,7 @@ describe('HeroComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('h1').textContent).toContain(
-      'Angular Sample Project'
+      'Experimentează transportul fără griji cu Serviciile Noastre'
     );
   });
 });
