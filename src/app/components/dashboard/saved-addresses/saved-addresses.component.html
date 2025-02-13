@@ -1,4 +1,10 @@
 <div class="container">
+
+  <!-- Success Message Div, fixed in the middle of the screen -->
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+
   <div class="form-wrapper flex-container">
     <div class="form-column" id="expeditorFormColumn">
 

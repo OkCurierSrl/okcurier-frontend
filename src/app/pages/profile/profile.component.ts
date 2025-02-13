@@ -48,8 +48,8 @@ export class ProfileComponent implements OnInit {
 
     toggleEditMode()
     {
-      this.editMode = !this.editMode; // Clear any previous messages this.errorMessages = []; this.successMessage = ''; }
-
+      this.editMode = !this.editMode; // Clear any previous messages
+      this.errorMessages = [];
     }
 
     onClientTypeChange()

@@ -1,54 +1,79 @@
 <div class="request-form">
-  <h2>Solicita Oferta</h2>
+  <h2>Solicită Oferta</h2>
+
+  <!-- Success Message Div, fixed in the middle of the screen -->
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+
   <form [formGroup]="requestForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="cui">CUI / Denumire societate</label>
-      <input id="cui" formControlName="cui" placeholder="Cui-ul sau Cif-ul companiei tale" />
-      <div *ngIf="requestForm.get('cui').invalid && requestForm.get('cui').touched" class="error">
-        CUI/CIF este obligatoriu.
+      <input id="cui" formControlName="cui" placeholder="Cui-ul sau CIF-ul companiei tale" />
+      <div *ngIf="requestForm.get('cui').touched && requestForm.get('cui').invalid" class="error">
+        {{ getErrorMessage('cui') }}
       </div>
     </div>
 
     <div class="form-group">
-      <label for="contactPerson">Persoana De contact</label>
+      <label for="contactPerson">Persoana de contact</label>
       <input id="contactPerson" formControlName="contactPerson" placeholder="Numele reprezentantului companiei" />
-      <div *ngIf="requestForm.get('contactPerson').invalid && requestForm.get('contactPerson').touched" class="error">
-        Persoana De contact este obligatoriu.
+      <div *ngIf="requestForm.get('contactPerson').touched && requestForm.get('contactPerson').invalid" class="error">
+        {{ getErrorMessage('contactPerson') }}
       </div>
     </div>
 
     <div class="form-group">
       <label for="contactPhone">Telefon Contact</label>
-      <input id="contactPhone" formControlName="contactPhone" placeholder="Numarul de telefon" />
-      <div *ngIf="requestForm.get('contactPhone').invalid && requestForm.get('contactPhone').touched" class="error">
-        Numarul de telefon trebuie sa fie valid.
+      <input id="contactPhone" formControlName="contactPhone" placeholder="Numărul de telefon" />
+      <div *ngIf="requestForm.get('contactPhone').touched && requestForm.get('contactPhone').invalid" class="error">
+        {{ getErrorMessage('contactPhone') }}
       </div>
     </div>
 
     <div class="form-group">
       <label for="email">Adresa de e-mail</label>
       <input id="email" formControlName="email" placeholder="Adresa de email" />
-      <div *ngIf="requestForm.get('email').invalid && requestForm.get('email').touched" class="error">
-        Adresa de e-mail este obligatoriu.
+      <div *ngIf="requestForm.get('email').touched && requestForm.get('email').invalid" class="error">
+        {{ getErrorMessage('email') }}
       </div>
     </div>
 
     <div class="form-group">
-      <label for="packagesPerMonth">Numar colete pe luna</label>
-      <input id="packagesPerMonth" formControlName="packagesPerMonth" placeholder="Numarul estimat de colete trimis in fiecare luna" />
-      <div *ngIf="requestForm.get('packagesPerMonth').invalid && requestForm.get('packagesPerMonth').touched" class="error">
-        Numarul colete pe luna este obligatoriu.
+      <label for="packagesPerMonth">Număr colete pe lună</label>
+      <input id="packagesPerMonth" formControlName="packagesPerMonth" placeholder="Numărul estimat de colete trimise lunar" />
+      <div *ngIf="requestForm.get('packagesPerMonth').touched && requestForm.get('packagesPerMonth').invalid" class="error">
+        {{ getErrorMessage('packagesPerMonth') }}
       </div>
     </div>
 
     <div class="form-group">
       <label for="message">Mesaj</label>
-      <textarea id="message" formControlName="message" placeholder="Detalii aditionale despre cererea dumneavoastra"></textarea>
-      <div *ngIf="requestForm.get('message').invalid && requestForm.get('message').touched" class="error">
-        Mesajul este obligatoriu.
+      <textarea id="message" formControlName="message" placeholder="Detalii adiționale despre cererea dumneavoastră"></textarea>
+      <div *ngIf="requestForm.get('message').touched && requestForm.get('message').invalid" class="error">
+        {{ getErrorMessage('message') }}
       </div>
     </div>
 
-    <button type="submit">Solicita Oferta</button>
+    <div class="form-group">
+      <label for="awbEnvelopes">Număr plicuri AWB</label>
+      <input id="awbEnvelopes" formControlName="awbEnvelopes" placeholder="Numărul de plicuri AWB" />
+      <div *ngIf="requestForm.get('awbEnvelopes').touched && requestForm.get('awbEnvelopes').invalid" class="error">
+        {{ getErrorMessage('awbEnvelopes') }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="awbBags">Număr colete AWB</label>
+      <input id="awbBags" formControlName="awbBags" placeholder="Numărul de colete AWB" />
+      <div *ngIf="requestForm.get('awbBags').touched && requestForm.get('awbBags').invalid" class="error">
+        {{ getErrorMessage('awbBags') }}
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="!requestForm.valid || isLoading">
+      <span *ngIf="!isLoading">Solicită Oferta</span>
+      <span *ngIf="isLoading">Se încarcă...</span>
+    </button>
   </form>
 </div>

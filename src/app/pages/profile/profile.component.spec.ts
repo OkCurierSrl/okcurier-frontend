@@ -144,8 +144,83 @@ describe('ProfileComponent', () => {
     component.saveProfile();
     fixture.detectChanges();
     expect(component.errorMessages.length).toBeGreaterThan(0);
-    expect(component.errorMessages[0]).toContain('persoana juridica');
+    expect(component.errorMessages[0]).toContain('Toate câmpurile pentru persoana juridica sunt obligatorii.');
   });
+
+  it('should display validation errors for juridica when CUI and IBAN formats are invalid', fakeAsync(() => {
+    // Switch to "persoana juridica" mode.
+    component.toggleEditMode();
+    fixture.detectChanges();
+    component.clientType = 'juridica';
+    component.onClientTypeChange();
+    fixture.detectChanges();
+
+    // Fill in required fields with valid values except CUI and IBAN.
+    component.client.billing_info.company_name = 'Valid Company';
+    component.client.billing_info.cui = 'invalidCUI'; // invalid format
+    component.client.billing_info.registration_number = '123456';
+    component.client.billing_info.iban = 'invalidIBAN'; // invalid format
+
+    // Trigger saveProfile.
+    component.saveProfile();
+    tick();
+    fixture.detectChanges();
+
+    // Expect the PUT request.
+    const putReq = httpTestingController.expectOne(req =>
+      req.method === 'PUT' &&
+      req.url.indexOf('/api/client/modify-billingInfo') !== -1 &&
+      req.url.indexOf('email=test@example.com') !== -1
+    );
+    // Simulate a backend response with validation errors.
+    putReq.flush({ cui: 'CUI invalid format', iban: 'IBAN invalid format' }, { status: 400, statusText: 'Bad Request' });
+    tick();
+    fixture.detectChanges();
+
+    // Now verify that the error messages contain the validation messages.
+    expect(component.errorMessages.some(msg => msg.includes('CUI invalid format'))).toBeTrue();
+    expect(component.errorMessages.some(msg => msg.includes('IBAN invalid format'))).toBeTrue();
+  }));
+
+  it('should display validation errors for fizica when CNP and bank account are invalid', fakeAsync(() => {
+    // Switch to "persoana fizica" mode.
+    component.toggleEditMode();
+    fixture.detectChanges();
+    component.clientType = 'fizica';
+    component.onClientTypeChange();
+    fixture.detectChanges();
+
+    // Fill in required fields with valid values except CNP and bank account.
+    component.client.billing_info.firstName = 'John';
+    component.client.billing_info.lastName = 'Doe';
+    component.client.billing_info.cnp = 'invalidCNP'; // invalid format (should be 13 digits with proper algorithm)
+    component.client.billing_info.judet = 'Bucuresti';
+    component.client.billing_info.oras = 'Bucuresti';
+    component.client.billing_info.adresa = 'Some Address';
+    component.client.billing_info.iban = 'invalidIBAN'; // assuming this is used for bank account validation
+    // (Adjust the field name if your component uses a different property name for bank account.)
+
+    // Trigger saveProfile.
+    component.saveProfile();
+    tick();
+    fixture.detectChanges();
+
+    // Expect the PUT request.
+    const putReq = httpTestingController.expectOne(req =>
+      req.method === 'PUT' &&
+      req.url.indexOf('/api/client/modify-billingInfo') !== -1 &&
+      req.url.indexOf('email=test@example.com') !== -1
+    );
+    // Simulate a backend response with validation errors.
+    putReq.flush({ cnp: 'CNP invalid', iban: 'Bank account invalid' }, { status: 400, statusText: 'Bad Request' });
+    tick();
+    fixture.detectChanges();
+
+    // Now verify that the error messages contain the validation messages.
+    expect(component.errorMessages.some(msg => msg.includes('CNP invalid'))).toBeTrue();
+    expect(component.errorMessages.some(msg => msg.includes('Bank account invalid'))).toBeTrue();
+  }));
+
 
   it('should show error messages for "persoana fizica" when required fields are missing', () => {
     component.toggleEditMode();
@@ -166,7 +241,7 @@ describe('ProfileComponent', () => {
     component.saveProfile();
     fixture.detectChanges();
     expect(component.errorMessages.length).toBeGreaterThan(0);
-    expect(component.errorMessages[0]).toContain('persoana fizica');
+    expect(component.errorMessages[0]).toContain('Toate câmpurile pentru persoana fizica sunt obligatorii');
   });
 
   it('should save profile with valid "persoana juridica" data and handle success response', fakeAsync(() => {
@@ -236,13 +311,4 @@ describe('ProfileComponent', () => {
     fixture.detectChanges();
     expect(component.errorMessages).toContain('CUI invalid');
   }));
-
-  // Optionally, you can test logout if needed.
-  // it('should call logout method when logout is triggered', () => {
-  //   const auth = TestBed.inject(AuthService) as FakeAuthService;
-  //   spyOn(auth, 'logout');
-  //   component.logout();
-  //   fixture.detectChanges();
-  //   expect(auth.logout).toHaveBeenCalled();
-  // });
 });

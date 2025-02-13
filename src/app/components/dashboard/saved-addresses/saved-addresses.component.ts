@@ -22,6 +22,7 @@ export class SavedAddressesComponent {
 
   expeditorFormValid: boolean = false;
   shortName: string;
+  successMessage: string;
 
   constructor(private orderService: OrderService, private router: Router) {}
 
@@ -48,8 +49,13 @@ export class SavedAddressesComponent {
 
       this.orderService.saveAddress(data).subscribe(
         response => {
+          this.successMessage = 'Adresa a fost adaugata cu succes';
+          // Clear success message after 3 seconds
+          setTimeout(() => {
+            this.successMessage = '';
+          }, 3000);
+          this.expeditorFormComponent.ngOnInit();
           this.tableComponent.refreshTable();  // Refresh the table component
-          this.router.navigate(['/dashboard/favorite-addresses']);
         },
         error => {
           console.error('Error saving address:', error);
