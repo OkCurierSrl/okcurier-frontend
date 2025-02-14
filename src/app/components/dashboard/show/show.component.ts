@@ -88,11 +88,13 @@ export class ShowComponent implements OnInit {
               private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    console.log('lalalalalalalal')
     // Get the AWB from the route parameters
     this.route.paramMap.subscribe(params => {
       const awb = params.get('awb');
         this.fetchOrderDetails(awb); // Fetch order details using AWB
     });
+    console.log('lalalalalalalal')
   }
 
   fetchOrderDetails(awb: string): void {

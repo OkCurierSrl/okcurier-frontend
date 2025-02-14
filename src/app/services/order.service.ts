@@ -27,7 +27,7 @@ export class OrderService {
 
   trackOrder(awbNumber: string): Observable<TrackingResponse> {
     let url = this.apiUrl + '/api/okcurier/track-order?awb=' + awbNumber;
-    return this.addAuthHeader().pipe(
+    return this.addDefaultHeaders().pipe(
       switchMap(headers => this.http.get<TrackingResponse>(url, { headers }))
     );
   }

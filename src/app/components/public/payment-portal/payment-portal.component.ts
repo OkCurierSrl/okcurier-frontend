@@ -98,11 +98,11 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
         const currentUrl = this.router.url;
         let paymentRoute: string;
         if (currentUrl.startsWith('/dashboard')) {
-          paymentRoute = '/dashboard/confirm-payment';
+          paymentRoute = '/dashboard/track/';
         } else if (currentUrl.startsWith('/admin')) {
-          paymentRoute = '/admin/confirm-payment';
+          paymentRoute = '/admin/track/';
         } else {
-          paymentRoute = '/confirm-payment';
+          paymentRoute = '/track/';
         }
         console.log("placing order...")
 
@@ -110,13 +110,8 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
           next: (response) => {
             // Navigate to confirmation page
             this.downloadService.downloadLabel(response);
-            this.router.navigate([paymentRoute], {
-              queryParams: {
-                email: this.orderData.email,
-                courier: this.courier,
-                orderData: JSON.stringify(this.orderData)
-              },
-            });
+            paymentRoute = paymentRoute + response.awb
+            this.router.navigate([paymentRoute]);
           },
           error: (error) => {
             alert("A aparut o eroare necunoscuta, va rugam incercati din nou")
