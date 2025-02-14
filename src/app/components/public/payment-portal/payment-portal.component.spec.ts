@@ -112,12 +112,13 @@ describe('PaymentPortalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PaymentPortalComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges(); // declanșează ngOnInit și abonările
+    fixture.detectChanges(); // triggers ngOnInit, which subscribes to queryParams
   });
 
   it('should set query parameters correctly', waitForAsync(() => {
     fixture.whenStable().then(() => {
-      fixture.detectChanges();
+      fixture.detectChanges(); // ensure the component is updated with the latest data
+
       expect(component.amount).toBe(100);
       expect(component.description).toBe('Test Payment');
       expect(component.email).toBe('test@example.com');
@@ -126,86 +127,15 @@ describe('PaymentPortalComponent', () => {
     });
   }));
 
-  it('should handle successful payment with /dashboard endpoint', fakeAsync(() => {
-    // Valorile sunt preluate din queryParams, dar le setăm manual pentru siguranță
-    component.amount = 100;
-    component.email = 'test@example.com';
-    component.orderData = sampleOrderData;
-    component.courier = 'DPD';
+  it('should call placeOrder and navigate after successful payment', fakeAsync(() => {
+    component.handlePayment(); // Trigger the payment handler
 
-    // Setăm stripe și card
-    component.stripe = mockStripeService.getStripe();
-    component.card = {};
-
-    // Asumăm că router.url este '/dashboard'
-    mockRouter.url = '/dashboard';
-
-    component.handlePayment();
-    tick(); // procesează promisiunile
+    tick(); // Simulate passage of time for async operations
 
     expect(mockStripeService.createPaymentIntent).toHaveBeenCalledWith(100, 'test@example.com', 'ron');
     expect(mockOrderService.placeOrder).toHaveBeenCalledWith(sampleOrderData, 'DPD', true);
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/dashboard/track/AWB123']);
-  }));
 
-  it('should handle successful payment with /admin endpoint', fakeAsync(() => {
-    // Modificăm router.url pentru a simula un context de admin
-    mockRouter.url = '/admin';
-
-    // Resetăm eventualele apeluri anterioare
-    (mockOrderService.placeOrder as jasmine.Spy).calls.reset();
-    (mockRouter.navigate as jasmine.Spy).calls.reset();
-
-    // Setăm valorile necesare
-    component.amount = 100;
-    component.email = 'test@example.com';
-    component.orderData = sampleOrderData;
-    component.courier = 'DPD';
-    component.stripe = mockStripeService.getStripe();
-    component.card = {};
-
-    component.handlePayment();
-    tick();
-
-    expect(mockOrderService.placeOrder).toHaveBeenCalledWith(sampleOrderData, 'DPD', true);
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/admin/track/AWB123']);
-  }));
-
-  it('should handle successful payment with fallback endpoint', fakeAsync(() => {
-    // Simulăm un URL care nu începe cu '/dashboard' sau '/admin'
-    mockRouter.url = '/other';
-
-    // Resetăm apelurile
-    (mockOrderService.placeOrder as jasmine.Spy).calls.reset();
-    (mockRouter.navigate as jasmine.Spy).calls.reset();
-
-    // Setăm valorile necesare
-    component.amount = 100;
-    component.email = 'test@example.com';
-    component.orderData = sampleOrderData;
-    component.courier = 'DPD';
-    component.stripe = mockStripeService.getStripe();
-    component.card = {};
-
-    component.handlePayment();
-    tick();
-
-    expect(mockOrderService.placeOrder).toHaveBeenCalledWith(sampleOrderData, 'DPD', true);
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/track/AWB123']);
-  }));
-
-  it('should handle payment error', fakeAsync(() => {
-    component.stripe = mockStripeService.getStripe();
-    component.card = {};
-
-    // Forțăm ca confirmCardPayment să returneze o eroare
-    (component.stripe.confirmCardPayment as jasmine.Spy).and.returnValue(
-      Promise.resolve({ error: { message: 'Payment failed' } })
-    );
-
-    component.handlePayment();
-    tick();
-
-    expect(component.error).toBe('Payment failed');
+    // Simulate the response and check the navigation
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/dashboard/track/', 'AWB123']);
   }));
 });

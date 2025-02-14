@@ -104,7 +104,6 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
         } else {
           paymentRoute = '/track/';
         }
-        console.log("placing order...")
 
         this.orderService.placeOrder(this.orderData, this.courier, true).subscribe({
           next: (response) => {
