@@ -353,7 +353,7 @@ export class OrderFormComponent implements OnInit {
   selectFavoriteAddress(suggestion: Address): void {
     this.isSavedAddress = true;
     this.orderForm.patchValue({
-      email: "dumitrachegeanigabriel@gmail.com",
+      email: undefined,
       name: suggestion.name,
       phone1: suggestion.phone1,
       phone2: suggestion.phone2 || '',

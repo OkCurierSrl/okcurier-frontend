@@ -42,4 +42,17 @@ export class RoleService {
       })
     );
   }
+
+  getEmail(): Observable<string> {
+    return this.auth.getAccessTokenSilently().pipe(
+      switchMap((token) => {
+        if (!token) {
+          return of('');
+        }
+        const decodedToken = this.jwtHelper.decodeToken(token);
+        const roles = decodedToken['https://mynamespace.com/email'] as string;
+        return of(roles);
+      })
+    );
+  }
 }

@@ -22,6 +22,8 @@ import {AuthService} from "@auth0/auth0-angular";
 import {Client} from "../../../model/client";
 import {ClientService} from "../../../services/client.service";
 import {OrderData} from "../../../model/order-data";
+import {auth} from "express-oauth2-jwt-bearer";
+import {RoleService} from "../../../services/role-service.service";
 
 
 @Component({
@@ -60,6 +62,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   isProfileComplete: boolean = true;
   iban: any;
   detinatorIban: any;
+  private email: string;
 
   constructor(private fb: FormBuilder,
               private renderer: Renderer2,
@@ -67,10 +70,17 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
               private priceCalculationService: PriceCalculationService,
               private auth: AuthService,
               private clientService: ClientService,
+              private roleService: RoleService,
               private router: Router) {
     this.auth.isAuthenticated$.subscribe((loggedIn,) => {
       this.isLoggedIn = loggedIn;
     });
+    this.roleService.getEmail().subscribe(
+      (email) => {
+        this.email = email;
+        console.log('email is ', email)
+      }
+    )
   }
 
   ngOnInit(): void {
@@ -93,6 +103,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
         console.log('User is not authenticated. Skipping isProfileCompleted check.');
       }
     });
+
     this.addPackage(); // Initialize with one package
   }
 
@@ -214,7 +225,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       const packagesData = this.courierPackages.map(pkg => pkg.form.getRawValue());
 
       const orderData: OrderData = {
-        email: expeditorData.email,
+        email: expeditorData.email? expeditorData.email : this.email,
         pickupDate: undefined,
         price: undefined,
         expeditor: expeditorData,

@@ -31,6 +31,39 @@ export class CourierOptionsNewComponent implements OnInit {
   ) {
   }
 
+  ngOnInit(): void {
+    console.log('heroooooo')
+    this.route.queryParams.subscribe(params => {
+      if (params['couriers']) {
+        this.couriers = JSON.parse(params['couriers']);
+      }
+      if (params['orderData']) {
+        this.orderData = JSON.parse(params['orderData']);
+        console.log('Order Data:', this.orderData);
+      }
+      if (params['origin']) {
+        this.origin = params['origin'];
+        console.log('origin :', this.origin);
+
+      }
+    });
+
+    // Subscribe to authentication status and, if logged in, check the contract flag.
+    this.auth.isAuthenticated$.subscribe(isAuth => {
+      this.isAuthenticated = isAuth;
+      if (isAuth) {
+        this.clientService.hasContract().subscribe(
+          (flag: boolean) => {
+            this.hasContract = flag;
+          },
+          error => {
+            console.error('Error checking contract flag', error);
+          }
+        );
+      }
+    });
+  }
+
   /**
    * "Comandă Curier" handler.
    * For authenticated users:
@@ -97,7 +130,6 @@ export class CourierOptionsNewComponent implements OnInit {
       });
     }
   }
-
   generateAWB(): void {
     const selected = this.couriers.find(c => c.selected);
     if (!selected) {
@@ -114,38 +146,6 @@ export class CourierOptionsNewComponent implements OnInit {
         console.error('Error generating AWB:', error);
       },
       complete: () => console.log('AWB generation completed')
-    });
-  }
-  ngOnInit(): void {
-    console.log('heroooooo')
-    this.route.queryParams.subscribe(params => {
-      if (params['couriers']) {
-        this.couriers = JSON.parse(params['couriers']);
-      }
-      if (params['orderData']) {
-        this.orderData = JSON.parse(params['orderData']);
-        console.log('Order Data:', this.orderData);
-      }
-      if (params['origin']) {
-        this.origin = params['origin'];
-        console.log('origin :', this.origin);
-
-      }
-    });
-
-    // Subscribe to authentication status and, if logged in, check the contract flag.
-    this.auth.isAuthenticated$.subscribe(isAuth => {
-      this.isAuthenticated = isAuth;
-      if (isAuth) {
-        this.clientService.hasContract().subscribe(
-          (flag: boolean) => {
-            this.hasContract = flag;
-          },
-          error => {
-            console.error('Error checking contract flag', error);
-          }
-        );
-      }
     });
   }
 
