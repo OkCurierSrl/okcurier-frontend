@@ -26,6 +26,8 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
   email: string;
   courier: string;
   orderData: OrderData;
+  isLoading: boolean;
+  isDisabled: boolean;
 
   constructor(private stripeService: StripeService,
               private route: ActivatedRoute,
@@ -82,19 +84,22 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
   }
 
   async handlePayment(): Promise<void> {
+    this.isLoading = true;
+    this.isDisabled = true;
     try {
-      const response = await this.stripeService.createPaymentIntent(this.amount, this.email, 'ron');
-      const clientSecret = response.clientSecret;
+      // Create Payment Intent and confirm payment with Stripe
+      const paymentIntentResponse = await this.stripeService.createPaymentIntent(this.amount, this.email, 'ron');
+      const clientSecret = paymentIntentResponse.clientSecret;
 
       const { error } = await this.stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: this.card,
-        },
+        payment_method: { card: this.card },
       });
 
       if (error) {
         this.error = error.message;
+        this.isLoading = false;
       } else {
+        // Determine the correct payment route based on current URL
         const currentUrl = this.router.url;
         let paymentRoute: string;
         if (currentUrl.startsWith('/dashboard')) {
@@ -105,27 +110,35 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
           paymentRoute = '/track/';
         }
 
+        // Call orderService.placeOrder. The place-order call itself takes ~2.5 seconds.
         this.orderService.placeOrder(this.orderData, this.courier, true).subscribe({
           next: (response) => {
-            // Navigate to confirmation page
-            this.downloadService.downloadLabel(response);
-            paymentRoute = paymentRoute + response.awb
+            // Immediately navigate to the confirmation page
+            paymentRoute = paymentRoute + response.awb;
             this.router.navigate([paymentRoute]);
+
+            // Trigger the download asynchronously (fire-and-forget)
+            setTimeout(() => {
+              this.downloadService.downloadLabel(response);
+            }, 0);
           },
           error: (error) => {
-            alert("A aparut o eroare necunoscuta, va rugam incercati din nou")
+            alert("A apărut o eroare necunoscută, vă rugăm încercați din nou");
             console.error('Error generating AWB:', error);
+            this.isLoading = false;
           },
           complete: () => {
+            // Stop showing the loading spinner as soon as order generation is done
+            this.isLoading = false;
             console.log('AWB generation completed');
           },
         });
-
       }
     } catch (err) {
       this.error = 'An error occurred during payment processing. Please try again.';
       console.error(err);
       alert(err);
+      this.isLoading = false;
     }
   }
 }
