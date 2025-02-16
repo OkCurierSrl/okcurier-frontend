@@ -50,4 +50,41 @@ body {
   animation: fadeOut 3s forwards;
 }
 
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
 
+/* Spinner styles can be the same as above */
+.spinner {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 15px;
+}
+
+.spinner-logo {
+  width: 100px;
+  height: 100px;
+  animation: spin 1s linear infinite;
+  border-radius: 50%;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

@@ -1,5 +1,13 @@
 <div class="courier-options">
   <h5>Alegeți una din ofertele de mai jos:</h5>
+
+  <!-- Loading overlay -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <img src="assets/logo.png" alt="Loading Logo" class="spinner-logo">
+    <div class="spinner"></div>
+    <p>Se încarcă...</p>
+  </div>
+
   <div *ngFor="let courier of couriers"
        class="courier-option"
        [ngClass]="{'selected': courier.selected}"
@@ -10,8 +18,7 @@
     <div class="courier-details">
       <img [src]="getCourierLogo(courier.courier)" alt="{{ courier.courier }} logo">
       <span class="price">
-        {{ courier.totalPrice.toFixed(2) }} RON
-        <i class="fas fa-money-bill-wave"></i>
+        {{ courier.totalPrice.toFixed(2) }} RON <i class="fas fa-money-bill-wave"></i>
       </span>
     </div>
     <div class="courier-info">
@@ -29,19 +36,10 @@
   </div>
 
   <div class="actions">
-    <!-- Show the "Generează AWB" button only if:
-         - the user is authenticated and has a contract,
-         - and the selected courier is not GLS or Sameday. -->
-    <button class="btn btn-primary"
-            *ngIf="isContractFlow() && !isGlsOrSamedaySelected()"
-            (click)="generateAWB()">
+    <button class="btn btn-primary" *ngIf="isContractFlow() && !isGlsOrSamedaySelected()" (click)="generateAWB()">
       Generează AWB
     </button>
-    <button class="btn btn-primary" (click)="orderCourier()">
-      Comandă Curier
-    </button>
-    <button class="btn btn-secondary" (click)="goBack()">
-      Înapoi
-    </button>
+    <button class="btn btn-primary" (click)="orderCourier()">Comandă Curier</button>
+    <button class="btn btn-secondary" (click)="goBack()">Înapoi</button>
   </div>
 </div>

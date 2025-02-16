@@ -1,35 +1,37 @@
 <div class="order-list-container">
   <h2>Lista cu AWB</h2>
+
   <div class="order-list-actions">
-    <button (click)="requestCourierPickup()">Cheama curierii!</button>
+    <button (click)="requestCourierPickup()">Cheamă curierii!</button>
     <button (click)="exportExcel()">Export excel</button>
     <app-date-picker-dialog
       *ngIf="showDialog"
       (confirm)="onDialogConfirm($event)"
       (cancel)="onDialogCancel()"
     ></app-date-picker-dialog>
-
   </div>
-  <div class="table-responsive">
+
+  <div class="table-container" style="position: relative;">
+    <div class="table-responsive">
     <table class="order-list-table">
       <thead>
       <tr>
         <th>Sel</th>
-        <th>Numar AWB</th>
+        <th>Număr AWB</th>
         <th>Curier</th>
         <th>Nume Expeditor</th>
-        <th>Adresa Expeditor</th>
+        <th>Adresă Expeditor</th>
         <th>Nume Destinatar</th>
-        <th>Adresa Destinatar</th>
+        <th>Adresă Destinatar</th>
         <th>Data Creare</th>
         <th>Data Ridicare</th>
         <th>IBAN</th>
-        <th>Numar Comanda</th>
-        <th>Numar Colete</th>
+        <th>Număr Comandă</th>
+        <th>Număr Colete</th>
         <th>Greutate</th>
         <th>Ramburs</th>
         <th>Status</th>
-        <th>Actiuni</th>
+        <th>Acțiuni</th>
       </tr>
       <tr>
         <th></th>
@@ -51,14 +53,19 @@
         <th><input type="text" [(ngModel)]="filter.weight"></th>
         <th><input type="text" [(ngModel)]="filter.cashOnDelivery"></th>
         <th><input type="text" [(ngModel)]="filter.status"></th>
-        <th><button class="btn-action" (click)="filterChange()">Filtreaza</button></th>
+        <th><button class="btn-action" (click)="filterChange()">Filtrează</button></th>
       </tr>
       </thead>
       <tbody>
+      <!-- Spinner overlay for table content -->
+      <div class="table-loading-overlay" *ngIf="isLoading">
+        <div class="spinner">
+          <img src="assets/logo.png" alt="Loading Logo" class="spinner-logo">
+        </div>
+        <p>Se încarcă...</p>
+      </div>
       <ng-container *ngFor="let order of filteredOrders">
-        <tr
-          [class.roll-green]="order.status === 'COMANDA_TRIMISA'"
-        >
+        <tr [ngClass]="{'roll-green': order.status === 'COMANDA_TRIMISA'}">
           <td>
             <input *ngIf="awbGenerat(order.status)" type="checkbox" [(ngModel)]="order.isSelected" />
           </td>
@@ -99,5 +106,6 @@
       </button>
     </ng-container>
     <button class="btn btn-pagination" (click)="nextPage()">Next »</button>
+  </div>
   </div>
 </div>
