@@ -40,7 +40,7 @@ export class FileUploadComponent {
         formData.append('files', file, file.name);
       });
 
-      this.uploadService.uploadFiles(formData)
+      this.uploadService.uploadFiles(formData, this.sendEmails)
         .subscribe({
           next: (taskId) => {
             this.taskId = taskId;
@@ -55,6 +55,7 @@ export class FileUploadComponent {
     }
   }
   private stopPolling = new Subject<void>();
+  sendEmails: boolean;
 
   startPollingStatus(taskId: string): void {
     this.processing = true;

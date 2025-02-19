@@ -16,10 +16,10 @@ export class UploadService {
               private auth: AuthService) {
   }
 
-  uploadFiles(formData: FormData): Observable<string> {
+  uploadFiles(formData: FormData, sendEmails: boolean): Observable<string> {
     console.log('uploading files')
     return this.addAuthHeader().pipe(
-      switchMap(headers => this.http.post<string>(`${this.apiUrl}/process-files`, formData, {headers}))
+      switchMap(headers => this.http.post<string>(`${this.apiUrl}/process-files/${sendEmails}`, formData, {headers}))
     );
   }
 

@@ -1,5 +1,5 @@
 <div class="container">
-        <h2>Introduceti fisierele excel pentru cei 5 curieri (in orice ordine)</h2>
+        <h2>Introduceti fisierele excel pentru cei 4 curieri</h2>
         <form (ngSubmit)="onSubmit($event)" enctype="multipart/form-data">
           <div class="form-group">
             <label for="dpdFile">Select DPD Excel File:</label>
@@ -18,7 +18,7 @@
               type="file"
               id="glsFile"
               name="glsFile"
-              (change)="onFileSelected($event,'dpd.xlsx')"
+              (change)="onFileSelected($event,'gls.xlsx')"
               class="form-control"
               accept=".xlsx, .xls"
             />
@@ -29,7 +29,7 @@
               type="file"
               id="samedayFile"
               name="samedayFile"
-              (change)="onFileSelected($event,'dpd.xlsx')"
+              (change)="onFileSelected($event,'sameday.xlsx')"
               class="form-control"
               accept=".xlsx, .xls"
             />
@@ -40,26 +40,21 @@
               type="file"
               id="cargusFile"
               name="cargusFile"
-              (change)="onFileSelected($event,'dpd.xlsx')"
+              (change)="onFileSelected($event,'cargus.xlsx')"
               class="form-control"
               accept=".xlsx, .xls"
             />
           </div>
-          <div class="form-group">
-            <label for="otherFile">Select Other Courier Excel File:</label>
-            <input
-              type="file"
-              id="otherFile"
-              name="otherFile"
-              (change)="onFileSelected($event,'dpd.xlsx')"
-              class="form-control"
-              accept=".xlsx, .xls"
-            />
+<!--          add a checkbox to send or not to send emails to customers -->
+          <div>
+          <label for="sendEmails">
+            <input type="checkbox" id="sendEmails" [(ngModel)]="sendEmails" name="sendEmails">
+            Send email notifications to customers? <small>(If not, staff will receive emails)</small>
+          </label>
           </div>
           <button
             type="submit"
             class="btn btn-primary"
-            [disabled]="!selectedFiles.length"
           >
             Upload Files
           </button>
