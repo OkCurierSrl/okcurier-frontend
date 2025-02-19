@@ -24,10 +24,10 @@ export class FileUploadComponent {
 
   constructor(private uploadService: UploadService) {}
 
-  onFileSelected(event: Event): void {
+  onFileSelected(event: Event, fileName: string): void {
     const input = event.target as HTMLInputElement;
-    if (input.files) {
-      this.selectedFiles = Array.from(input.files);
+    if (input.files.length > 0) {
+      this.selectedFiles[fileName] = input.files[0];
     }
   }
 

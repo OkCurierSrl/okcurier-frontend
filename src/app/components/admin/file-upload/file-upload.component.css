@@ -7,19 +7,15 @@
   height: 80vh; /* Adjusts the vertical centering */
 }
 
+label {
+  color: whitesmoke;
+  font-size: 24px;
+}
+
 h2 {
   color: whitesmoke;
 }
-/*!* Style the input field *!*/
-/*input {*/
-/*  padding: 15px 15px 20px;*/
-/*  font-size: 20px;*/
-/*  border: 2px solid #007bff;*/
-/*  border-radius: 8px;*/
-/*  outline: none;*/
-/*  transition: all 0.3s ease;*/
-/*  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);*/
-/*}*/
+/* Style the input field */
 
 /* Add focus effects */
 input:focus {

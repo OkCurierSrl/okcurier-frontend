@@ -1,27 +1,70 @@
 <div class="container">
-  <h2>Introduceti fisierele excel pentru cei 5 curieri (in orice ordine)</h2>
-  <form (ngSubmit)="onSubmit($event)" enctype="multipart/form-data">
-    <div class="form-group">
-      <label for="files">Select Excel Files:</label>
-      <input
-        type="file"
-        id="files"
-        name="files"
-        (change)="onFileSelected($event)"
-        multiple
-        class="form-control"
-        accept=".xlsx, .xls"
-      />
-    </div>
-    <button
-      type="submit"
-      class="btn btn-primary"
-      [disabled]="!selectedFiles.length"
-    >
-      Upload Files
-    </button>
-  </form>
-  <div *ngIf="responseMessage" class="alert alert-info mt-3">
-    {{ responseMessage }}
-  </div>
-</div>
+        <h2>Introduceti fisierele excel pentru cei 5 curieri (in orice ordine)</h2>
+        <form (ngSubmit)="onSubmit($event)" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="dpdFile">Select DPD Excel File:</label>
+            <input
+              type="file"
+              id="dpdFile"
+              name="dpdFile"
+              (change)="onFileSelected($event, 'dpd.xlsx')"
+              class="form-control"
+              accept=".xlsx, .xls"
+            />
+          </div>
+          <div class="form-group">
+            <label for="glsFile">Select GLS Excel File:</label>
+            <input
+              type="file"
+              id="glsFile"
+              name="glsFile"
+              (change)="onFileSelected($event,'dpd.xlsx')"
+              class="form-control"
+              accept=".xlsx, .xls"
+            />
+          </div>
+          <div class="form-group">
+            <label for="samedayFile">Select Sameday Excel File:</label>
+            <input
+              type="file"
+              id="samedayFile"
+              name="samedayFile"
+              (change)="onFileSelected($event,'dpd.xlsx')"
+              class="form-control"
+              accept=".xlsx, .xls"
+            />
+          </div>
+          <div class="form-group">
+            <label for="cargusFile">Select Cargus Excel File:</label>
+            <input
+              type="file"
+              id="cargusFile"
+              name="cargusFile"
+              (change)="onFileSelected($event,'dpd.xlsx')"
+              class="form-control"
+              accept=".xlsx, .xls"
+            />
+          </div>
+          <div class="form-group">
+            <label for="otherFile">Select Other Courier Excel File:</label>
+            <input
+              type="file"
+              id="otherFile"
+              name="otherFile"
+              (change)="onFileSelected($event,'dpd.xlsx')"
+              class="form-control"
+              accept=".xlsx, .xls"
+            />
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="!selectedFiles.length"
+          >
+            Upload Files
+          </button>
+        </form>
+        <div *ngIf="responseMessage" class="alert alert-info mt-3">
+          {{ responseMessage }}
+        </div>
+      </div>

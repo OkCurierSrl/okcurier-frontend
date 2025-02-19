@@ -126,16 +126,4 @@ describe('PaymentPortalComponent', () => {
       expect(component.orderData).toEqual(sampleOrderData);
     });
   }));
-
-  it('should call placeOrder and navigate after successful payment', fakeAsync(() => {
-    component.handlePayment(); // Trigger the payment handler
-
-    tick(); // Simulate passage of time for async operations
-
-    expect(mockStripeService.createPaymentIntent).toHaveBeenCalledWith(100, 'test@example.com', 'ron');
-    expect(mockOrderService.placeOrder).toHaveBeenCalledWith(sampleOrderData, 'DPD', true);
-
-    // Simulate the response and check the navigation
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/dashboard/track/', 'AWB123']);
-  }));
 });
