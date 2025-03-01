@@ -40,6 +40,7 @@ export class NavBarComponent {
   faPowerOff = faPowerOff;
   isNavOpen: boolean = false;
 
+
   constructor(
     public auth: AuthService,
     private roleService: RoleService,

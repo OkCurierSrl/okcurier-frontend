@@ -1,65 +1,86 @@
 <div class="container">
-        <h2>Introduceti fisierele excel pentru cei 4 curieri</h2>
-        <form (ngSubmit)="onSubmit($event)" enctype="multipart/form-data">
-          <div class="form-group">
-            <label for="dpdFile">Select DPD Excel File:</label>
-            <input
-              type="file"
-              id="dpdFile"
-              name="dpdFile"
-              (change)="onFileSelected($event, 'dpd.xlsx')"
-              class="form-control"
-              accept=".xlsx, .xls"
-            />
-          </div>
-          <div class="form-group">
-            <label for="glsFile">Select GLS Excel File:</label>
-            <input
-              type="file"
-              id="glsFile"
-              name="glsFile"
-              (change)="onFileSelected($event,'gls.xlsx')"
-              class="form-control"
-              accept=".xlsx, .xls"
-            />
-          </div>
-          <div class="form-group">
-            <label for="samedayFile">Select Sameday Excel File:</label>
-            <input
-              type="file"
-              id="samedayFile"
-              name="samedayFile"
-              (change)="onFileSelected($event,'sameday.xlsx')"
-              class="form-control"
-              accept=".xlsx, .xls"
-            />
-          </div>
-          <div class="form-group">
-            <label for="cargusFile">Select Cargus Excel File:</label>
-            <input
-              type="file"
-              id="cargusFile"
-              name="cargusFile"
-              (change)="onFileSelected($event,'cargus.xlsx')"
-              class="form-control"
-              accept=".xlsx, .xls"
-            />
-          </div>
-<!--          add a checkbox to send or not to send emails to customers -->
-          <div>
-          <label for="sendEmails">
-            <input type="checkbox" id="sendEmails" [(ngModel)]="sendEmails" name="sendEmails">
-            Send email notifications to customers? <small>(If not, staff will receive emails)</small>
-          </label>
-          </div>
-          <button
-            type="submit"
-            class="btn btn-primary"
-          >
-            Upload Files
-          </button>
-        </form>
-        <div *ngIf="responseMessage" class="alert alert-info mt-3">
-          {{ responseMessage }}
-        </div>
-      </div>
+  <h2>Introduceti fisierele excel pentru cei 4 curieri</h2>
+  <form (ngSubmit)="onSubmit($event)" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="dpdFile">Select DPD Excel File:</label>
+      <input
+        type="file"
+        id="dpdFile"
+        name="dpdFile"
+        (change)="onFileSelected($event, 'dpd.xlsx')"
+        class="form-control"
+        accept=".xlsx, .xls"
+      />
+    </div>
+    <div class="form-group">
+      <label for="glsFile">Select GLS Excel File:</label>
+      <input
+        type="file"
+        id="glsFile"
+        name="glsFile"
+        (change)="onFileSelected($event, 'gls.xlsx')"
+        class="form-control"
+        accept=".xlsx, .xls"
+      />
+    </div>
+    <div class="form-group">
+      <label for="samedayFile">Select Sameday Excel File:</label>
+      <input
+        type="file"
+        id="samedayFile"
+        name="samedayFile"
+        (change)="onFileSelected($event, 'sameday.xlsx')"
+        class="form-control"
+        accept=".xlsx, .xls"
+      />
+    </div>
+    <div class="form-group">
+      <label for="cargusFile">Select Cargus Excel File:</label>
+      <input
+        type="file"
+        id="cargusFile"
+        name="cargusFile"
+        (change)="onFileSelected($event, 'cargus.xlsx')"
+        class="form-control"
+        accept=".xlsx, .xls"
+      />
+    </div>
+    <div>
+      <label for="sendEmails">
+        <input type="checkbox" id="sendEmails" [(ngModel)]="sendEmails" name="sendEmails">
+        Send email notifications to customers? <small>(If not, staff will receive emails)</small>
+      </label>
+    </div>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="uploading || processing || Object.keys(selectedFiles).length === 0"
+    >
+      Upload Files
+    </button>
+  </form>
+  <div *ngIf="responseMessage" class="alert alert-info mt-3">
+    {{ responseMessage }}
+  </div>
+
+  <div class="progress-section" *ngIf="uploading || processing">
+    <p-progressBar
+      [value]="uploadProgress"
+      [showValue]="true"
+      *ngIf="uploading"
+    ></p-progressBar>
+    <p-progressBar
+      mode="indeterminate"
+      *ngIf="processing"
+    ></p-progressBar>
+  </div>
+
+  <button
+    pButton
+    type="button"
+    *ngIf="uploading || processing"
+    (click)="cancelOperation()"
+    label="Cancel"
+    class="p-button-secondary"
+  ></button>
+</div>
