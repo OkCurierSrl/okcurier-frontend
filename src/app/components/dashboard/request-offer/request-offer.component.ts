@@ -37,8 +37,6 @@ export class RequestOfferComponent implements OnInit {
       contactPerson: ['', Validators.required],
       contactPhone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      awbEnvelopes: ['', Validators.required],
-      awbBags: ['', Validators.required]
     });
   }
 
@@ -59,10 +57,6 @@ export class RequestOfferComponent implements OnInit {
             return 'Telefonul de contact este obligatoriu.';
           case 'email':
             return 'Adresa de e-mail este obligatorie.';
-          case 'awbEnvelopes':
-            return 'Numărul de plicuri AWB este obligatoriu.';
-          case 'awbBags':
-            return 'Numărul de colete AWB este obligatoriu.';
           default:
             return 'Acest câmp este obligatoriu.';
         }
@@ -80,31 +74,31 @@ export class RequestOfferComponent implements OnInit {
       const formData = this.requestForm.value;
       const emailData = {
         to: 'contact@okcurier.ro',
-        subject: 'Request for Materials',
+        subject: 'Solicitare Ofertă Nouă',
         body: `
-          Contact Person: ${formData.contactPerson}
-          Contact Phone: ${formData.contactPhone}
+          CUI / Denumire societate: ${formData.cui}
+          Persoană de contact: ${formData.contactPerson}
+          Telefon contact: ${formData.contactPhone}
           Email: ${formData.email}
-          AWB Envelopes: ${formData.awbEnvelopes}
-          AWB Bags: ${formData.awbBags}
+          Număr colete pe lună: ${formData.packagesPerMonth}
+          Mesaj: ${formData.message}
         `
       };
 
       this.emailService.sendEmail(emailData).subscribe(response => {
-        console.log('Email sent successfully:', response);
+        console.log('Email trimis cu succes:', response);
         this.isLoading = false;
-        this.successMessage = 'Email trimis cu succes!';
-        // Clear success message after 3 seconds
+        this.successMessage = 'Vă mulțumim pentru solicitare, veți fi contactat în cel mai scurt timp de echipa OkCurier';
         setTimeout(() => {
           this.successMessage = '';
           this.initForm();
-        }, 3000);
+        }, 6000);
       }, error => {
-        console.error('Error sending email:', error);
+        console.error('Eroare la trimiterea emailului:', error);
         this.isLoading = false;
       });
     } else {
-      console.log('Form is invalid');
+      console.log('Formularul nu este valid');
       this.requestForm.markAllAsTouched();
     }
   }

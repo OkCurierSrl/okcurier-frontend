@@ -1,46 +1,61 @@
 <div class="request-form">
   <h2>Solicita Materiale</h2>
+
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+
   <form [formGroup]="requestForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="name">Nume</label>
       <input id="name" formControlName="name" placeholder="Adauga numele" />
-      <div *ngIf="requestForm.get('name').invalid && requestForm.get('name').touched" class="error">
-        Numele este obligatoriu.
+      <div *ngIf="requestForm.get('name').touched" class="error">
+        {{ getErrorMessage('name') }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" placeholder="Adauga email" />
+      <div *ngIf="requestForm.get('email').touched" class="error">
+        {{ getErrorMessage('email') }}
       </div>
     </div>
 
     <div class="form-group">
       <label for="address">Adresa</label>
       <input id="address" formControlName="address" placeholder="Adauga adresa" />
-      <div *ngIf="requestForm.get('address').invalid && requestForm.get('address').touched" class="error">
-        Adresa este obligatorie.
+      <div *ngIf="requestForm.get('address').touched" class="error">
+        {{ getErrorMessage('address') }}
       </div>
     </div>
 
     <div class="form-group">
       <label for="phone">Telefon</label>
       <input id="phone" formControlName="phone" placeholder="Adauga numarul de telefon" />
-      <div *ngIf="requestForm.get('phone').invalid && requestForm.get('phone').touched" class="error">
-        Numarul de telefon trebuie sa fie valid.
+      <div *ngIf="requestForm.get('phone').touched" class="error">
+        {{ getErrorMessage('phone') }}
       </div>
     </div>
 
     <div class="form-group">
-      <label for="numEnvelopes">Numar plicuri AWB</label>
-      <input type=number id="numEnvelopes" formControlName="numEnvelopes" placeholder="Adauga numarul de plicuri AWB" />
-      <div *ngIf="requestForm.get('numEnvelopes').invalid && requestForm.get('numEnvelopes').touched" class="error">
-        Numarul de plicuri trebuie sa fie cel mult 100/numarul de trimiteri pe luna precedenta.
+      <label for="numEnvelopes">Pungi colete</label>
+      <input type="number" id="numEnvelopes" formControlName="numEnvelopes" placeholder="Adauga numarul de pungi de colete AWB" />
+      <div *ngIf="requestForm.get('numEnvelopes').touched" class="error">
+        {{ getErrorMessage('numEnvelopes') }}
       </div>
     </div>
 
     <div class="form-group">
-      <label for="numBags">Numar pungi AWB</label>
-      <input type=number id="numBags" formControlName="numBags" placeholder="Adauga numarul de pungi AWB" />
-      <div *ngIf="requestForm.get('numBags').invalid && requestForm.get('numBags').touched" class="error">
-        Numarul de pungi trebuie sa fie cel mult 100/numarul de trimiteri pe luna precedenta.
+      <label for="numBags">Plic pentru AWB</label>
+      <input type="number" id="numBags" formControlName="numBags" placeholder="Adauga numarul de plicuri AWB" />
+      <div *ngIf="requestForm.get('numBags').touched" class="error">
+        {{ getErrorMessage('numBags') }}
       </div>
     </div>
 
-    <button type="submit">Trimite</button>
+    <button type="submit" [disabled]="isLoading">
+      {{ isLoading ? 'Se trimite...' : 'Trimite' }}
+    </button>
   </form>
 </div>

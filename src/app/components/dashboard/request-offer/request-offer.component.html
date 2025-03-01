@@ -55,22 +55,6 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="awbEnvelopes">Număr plicuri AWB</label>
-      <input id="awbEnvelopes" formControlName="awbEnvelopes" placeholder="Numărul de plicuri AWB" />
-      <div *ngIf="requestForm.get('awbEnvelopes').touched && requestForm.get('awbEnvelopes').invalid" class="error">
-        {{ getErrorMessage('awbEnvelopes') }}
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="awbBags">Număr colete AWB</label>
-      <input id="awbBags" formControlName="awbBags" placeholder="Numărul de colete AWB" />
-      <div *ngIf="requestForm.get('awbBags').touched && requestForm.get('awbBags').invalid" class="error">
-        {{ getErrorMessage('awbBags') }}
-      </div>
-    </div>
-
     <button type="submit" [disabled]="!requestForm.valid || isLoading">
       <span *ngIf="!isLoading">Solicită Oferta</span>
       <span *ngIf="isLoading">Se încarcă...</span>

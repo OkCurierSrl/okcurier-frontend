@@ -59,25 +59,42 @@ export class ProfileComponent implements OnInit {
       }
     }
 
-    saveProfile()
-    { // Clear previous messages
+    saveProfile() {
       this.errorMessages = [];
       this.successMessage = '';
-      // Basic front-end validations based on client type
+
+      // Validare pentru persoana juridică
       if (this.client.billing_info.clientType === 'juridica') {
-        if (!this.client.billing_info.company_name || !this.client.billing_info.cui ||
-          !this.client.billing_info.registration_number || !this.client.billing_info.iban) {
-          this.errorMessages.push("Toate câmpurile pentru persoana juridica sunt obligatorii.");
+        if (!this.client.billing_info.company_name ||
+            !this.client.billing_info.cui ||
+            !this.client.billing_info.registration_number) {
+          this.errorMessages.push("Toate câmpurile pentru persoana juridică sunt obligatorii.");
           return;
         }
-      } else if (this.client.billing_info.clientType === 'fizica') {
-        if (!this.client.billing_info.firstName || !this.client.billing_info.lastName ||
-          !this.client.billing_info.cnp || !this.client.billing_info.judet ||
-          !this.client.billing_info.oras || !this.client.billing_info.adresa ||
-          !this.client.billing_info.iban) {
-          this.errorMessages.push("Toate câmpurile pentru persoana fizica sunt obligatorii.");
+      }
+      // Validare pentru persoana fizică
+      else if (this.client.billing_info.clientType === 'fizica') {
+        if (!this.client.billing_info.firstName ||
+            !this.client.billing_info.lastName ||
+            !this.client.billing_info.cnp ||
+            !this.client.billing_info.judet ||
+            !this.client.billing_info.oras ||
+            !this.client.billing_info.adresa) {
+          this.errorMessages.push("Toate câmpurile pentru persoana fizică sunt obligatorii.");
           return;
         }
+      }
+
+      // Validare IBAN separată pentru ambele tipuri
+      if (this.client.billing_info.iban) {
+        const ibanRegex = /RO[a-zA-Z0-9]{2}\s?([a-zA-Z]{4}\s?){1}([a-zA-Z0-9]{4}\s?){4}\s?/;
+        if (!ibanRegex.test(this.client.billing_info.iban)) {
+          this.errorMessages.push("IBAN-ul introdus nu este valid.");
+          return;
+        }
+      } else {
+        this.errorMessages.push("IBAN-ul este obligatoriu.");
+        return;
       }
 
       this.clientService.modifyBillingInfo(this.client.email, this.client.billing_info)
@@ -89,12 +106,11 @@ export class ProfileComponent implements OnInit {
           error: (error) => {
             let errObj;
             if (error.error) {
-              // If error.error is a string, try to parse it.
               if (typeof error.error === 'string') {
                 try {
                   errObj = JSON.parse(error.error);
                 } catch(e) {
-                  errObj = error.error; // fallback if parsing fails
+                  errObj = error.error;
                 }
               } else {
                 errObj = error.error;

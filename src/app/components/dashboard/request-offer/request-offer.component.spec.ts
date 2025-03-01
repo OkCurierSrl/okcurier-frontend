@@ -41,8 +41,6 @@ describe('RequestOfferComponent', () => {
     expect(controls['contactPerson']).toBeDefined();
     expect(controls['contactPhone']).toBeDefined();
     expect(controls['email']).toBeDefined();
-    expect(controls['awbEnvelopes']).toBeDefined();
-    expect(controls['awbBags']).toBeDefined();
   });
 
   it('should return proper error messages for invalid fields', () => {
@@ -72,8 +70,6 @@ describe('RequestOfferComponent', () => {
       contactPerson: 'John Doe',
       contactPhone: '0712345678',
       email: 'test@example.com',
-      awbEnvelopes: '5',
-      awbBags: '3'
     });
     component.isLoading = false;
     fixture.detectChanges();
@@ -90,8 +86,6 @@ describe('RequestOfferComponent', () => {
       contactPerson: 'John Doe',
       contactPhone: '0712345678',
       email: 'test@example.com',
-      awbEnvelopes: '5',
-      awbBags: '3'
     });
     fixture.detectChanges();
     const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
@@ -103,7 +97,7 @@ describe('RequestOfferComponent', () => {
     fixture.detectChanges();
     expect(emailService.sendEmail).toHaveBeenCalled();
     expect(component.isLoading).toBeFalse();
-    expect(component.successMessage).toEqual('Email trimis cu succes!');
+    expect(component.successMessage).toEqual('Vă mulțumim pentru solicitare, veți fi contactat în cel mai scurt timp de echipa OkCurier');
 
     // Check that the success message div is centered
     const successDiv: HTMLElement = fixture.nativeElement.querySelector('.success-message');
@@ -130,8 +124,6 @@ describe('RequestOfferComponent', () => {
       contactPerson: 'John Doe',
       contactPhone: '0712345678',
       email: 'test@example.com',
-      awbEnvelopes: '5',
-      awbBags: '3'
     });
     fixture.detectChanges();
     component.onSubmit();
