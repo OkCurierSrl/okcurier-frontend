@@ -4,6 +4,8 @@ import {ClientService} from "../../../services/client.service";
 import {Client} from "../../../model/client";
 import {Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
+import { finalize } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-clients-component',
@@ -16,8 +18,9 @@ export class ClientsComponent implements OnInit {
   clients: Client[] = [];
   protected newClientEmail: string;
   protected newClientContractNumber: string;
+  isProcessing = false;
 
-  constructor(private clientService: ClientService, private router: Router) {}
+  constructor(private clientService: ClientService, private router: Router, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.loadClients();
@@ -89,5 +92,34 @@ export class ClientsComponent implements OnInit {
     this.router.navigate(['/admin/client-view'], {
       queryParams: {name: client.name, email: client.email}
     });
+  }
+
+  toggleKeepShippingCost(client: any) {
+    this.isProcessing = true;
+
+    const updatedBillingInfo = {
+      ...client.billing_info,
+      keep_shipping_cost: !client.billing_info.keep_shipping_cost
+    };
+
+    this.clientService.modifyBillingInfo(client.email, updatedBillingInfo)
+      .pipe(finalize(() => this.isProcessing = false))
+      .subscribe({
+        next: () => {
+          client.billing_info.keep_shipping_cost = !client.billing_info.keep_shipping_cost;
+          this.snackBar.open(
+            'Starea de oprire din ramburs a fost actualizată cu succes',
+            'OK',
+            { duration: 3000 }
+          );
+        },
+        error: (error) => {
+          this.snackBar.open(
+            'A apărut o eroare la actualizarea stării',
+            'OK',
+            { duration: 3000 }
+          );
+        }
+      });
   }
 }

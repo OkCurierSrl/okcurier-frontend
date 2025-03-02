@@ -28,6 +28,7 @@
         <th>Email</th>
         <th>Ultima Logare</th>
         <th>Acțiuni</th>
+        <th>Oprește din ramburs</th>
       </tr>
       </thead>
       <tbody>
@@ -61,6 +62,13 @@
                 <i class="fas fa-edit"></i>
               </button>
             </div>
+          </td>
+          <td>
+            <mat-checkbox
+              [checked]="client.billing_info.keep_shipping_cost"
+              (change)="toggleKeepShippingCost(client)"
+              [disabled]="isProcessing">
+            </mat-checkbox>
           </td>
         </tr>
       </ng-container>
