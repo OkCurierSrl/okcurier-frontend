@@ -50,7 +50,7 @@
               </div>
               <div class="form-group mb-3">
                 <label for="ibanHolder">Nume detinator IBAN</label>
-                <input id="ibanHolder" [(ngModel)]="client.billing_info.name" name="ibanHolder" class="form-control"/>
+                <input id="ibanHolder" [(ngModel)]="client.billing_info.iban_name" name="ibanHolder" class="form-control"/>
               </div>
             </div>
           </div>
@@ -62,12 +62,12 @@
             <div class="col-md-6">
               <div class="form-group mb-3">
                 <label for="firstName">Prenume</label>
-                <input id="firstName" [(ngModel)]="client.billing_info.firstName" name="firstName"
+                <input id="firstName" [(ngModel)]="client.billing_info.first_name" name="firstName"
                        class="form-control"/>
               </div>
               <div class="form-group mb-3">
                 <label for="lastName">Nume</label>
-                <input id="lastName" [(ngModel)]="client.billing_info.lastName" name="lastName" class="form-control"/>
+                <input id="lastName" [(ngModel)]="client.billing_info.last_name" name="lastName" class="form-control"/>
               </div>
               <div class="form-group mb-3">
                 <label for="cnp">CNP</label>
@@ -98,7 +98,7 @@
               </div>
               <div class="form-group mb-3">
                 <label for="ibanHolderFizica">Nume detinator IBAN</label>
-                <input id="ibanHolderFizica" [(ngModel)]="client.billing_info.name" name="ibanHolderFizica"
+                <input id="ibanHolderFizica" [(ngModel)]="client.billing_info.iban_name" name="ibanHolderFizica"
                        class="form-control"/>
               </div>
             </div>
@@ -120,7 +120,7 @@
 
       <!-- Non-editable Profile Display -->
       <div *ngIf="!editMode">
-        <div *ngIf="client.billing_info.clientType === 'juridica'">
+        <div *ngIf="client.billing_info.client_type === 'juridica'">
           <div class="row">
             <div class="col-md-6">
               <p><strong>Nume Firmă:</strong> {{ client.billing_info.company_name }}</p>
@@ -130,15 +130,15 @@
             <div class="col-md-6">
               <p><strong>IBAN:</strong> {{ client.billing_info.iban }}</p>
               <p><strong>Număr de Telefon:</strong> {{ client.billing_info.phone_number }}</p>
-              <p><strong>Nume detinator IBAN:</strong> {{ client.billing_info.name }}</p>
+              <p><strong>Nume detinator IBAN:</strong> {{ client.billing_info.iban_name }}</p>
             </div>
           </div>
         </div>
-        <div *ngIf="client.billing_info.clientType === 'fizica'">
+        <div *ngIf="client.billing_info.client_type === 'fizica'">
           <div class="row">
             <div class="col-md-6">
-              <p><strong>Prenume:</strong> {{ client.billing_info.firstName }}</p>
-              <p><strong>Nume:</strong> {{ client.billing_info.lastName }}</p>
+              <p><strong>Prenume:</strong> {{ client.billing_info.first_name }}</p>
+              <p><strong>Nume:</strong> {{ client.billing_info.last_name }}</p>
               <p><strong>CNP:</strong> {{ client.billing_info.cnp }}</p>
               <p><strong>Judet:</strong> {{ client.billing_info.judet }}</p>
             </div>
@@ -147,7 +147,7 @@
               <p><strong>Adresa:</strong> {{ client.billing_info.adresa }}</p>
               <p><strong>IBAN:</strong> {{ client.billing_info.iban }}</p>
               <p><strong>Număr de Telefon:</strong> {{ client.billing_info.phone_number }}</p>
-              <p><strong>Nume detinator IBAN:</strong> {{ client.billing_info.name }}</p>
+              <p><strong>Nume detinator IBAN:</strong> {{ client.billing_info.iban_name }}</p>
             </div>
           </div>
         </div>

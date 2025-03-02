@@ -40,7 +40,7 @@ export class ProfileComponent implements OnInit {
             this.clientType = 'fizica';
           }
           if (this.client.billing_info) {
-            this.client.billing_info.clientType = this.clientType;
+            this.client.billing_info.client_type = this.clientType;
           }
         });
     });
@@ -55,37 +55,72 @@ export class ProfileComponent implements OnInit {
     onClientTypeChange()
     {
       if (this.client.billing_info) {
-        this.client.billing_info.clientType = this.clientType;
+        this.client.billing_info.client_type = this.clientType;
       }
     }
 
-    saveProfile() {
+     saveProfile() {
       this.errorMessages = [];
       this.successMessage = '';
 
-      // Validare pentru persoana juridică
-      if (this.client.billing_info.clientType === 'juridica') {
-        if (!this.client.billing_info.company_name ||
-            !this.client.billing_info.cui ||
-            !this.client.billing_info.registration_number) {
+      // Create billingInfoToSend at the top level
+      const billingInfoToSend = {
+        ...this.client.billing_info,
+        // Remove camelCase versions
+        clientType: undefined,
+        companyName: undefined,
+        contractNumber: undefined,
+        phoneNumber: undefined,
+        registrationNumber: undefined,
+        ibanName: undefined,
+        firstName: undefined,
+        lastName: undefined
+      };
+
+      if (this.client.billing_info.client_type === 'juridica') {
+        // Reset personal fields for company
+        billingInfoToSend.first_name = 'None';
+        billingInfoToSend.last_name = 'None';
+        billingInfoToSend.cnp = 'None';
+
+        // Validate company fields
+        if (!billingInfoToSend.company_name ||
+            !billingInfoToSend.cui ||
+            !billingInfoToSend.registration_number ||
+            !billingInfoToSend.judet ||
+            !billingInfoToSend.oras ||
+            !billingInfoToSend.iban_name ||
+            !billingInfoToSend.adresa) {
           this.errorMessages.push("Toate câmpurile pentru persoana juridică sunt obligatorii.");
           return;
         }
-      }
-      // Validare pentru persoana fizică
-      else if (this.client.billing_info.clientType === 'fizica') {
-        if (!this.client.billing_info.firstName ||
-            !this.client.billing_info.lastName ||
-            !this.client.billing_info.cnp ||
-            !this.client.billing_info.judet ||
-            !this.client.billing_info.oras ||
-            !this.client.billing_info.adresa) {
+      } else if (this.client.billing_info.client_type === 'fizica') {
+        // Reset company fields for individual
+        billingInfoToSend.company_name = 'None';
+        billingInfoToSend.cui = 'None';
+        billingInfoToSend.registration_number = 'None';
+
+        // Validate personal fields
+        if (!billingInfoToSend.first_name ||
+            !billingInfoToSend.last_name ||
+            !billingInfoToSend.cnp ||
+            !billingInfoToSend.judet ||
+            !billingInfoToSend.oras ||
+            !billingInfoToSend.iban_name ||
+            !billingInfoToSend.adresa) {
           this.errorMessages.push("Toate câmpurile pentru persoana fizică sunt obligatorii.");
+          return;
+        }
+
+        // Validate CNP format
+        const cnpRegex = /^[1-9]\d{12}$/;
+        if (!cnpRegex.test(billingInfoToSend.cnp)) {
+          this.errorMessages.push("CNP-ul introdus nu este valid.");
           return;
         }
       }
 
-      // Validare IBAN separată pentru ambele tipuri
+      // Validate IBAN for both types
       if (this.client.billing_info.iban) {
         const ibanRegex = /RO[a-zA-Z0-9]{2}\s?([a-zA-Z]{4}\s?){1}([a-zA-Z0-9]{4}\s?){4}\s?/;
         if (!ibanRegex.test(this.client.billing_info.iban)) {
@@ -97,7 +132,7 @@ export class ProfileComponent implements OnInit {
         return;
       }
 
-      this.clientService.modifyBillingInfo(this.client.email, this.client.billing_info)
+      this.clientService.modifyBillingInfo(this.client.email, billingInfoToSend)
         .subscribe({
           next: (response: any) => {
             this.successMessage = response.message || "Date salvate cu succes.";
