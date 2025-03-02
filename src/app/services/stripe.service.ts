@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { HttpClient } from '@angular/common/http';
 import {environment} from "../../environments/environment";
+import {Observable} from "rxjs";
+import {OrderData} from "../model/order-data";
 
 @Injectable({
   providedIn: 'root',
@@ -36,13 +38,13 @@ export class StripeService {
     return this.stripe;
   }
 
-  async createPaymentIntent(amount: number, email:string, currency: string): Promise<{ clientSecret: string }> {
+  async createPaymentIntent(amount: number, email:string, currency: string): Promise<{ clientSecret: string, invoiceUrl: string }> {
     // Call the backend to create a payment intent
     return this.http
-      .post<{ clientSecret: string }>(this.apiUrl + '/api/payments/create-payment-intent', {
+      .post<{ clientSecret: string, invoiceUrl: string }>(this.apiUrl + '/api/payments/create-payment-intent', {
         amount,
         email,
-        currency,
+        currency
       })
       .toPromise();
   }
@@ -59,4 +61,16 @@ export class StripeService {
       },
     });
   }
+
+  sendConfirmationEmail(request: {
+    amount: number;
+    courier: string;
+    invoiceUrl: string;
+    orderData: OrderData; // Keep as OrderData type
+    awb: string;
+    email: string
+  }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/payments/send-confirmation`, request);
+  }
+
 }

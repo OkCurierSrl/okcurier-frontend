@@ -1,0 +1,71 @@
+@host = http://localhost:8080
+@awb = 80934360013
+
+###
+POST {{host}}/api/okcurier/place-order-free
+Content-Type: application/json
+courierCompany: {{$random.alphanumeric(8)}}
+
+###
+DELETE {{host}}/api/okcurier/delete
+email: {{$random.alphanumeric(8)}}
+
+###
+POST {{host}}/api/process-files
+Content-Type: application/json
+files: {{$placeholder}}
+sendEmails: false
+
+###
+GET {{host}}/api/okcurier/track-order?awb={{awb}}
+
+###
+POST {{host}}/api/payments/send-confirmation
+Content-Type: application/json
+
+{
+    "email": "contact@okcurier.ro",
+    "awb": "81032198115",
+    "invoiceUrl": "https://invoice.stripe.com/i/acct_1QUZAiCtGSZI6Bdq/test_YWNjdF8xUVVaQWlDdEdTWkk2QmRxLF9ScnRQSTZVWElaZ0NQMzVWVGxNdW5UNmRaTjNiWjN3LDEzMTQ1MTYwNg0200mA1YNuHu?s=ap",
+    "amount": 15.926959999999998,
+    "orderData": {
+        "email": "contact@okcurier.ro",
+        "expeditor": {
+            "name": "Geani Dumitrache",
+            "phone1": "0731446895",
+            "phone2": "0731446895",
+            "county": "Bucuresti",
+            "city": "Sector 3",
+            "street": "Bulevardul Camil Ressu",
+            "number": "42",
+            "postalCode": "031743",
+            "block": "",
+            "staircase": "",
+            "floor": "",
+            "apartment": "",
+            "favoriteAddress": "bucuresti"
+        },
+        "destinatar": {
+            "name": "Geani Dumitrache",
+            "phone1": "0731446895",
+            "phone2": "0731446895",
+            "county": "Bucuresti",
+            "city": "Sector 3",
+            "street": "Bulevardul Camil Ressu",
+            "number": "42",
+            "postalCode": "031743",
+            "block": "",
+            "staircase": "",
+            "floor": "",
+            "apartment": "",
+            "favoriteAddress": "bucuresti"
+        },
+        "packages": [],
+        "extraServices": {
+            "rambursCont": 0
+        },
+        "isPlicSelected": true,
+        "price": 15.926959999999998
+    },
+    "courier": "DPD"
+}

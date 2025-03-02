@@ -25,7 +25,7 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
   stripeInitialized: boolean = false;
   email: string;
   courier: string;
-  orderData: OrderData;
+   orderData: OrderData;
   isLoading: boolean;
   isDisabled: boolean;
 
@@ -88,8 +88,13 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
     this.isDisabled = true;
     try {
       // Create Payment Intent and confirm payment with Stripe
-      const paymentIntentResponse = await this.stripeService.createPaymentIntent(this.amount, this.email, 'ron');
+      const paymentIntentResponse = await this.stripeService.createPaymentIntent(
+        this.amount,
+        this.email,
+        'ron'
+      );
       const clientSecret = paymentIntentResponse.clientSecret;
+      const invoiceUrl = paymentIntentResponse.invoiceUrl;
 
       const { error } = await this.stripe.confirmCardPayment(clientSecret, {
         payment_method: { card: this.card },
@@ -110,14 +115,17 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
           paymentRoute = '/track/';
         }
 
-        // Call orderService.placeOrder. The place-order call itself takes ~2.5 seconds.
+        // Call orderService.placeOrder
         this.orderService.placeOrder(this.orderData, this.courier, true).subscribe({
           next: (response) => {
-            // Immediately navigate to the confirmation page
+            // Send confirmation email with invoice and AWB links
+            this.sendConfirmationEmail(response.awb, invoiceUrl);
+
+            // Navigate to confirmation page
             paymentRoute = paymentRoute + response.awb;
             this.router.navigate([paymentRoute]);
 
-            // Trigger the download asynchronously (fire-and-forget)
+            // Trigger the download asynchronously
             setTimeout(() => {
               this.downloadService.downloadLabel(response);
             }, 0);
@@ -128,7 +136,6 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
             this.isLoading = false;
           },
           complete: () => {
-            // Stop showing the loading spinner as soon as order generation is done
             this.isLoading = false;
             console.log('AWB generation completed');
           },
@@ -141,4 +148,19 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
       this.isLoading = false;
     }
   }
-}
+
+  private sendConfirmationEmail(awb: string, invoiceUrl: string): void {
+    // Don't stringify orderData, let Angular's HttpClient handle the JSON serialization
+    this.stripeService.sendConfirmationEmail({
+      email: this.email,
+      awb: awb,
+      invoiceUrl: invoiceUrl,
+      amount: this.amount,
+      orderData: this.orderData, // Remove JSON.stringify()
+      courier: this.courier,
+    }).subscribe({
+      error: (error) => {
+        console.error('Error sending confirmation email:', error);
+      }
+    });
+  }}

@@ -23,6 +23,7 @@ import {FileUploadComponent} from "./components/admin/file-upload/file-upload.co
 import {OrderListRecheckedComponent} from "./components/dashboard/order-list-rechecked/order-list-rechecked.component";
 import {PaymentPortalComponent} from "./components/public/payment-portal/payment-portal.component";
 import {CourierOptionsNewComponent} from "./components/public/courier-options-new/courier-options-new.component";
+import {DownloadProxyComponent} from "./components/download/download-proxy.component";
 
 export const routes: Routes = [
 
@@ -175,6 +176,7 @@ export const routes: Routes = [
       {path: 'info', component: HowToOrderComponent},
       {path: 'track/:awb', component: ShowComponent,},
       {path: 'track', component: TrackComponent,},
+      {path: 'download/:awb', component: DownloadProxyComponent,},
     ]
   },
 ];
