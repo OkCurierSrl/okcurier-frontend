@@ -48,7 +48,9 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
         this.amount = +params['amount'] || 0;
         this.description = params['description'] || 'Default description';
         this.email = params['email'] || 'default email';
-        this.orderData = params['orderData'];
+        this.orderData = typeof params['orderData'] === 'string'
+          ? JSON.parse(params['orderData'])
+          : params['orderData'];
         this.courier = params['courier'];
       });
     } catch (error) {
@@ -121,7 +123,7 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
             // Send confirmation email with invoice and AWB links
             this.sendConfirmationEmail(response.awb, invoiceUrl);
 
-            // Navigate to confirmation page
+            // Navigate to confirmation pagecou
             paymentRoute = paymentRoute + response.awb;
             this.router.navigate([paymentRoute]);
 

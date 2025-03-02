@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
 import {OrderData} from "../model/order-data";
@@ -63,14 +63,18 @@ export class StripeService {
   }
 
   sendConfirmationEmail(request: {
-    amount: number;
-    courier: string;
-    invoiceUrl: string;
-    orderData: OrderData; // Keep as OrderData type
+    email: string;
     awb: string;
-    email: string
+    invoiceUrl: string;
+    amount: number;
+    orderData: OrderData;
+    courier: string;
   }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/payments/send-confirmation`, request);
+    return this.http.post(`${this.apiUrl}/api/payments/send-confirmation`, request, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
   }
 
 }

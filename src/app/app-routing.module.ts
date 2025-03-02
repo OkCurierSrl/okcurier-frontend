@@ -24,9 +24,21 @@ import {OrderListRecheckedComponent} from "./components/dashboard/order-list-rec
 import {PaymentPortalComponent} from "./components/public/payment-portal/payment-portal.component";
 import {CourierOptionsNewComponent} from "./components/public/courier-options-new/courier-options-new.component";
 import {DownloadProxyComponent} from "./components/download/download-proxy.component";
+import { TrackRedirectGuard } from './guards/track-redirect.guard';
 
 export const routes: Routes = [
+  // Standalone routes that don't need layouts
+  {
+    path: 'download/:awb',
+    component: DownloadProxyComponent
+  },
+  {
+    path: 'track/:awb',
+    component: ShowComponent,
+    canActivate: [TrackRedirectGuard]
+  },
 
+  // Dashboard routes
   {
     path: 'dashboard',
     component: DashboardLayoutComponent,
@@ -35,9 +47,8 @@ export const routes: Routes = [
       {
         path: '',
         redirectTo: 'order',
-        pathMatch: 'full' // Ensures redirect occurs only on exact 'dashboard/order' path
+        pathMatch: 'full'
       },
-
       {
         path: 'profile',
         component: ProfileComponent,
@@ -86,16 +97,17 @@ export const routes: Routes = [
     ]
   },
 
+  // Admin routes
   {
     path: 'admin',
     component: AdminLayoutComponent,
     canActivate: [authGuardFn, RoleGuard],
-    data: {roles: ['ADMIN']}, // Specify the roles required for this route
+    data: { roles: ['ADMIN'] },
     children: [
       {
         path: '',
         redirectTo: 'order',
-        pathMatch: 'full' // Ensures redirect occurs only on exact 'admin' path
+        pathMatch: 'full'
       },
       {
         path: 'prices',
@@ -161,6 +173,7 @@ export const routes: Routes = [
       {path: 'confirm-payment', component: PaymentConfirmationComponent}
     ]
   },
+  // Public routes
   {
     path: '',
     component: MainLayoutComponent,
@@ -171,12 +184,10 @@ export const routes: Routes = [
       {path: '', redirectTo: '/payment', pathMatch: 'full'},
       {path: 'oferta', component: RequestOfferComponent},
       {path: 'order', component: CreateOrderComponent},
-      {path: '', component: CreateOrderComponent},
       {path: 'courier-options', component: CourierOptionsNewComponent},
       {path: 'info', component: HowToOrderComponent},
-      {path: 'track/:awb', component: ShowComponent,},
-      {path: 'track', component: TrackComponent,},
-      {path: 'download/:awb', component: DownloadProxyComponent,},
+      {path: 'track/:awb', component: ShowComponent},
+      {path: 'track', component: TrackComponent},
     ]
   },
 ];

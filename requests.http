@@ -24,12 +24,12 @@ POST {{host}}/api/payments/send-confirmation
 Content-Type: application/json
 
 {
-    "email": "contact@okcurier.ro",
+    "email": "dumitrachegeanigabriel@gmail.com",
     "awb": "81032198115",
     "invoiceUrl": "https://invoice.stripe.com/i/acct_1QUZAiCtGSZI6Bdq/test_YWNjdF8xUVVaQWlDdEdTWkk2QmRxLF9ScnRQSTZVWElaZ0NQMzVWVGxNdW5UNmRaTjNiWjN3LDEzMTQ1MTYwNg0200mA1YNuHu?s=ap",
     "amount": 15.926959999999998,
     "orderData": {
-        "email": "contact@okcurier.ro",
+        "email": "dumitrachegeanigabriel@gmail.com",
         "expeditor": {
             "name": "Geani Dumitrache",
             "phone1": "0731446895",
