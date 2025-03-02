@@ -6,11 +6,12 @@ import {Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import { finalize } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {MatCheckbox} from "@angular/material/checkbox";
 
 @Component({
   selector: 'app-clients-component',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatCheckbox],
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.css', '../../dashboard/order-list/order-list.component.css']
 })

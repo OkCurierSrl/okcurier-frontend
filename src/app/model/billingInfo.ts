@@ -1,6 +1,7 @@
 import { Discount } from "./discount";
 
 export interface BillingInfo {
+  keep_shipping_cost: false;
   id: number;
   email: string;
   client_type: string;  // matches @Column(name = "client_type")
