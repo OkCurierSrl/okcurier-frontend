@@ -3,7 +3,9 @@
 
   <div class="order-list-actions">
     <button (click)="requestCourierPickup()">Cheamă curierii!</button>
-    <button (click)="exportExcel()">Export excel</button>
+    <button (click)="exportExcel()" [disabled]="isLoading">
+      {{ isLoading ? 'Se exportă...' : 'Export excel' }}
+    </button>
     <app-date-picker-dialog
       *ngIf="showDialog"
       (confirm)="onDialogConfirm($event)"

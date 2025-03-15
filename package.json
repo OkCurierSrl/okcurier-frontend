@@ -57,6 +57,7 @@
     "rxjs": "^6.6.7",
     "swiper": "^11.1.5",
     "tslib": "^2.5.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.14.2"
   },
   "devDependencies": {

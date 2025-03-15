@@ -8,6 +8,7 @@ import { OrderService } from "../../../services/order.service";
 import { PickupData } from "../../../services/pickupData";
 import { DatePickerDialogComponent } from "../date-picker-dialog/date-picker-dialog.component";
 import { DownloadService } from "../../../services/download.service";
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-order-list',
@@ -176,7 +177,49 @@ export class OrderListComponent implements OnInit {
   }
 
   exportExcel(): void {
-    // Implement export functionality here
+    // Obținem toate comenzile pentru export (fără paginare)
+    this.isLoading = true;
+    this.orderService.filterShipments(this.filter, 0, 999999).subscribe(
+      (orders: FlatShipment[]) => {
+        // Pregătim datele pentru Excel
+        const excelData = orders.map(order => ({
+          'Număr AWB': order.awb,
+          'Curier': order.courier,
+          'Nume Expeditor': order.senderName,
+          'Adresă Expeditor': order.senderAddress,
+          'Nume Destinatar': order.recipientName,
+          'Adresă Destinatar': order.recipientAddress,
+          'Data Creare': order.creationDate,
+          'Data Ridicare': order.pickupDate,
+          'IBAN': order.iban,
+          'Număr Comandă': order.orderNumber,
+          'Număr Colete': order.packageCount,
+          'Greutate': order.weight,
+          'Ramburs': `${order.cashOnDelivery} RON`,
+          'Status': order.status
+        }));
+
+        // Creăm worksheet
+        const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+        // Creăm workbook
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Comenzi');
+
+        // Generăm numele fișierului cu data curentă
+        const currentDate = new Date().toISOString().split('T')[0];
+        const fileName = `comenzi_${currentDate}.xlsx`;
+
+        // Salvăm fișierul
+        XLSX.writeFile(workbook, fileName);
+        this.isLoading = false;
+      },
+      error => {
+        console.error('Eroare la exportul Excel:', error);
+        alert('A apărut o eroare la generarea fișierului Excel. Vă rugăm încercați din nou.');
+        this.isLoading = false;
+      }
+    );
   }
 
   onDialogConfirm(pickupDate: string): void {
