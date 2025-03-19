@@ -136,7 +136,7 @@ export class FileUploadComponent {
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = 'processed-results.xlsx';
+        link.download = 'excel-files.zip';  // Changed from .xlsx to .zip
         link.click();
         window.URL.revokeObjectURL(url);
       },
