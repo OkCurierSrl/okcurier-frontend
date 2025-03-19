@@ -6,6 +6,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { ClientService } from '../../../services/client.service';
 import { CourierOption } from '../../../model/courier.option';
 import { OrderData } from '../../../model/order-data';
+import {RoleService} from "../../../services/role-service.service";
 
 @Component({
   selector: 'app-courier-options-new',
@@ -21,13 +22,15 @@ export class CourierOptionsNewComponent implements OnInit {
   isAuthenticated: boolean = false;
   hasContract: boolean = false;
   isLoading: boolean = false;  // new loading flag
+  private isAdmin: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private auth: AuthService,
     private router: Router,
     private orderService: OrderService,
-    private clientService: ClientService
+    private clientService: ClientService,
+    private roleService: RoleService
   ) {}
 
   ngOnInit(): void {
@@ -41,6 +44,11 @@ export class CourierOptionsNewComponent implements OnInit {
       if (params['origin']) {
         this.origin = params['origin'];
       }
+
+      this.roleService.hasRequiredRole(['ADMIN']).subscribe((hasAdminRole) => {
+        this.isAdmin = hasAdminRole;
+      });
+
     });
 
     this.auth.isAuthenticated$.subscribe(isAuth => {
@@ -68,7 +76,7 @@ export class CourierOptionsNewComponent implements OnInit {
       this.router.navigate(['/order']);
       this.isLoading = false;
     } else if (this.isAuthenticated) {
-      if (this.hasContract) {
+      if (this.hasContract || this.isAdmin) {
         const selected1 = this.couriers.find(c => c.selected);
         if (!selected1) {
           console.error('No courier selected');

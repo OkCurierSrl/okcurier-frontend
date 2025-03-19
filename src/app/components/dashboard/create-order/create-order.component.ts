@@ -41,6 +41,7 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   @ViewChildren(PackageOverviewComponent) packageOverviewComponents: QueryList<PackageOverviewComponent>;
 
   protected isLoggedIn: boolean;
+  private isAdmin: boolean = false;
 
   expeditorFormValid: boolean = false;
   destinatarFormValid: boolean = false;
@@ -80,7 +81,10 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
         this.email = email;
         console.log('email is ', email)
       }
-    )
+    );
+    this.roleService.hasRequiredRole(['ADMIN']).subscribe((hasAdminRole) => {
+      this.isAdmin = hasAdminRole;
+    });
   }
 
   ngOnInit(): void {
@@ -248,7 +252,8 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       if (this.isLoggedIn) {
         this.priceCalculationService.getPrices(orderData).subscribe(
           (response) => {
-            this.router.navigate(['/dashboard/courier-options'],
+            const basePath = this.isAdmin ? '/admin' : '/dashboard';
+            this.router.navigate([`${basePath}/courier-options`],
               {
                 queryParams: {
                   couriers: JSON.stringify(response),
