@@ -136,7 +136,17 @@ export class FileUploadComponent {
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = 'excel-files.zip';  // Changed from .xlsx to .zip
+
+        // Get current timestamp formatted as yyyy-MM-dd_HH-mm-ss
+        const now = new Date();
+        const timestamp = now.getFullYear() + '-' +
+          String(now.getMonth() + 1).padStart(2, '0') + '-' +
+          String(now.getDate()).padStart(2, '0') + '_' +
+          String(now.getHours()).padStart(2, '0') + '-' +
+          String(now.getMinutes()).padStart(2, '0') + '-' +
+          String(now.getSeconds()).padStart(2, '0');
+
+        link.download = `rambursuri-script-${timestamp}.zip`;
         link.click();
         window.URL.revokeObjectURL(url);
       },

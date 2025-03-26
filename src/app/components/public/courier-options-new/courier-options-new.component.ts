@@ -85,7 +85,9 @@ export class CourierOptionsNewComponent implements OnInit {
         this.orderService.placeOrder(this.orderData, selected1.courier, true).subscribe({
           next: response => {
             console.log('AWB generated successfully:', response);
-            this.router.navigate(['/dashboard/order-list']);
+            // Fix: Use conditional routing based on isAdmin
+            const routePath = this.isAdmin ? '/admin/order-list' : '/dashboard/order-list';
+            this.router.navigate([routePath]);
           },
           error: error => {
             alert("A apărut o eroare neașteptată. Încercați alt curier sau contactați-ne.");
@@ -93,11 +95,12 @@ export class CourierOptionsNewComponent implements OnInit {
           },
           complete: () => {
             console.log('AWB generation completed');
-            this.isLoading = false;  // stop loading
+            this.isLoading = false;
           }
         });
       } else {
-        this.router.navigate(['/dashboard/payment'], {
+        const basePath = this.isAdmin ? '/admin' : '/dashboard';
+        this.router.navigate([`${basePath}/payment`], {
           queryParams: {
             amount: selected.totalPrice,
             email: this.orderData.email,
@@ -129,7 +132,9 @@ export class CourierOptionsNewComponent implements OnInit {
     this.orderService.placeOrder(this.orderData, selected.courier, false).subscribe({
       next: response => {
         console.log('AWB generated successfully:', response);
-        this.router.navigate(['/dashboard/order-list']);
+        // Fix: Use conditional routing based on isAdmin
+        const routePath = this.isAdmin ? '/admin/order-list' : '/dashboard/order-list';
+        this.router.navigate([routePath]);
       },
       error: error => {
         alert("A apărut o eroare neașteptată. Încercați alt curier sau contactați-ne.");
