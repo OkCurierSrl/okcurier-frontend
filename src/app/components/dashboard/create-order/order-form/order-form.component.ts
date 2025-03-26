@@ -151,13 +151,12 @@ export class OrderFormComponent implements OnInit {
     });
   }
 
-
   // Initialize Street Autocomplete
   private initStreetAutocomplete(city: string, county: string): void {
     // Read the current city & county from the form
-    console.log("Initializing street autocomplete for")
-    console.log("city", city)
-    console.log("county", county)
+    // console.log("Initializing street autocomplete for")
+    // console.log("city", city)
+    // console.log("county", county)
 
 
     // Initialize the autocomplete restricted to country=RO

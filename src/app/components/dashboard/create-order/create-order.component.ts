@@ -73,38 +73,61 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
               private clientService: ClientService,
               private roleService: RoleService,
               private router: Router) {
-    this.auth.isAuthenticated$.subscribe((loggedIn,) => {
-      this.isLoggedIn = loggedIn;
-    });
-    this.roleService.getEmail().subscribe(
-      (email) => {
-        this.email = email;
-        console.log('email is ', email)
-      }
-    );
-    this.roleService.hasRequiredRole(['ADMIN']).subscribe((hasAdminRole) => {
-      this.isAdmin = hasAdminRole;
-    });
   }
 
   ngOnInit(): void {
-    // Check if the user is authenticated
+    // First, get authentication status
     this.auth.isAuthenticated$.subscribe((isAuthenticated) => {
+      this.isLoggedIn = isAuthenticated;
+
       if (isAuthenticated) {
-        // Only make the API call if the user is authenticated
-        this.clientService.isProfileCompleted().subscribe(
-          (isProfileCompleted: boolean) => {
-            this.isProfileComplete = isProfileCompleted;
-            if (!this.isProfileComplete) {
-              this.greyOutThePageAndDisplayInfoInDiv();
-            }
-          },
-          (error) => {
-            console.error('Error fetching client data', error);
+        // Get email first
+        this.roleService.getEmail().subscribe(
+          (email) => {
+            this.email = email;
+
+            // Only after we have the email, fetch client data
+            this.clientService.getClientByEmail(this.email).subscribe(
+              (client: Client) => {
+                // Autocomplete IBAN fields if they exist and are not 'None'
+                if (client.billing_info?.iban &&
+                    client.billing_info.iban !== 'None' &&
+                    client.billing_info.iban !== '') {
+                  this.iban = client.billing_info.iban;
+                }
+
+                if (client.billing_info?.iban_name &&
+                    client.billing_info.iban_name !== 'None' &&
+                    client.billing_info.iban_name !== '') {
+                  this.detinatorIban = client.billing_info.iban_name;
+                }
+              },
+              (error) => {
+                console.error('Error fetching client data', error);
+              }
+            );
+
+            // Check profile completion
+            this.clientService.isProfileCompleted().subscribe(
+              (isProfileCompleted: boolean) => {
+                this.isProfileComplete = isProfileCompleted;
+                if (!this.isProfileComplete) {
+                  this.greyOutThePageAndDisplayInfoInDiv();
+                }
+              },
+              (error) => {
+                console.error('Error checking profile completion', error);
+              }
+            );
           }
         );
+
+        // Get admin role
+        this.roleService.hasRequiredRole(['ADMIN']).subscribe((hasAdminRole) => {
+          this.isAdmin = hasAdminRole;
+        });
       } else {
-        console.log('User is not authenticated. Skipping isProfileCompleted check.');
+        console.log('User is not authenticated. Skipping data fetching.');
       }
     });
 
@@ -217,62 +240,83 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     // console.log('expeditor length : ' + expeditorLength)
 
     let isvalid = expeditorLength == 0 && destinatarL == 0 && packageValid;
-    console.log('Everything is valid', isvalid)
-    return  isvalid;
+    // console.log('Everything is valid', isvalid)
+    return isvalid;
   }
 
 
   onSubmit(): void {
     // if (this.isFormValid()) {
-      const expeditorData = this.expeditorFormComponent.orderForm.getRawValue();
-      const destinatarData = this.destinatarFormComponent.orderForm.getRawValue();
-      const packagesData = this.courierPackages.map(pkg => pkg.form.getRawValue());
+    const expeditorData = this.expeditorFormComponent.orderForm.getRawValue();
+    const destinatarData = this.destinatarFormComponent.orderForm.getRawValue();
+    const packagesData = this.courierPackages.map(pkg => pkg.form.getRawValue());
 
-      const orderData: OrderData = {
-        email: expeditorData.email? expeditorData.email : this.email,
-        pickupDate: undefined,
-        price: undefined,
-        expeditor: expeditorData,
-        destinatar: destinatarData,
-        packages: this.isPlicSelected ? [] : packagesData,
-        extraServices: {
-          returColetNelivrat: this.selectedServices['returColetNelivrat'],
-          documentSchimb: this.selectedServices['documentSchimb'],
-          coletSchimb: this.selectedServices['coletSchimb'],
-          deschidereColet: this.selectedServices['deschidereColet'],
-          asigurare: this.asigurare,
-          transportRamburs: this.selectedServices['transportRamburs'],
-          rambursCont: this.isPlicSelected ? 0 : this.rambursCont,
-        },
-        isPlicSelected: this.isPlicSelected,
-        iban: this.iban,
-        detinatorIban : this.detinatorIban
-      };
+    const orderData: OrderData = {
+      email: expeditorData.email ? expeditorData.email : this.email,
+      pickupDate: undefined,
+      price: undefined,
+      expeditor: expeditorData,
+      destinatar: destinatarData,
+      packages: this.isPlicSelected ? [] : packagesData,
+      extraServices: {
+        returColetNelivrat: this.selectedServices['returColetNelivrat'],
+        documentSchimb: this.selectedServices['documentSchimb'],
+        coletSchimb: this.selectedServices['coletSchimb'],
+        deschidereColet: this.selectedServices['deschidereColet'],
+        asigurare: this.asigurare,
+        transportRamburs: this.selectedServices['transportRamburs'],
+        rambursCont: this.isPlicSelected ? 0 : this.rambursCont,
+      },
+      isPlicSelected: this.isPlicSelected,
+      iban: this.iban,
+      detinatorIban: this.detinatorIban
+    };
 
-      if (this.isLoggedIn) {
-        this.priceCalculationService.getPrices(orderData).subscribe(
-          (response) => {
-            const basePath = this.isAdmin ? '/admin' : '/dashboard';
-            this.router.navigate([`${basePath}/courier-options`],
-              {
-                queryParams: {
-                  couriers: JSON.stringify(response),
-                  orderData: JSON.stringify(orderData)
-                }
-              });
-          });
-      } else {
-        this.priceCalculationService.getPricesFree(orderData).subscribe(
-          (response) => {
-            this.router.navigate(['/courier-options'],
-              {
-                queryParams: {
-                  couriers: JSON.stringify(response),
-                  orderData: JSON.stringify(orderData)
-                }
-              });
-          })
+    if (this.isLoggedIn) {
+      setTimeout(() => this.updateIbanInfo(), 0);
+
+      this.priceCalculationService.getPrices(orderData).subscribe(
+        (response) => {
+          const basePath = this.isAdmin ? '/admin' : '/dashboard';
+          this.router.navigate([`${basePath}/courier-options`],
+            {
+              queryParams: {
+                couriers: JSON.stringify(response),
+                orderData: JSON.stringify(orderData)
+              }
+            });
+        });
+    } else {
+      this.priceCalculationService.getPricesFree(orderData).subscribe(
+        (response) => {
+          this.router.navigate(['/courier-options'],
+            {
+              queryParams: {
+                couriers: JSON.stringify(response),
+                orderData: JSON.stringify(orderData)
+              }
+            });
+        })
       // }
+    }
+  }
+
+  private updateIbanInfo() {
+    if (this.iban && this.detinatorIban) {
+      this.clientService.getClientByEmail(this.email).subscribe(
+        (client) => {
+          const updatedBillingInfo = {
+            ...client.billing_info,  // preserve existing billing info
+            iban: this.iban,
+            iban_name: this.detinatorIban
+          };
+
+          this.clientService.modifyBillingInfo(this.email, updatedBillingInfo).subscribe({
+            next: () => console.log('Billing info updated successfully'),
+            error: (error) => console.error('Error updating billing info:', error)
+          });
+        }
+      );
     }
   }
 
