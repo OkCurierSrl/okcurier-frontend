@@ -26,31 +26,43 @@
               <div class="form-group mb-3">
                 <label for="businessName">Nume Firmă</label>
                 <input id="businessName" [(ngModel)]="client.billing_info.company_name" name="businessName"
-                       class="form-control"/>
+                       class="form-control"
+                       (focus)="onFieldFocus('company_name')"
+                       (blur)="onFieldBlur('company_name')"/>
               </div>
               <div class="form-group mb-3">
                 <label for="cui">CUI</label>
-                <input id="cui" [(ngModel)]="client.billing_info.cui" name="cui" class="form-control"/>
+                <input id="cui" [(ngModel)]="client.billing_info.cui" name="cui" class="form-control"
+                       (focus)="onFieldFocus('cui')"
+                       (blur)="onFieldBlur('cui')"/>
               </div>
               <div class="form-group mb-3">
                 <label for="registrationNumber">Numar de inregistrare (J)</label>
                 <input id="registrationNumber" [(ngModel)]="client.billing_info.registration_number"
-                       name="registrationNumber" class="form-control"/>
+                       name="registrationNumber" class="form-control"
+                       (focus)="onFieldFocus('registration_number')"
+                       (blur)="onFieldBlur('registration_number')"/>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group mb-3">
                 <label for="iban">IBAN</label>
-                <input id="iban" [(ngModel)]="client.billing_info.iban" name="iban" class="form-control"/>
+                <input id="iban" [(ngModel)]="client.billing_info.iban" name="iban" class="form-control"
+                       (focus)="onFieldFocus('iban')"
+                       (blur)="onFieldBlur('iban')"/>
               </div>
               <div class="form-group mb-3">
                 <label for="phoneNumber">Număr de Telefon</label>
                 <input id="phoneNumber" [(ngModel)]="client.billing_info.phone_number" name="phoneNumber"
-                       class="form-control"/>
+                       class="form-control"
+                       (focus)="onFieldFocus('phone_number')"
+                       (blur)="onFieldBlur('phone_number')"/>
               </div>
               <div class="form-group mb-3">
                 <label for="ibanHolder">Nume detinator IBAN</label>
-                <input id="ibanHolder" [(ngModel)]="client.billing_info.iban_name" name="ibanHolder" class="form-control"/>
+                <input id="ibanHolder" [(ngModel)]="client.billing_info.iban_name" name="ibanHolder" class="form-control"
+                       (focus)="onFieldFocus('iban_name')"
+                       (blur)="onFieldBlur('iban_name')"/>
               </div>
             </div>
           </div>
@@ -63,43 +75,61 @@
               <div class="form-group mb-3">
                 <label for="firstName">Prenume</label>
                 <input id="firstName" [(ngModel)]="client.billing_info.first_name" name="firstName"
-                       class="form-control"/>
+                       class="form-control"
+                       (focus)="onFieldFocus('first_name')"
+                       (blur)="onFieldBlur('first_name')"/>
               </div>
               <div class="form-group mb-3">
                 <label for="lastName">Nume</label>
-                <input id="lastName" [(ngModel)]="client.billing_info.last_name" name="lastName" class="form-control"/>
+                <input id="lastName" [(ngModel)]="client.billing_info.last_name" name="lastName" class="form-control"
+                       (focus)="onFieldFocus('last_name')"
+                       (blur)="onFieldBlur('last_name')"/>
               </div>
               <div class="form-group mb-3">
                 <label for="cnp">CNP</label>
-                <input id="cnp" [(ngModel)]="client.billing_info.cnp" name="cnp" class="form-control"/>
+                <input id="cnp" [(ngModel)]="client.billing_info.cnp" name="cnp" class="form-control"
+                       (focus)="onFieldFocus('cnp')"
+                       (blur)="onFieldBlur('cnp')"/>
               </div>
               <div class="form-group mb-3">
                 <label for="judet">Judet</label>
-                <input id="judet" [(ngModel)]="client.billing_info.judet" name="judet" class="form-control"/>
+                <input id="judet" [(ngModel)]="client.billing_info.judet" name="judet" class="form-control"
+                       (focus)="onFieldFocus('judet')"
+                       (blur)="onFieldBlur('judet')"/>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group mb-3">
                 <label for="oras">Oras</label>
-                <input id="oras" [(ngModel)]="client.billing_info.oras" name="oras" class="form-control"/>
+                <input id="oras" [(ngModel)]="client.billing_info.oras" name="oras" class="form-control"
+                       (focus)="onFieldFocus('oras')"
+                       (blur)="onFieldBlur('oras')"/>
               </div>
               <div class="form-group mb-3">
                 <label for="adresa">Adresa</label>
-                <input id="adresa" [(ngModel)]="client.billing_info.adresa" name="adresa" class="form-control"/>
+                <input id="adresa" [(ngModel)]="client.billing_info.adresa" name="adresa" class="form-control"
+                       (focus)="onFieldFocus('adresa')"
+                       (blur)="onFieldBlur('adresa')"/>
               </div>
               <div class="form-group mb-3">
                 <label for="ibanFizica">IBAN</label>
-                <input id="ibanFizica" [(ngModel)]="client.billing_info.iban" name="ibanFizica" class="form-control"/>
+                <input id="ibanFizica" [(ngModel)]="client.billing_info.iban" name="ibanFizica" class="form-control"
+                       (focus)="onFieldFocus('iban')"
+                       (blur)="onFieldBlur('iban')"/>
               </div>
               <div class="form-group mb-3">
                 <label for="phoneNumberFizica">Număr de Telefon</label>
                 <input id="phoneNumberFizica" [(ngModel)]="client.billing_info.phone_number" name="phoneNumberFizica"
-                       class="form-control"/>
+                       class="form-control"
+                       (focus)="onFieldFocus('phone_number')"
+                       (blur)="onFieldBlur('phone_number')"/>
               </div>
               <div class="form-group mb-3">
                 <label for="ibanHolderFizica">Nume detinator IBAN</label>
                 <input id="ibanHolderFizica" [(ngModel)]="client.billing_info.iban_name" name="ibanHolderFizica"
-                       class="form-control"/>
+                       class="form-control"
+                       (focus)="onFieldFocus('iban_name')"
+                       (blur)="onFieldBlur('iban_name')"/>
               </div>
             </div>
           </div>
@@ -120,34 +150,34 @@
 
       <!-- Non-editable Profile Display -->
       <div *ngIf="!editMode">
-        <div *ngIf="client.billing_info.client_type === 'juridica'">
+        <div *ngIf="client?.billing_info?.client_type === 'juridica'">
           <div class="row">
             <div class="col-md-6">
-              <p><strong>Nume Firmă:</strong> {{ client.billing_info.company_name }}</p>
-              <p><strong>CUI:</strong> {{ client.billing_info.cui }}</p>
-              <p><strong>Numar de inregistrare (J):</strong> {{ client.billing_info.registration_number }}</p>
+              <p><strong>Nume Firmă:</strong> {{ client.billing_info?.company_name }}</p>
+              <p><strong>CUI:</strong> {{ client.billing_info?.cui }}</p>
+              <p><strong>Numar de inregistrare (J):</strong> {{ client.billing_info?.registration_number }}</p>
             </div>
             <div class="col-md-6">
-              <p><strong>IBAN:</strong> {{ client.billing_info.iban }}</p>
-              <p><strong>Număr de Telefon:</strong> {{ client.billing_info.phone_number }}</p>
-              <p><strong>Nume detinator IBAN:</strong> {{ client.billing_info.iban_name }}</p>
+              <p><strong>IBAN:</strong> {{ client.billing_info?.iban }}</p>
+              <p><strong>Număr de Telefon:</strong> {{ client.billing_info?.phone_number }}</p>
+              <p><strong>Nume detinator IBAN:</strong> {{ client.billing_info?.iban_name }}</p>
             </div>
           </div>
         </div>
-        <div *ngIf="client.billing_info.client_type === 'fizica'">
+        <div *ngIf="client?.billing_info?.client_type === 'fizica'">
           <div class="row">
             <div class="col-md-6">
-              <p><strong>Prenume:</strong> {{ client.billing_info.first_name }}</p>
-              <p><strong>Nume:</strong> {{ client.billing_info.last_name }}</p>
-              <p><strong>CNP:</strong> {{ client.billing_info.cnp }}</p>
-              <p><strong>Judet:</strong> {{ client.billing_info.judet }}</p>
+              <p><strong>Prenume:</strong> {{ client.billing_info?.first_name }}</p>
+              <p><strong>Nume:</strong> {{ client.billing_info?.last_name }}</p>
+              <p><strong>CNP:</strong> {{ client.billing_info?.cnp }}</p>
+              <p><strong>Judet:</strong> {{ client.billing_info?.judet }}</p>
             </div>
             <div class="col-md-6">
-              <p><strong>Oras:</strong> {{ client.billing_info.oras }}</p>
-              <p><strong>Adresa:</strong> {{ client.billing_info.adresa }}</p>
-              <p><strong>IBAN:</strong> {{ client.billing_info.iban }}</p>
-              <p><strong>Număr de Telefon:</strong> {{ client.billing_info.phone_number }}</p>
-              <p><strong>Nume detinator IBAN:</strong> {{ client.billing_info.iban_name }}</p>
+              <p><strong>Oras:</strong> {{ client.billing_info?.oras }}</p>
+              <p><strong>Adresa:</strong> {{ client.billing_info?.adresa }}</p>
+              <p><strong>IBAN:</strong> {{ client.billing_info?.iban }}</p>
+              <p><strong>Număr de Telefon:</strong> {{ client.billing_info?.phone_number }}</p>
+              <p><strong>Nume detinator IBAN:</strong> {{ client.billing_info?.iban_name }}</p>
             </div>
           </div>
         </div>

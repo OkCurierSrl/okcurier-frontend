@@ -1,5 +1,6 @@
+
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {HeroComponent} from "../../components/public/hero/hero.component";
 import {Testimonials} from "../../model/testimonials";
 
@@ -7,7 +8,7 @@ import {Testimonials} from "../../model/testimonials";
 @Component({
   selector: 'app-landing-page',
   standalone: true,
-  imports: [CommonModule, HeroComponent],
+  imports: [CommonModule, HeroComponent, NgOptimizedImage],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css'
 })
@@ -51,4 +52,12 @@ export class LandingPageComponent {
     const scrollPosition = testimonialWidth * this.currentTestimonialIndex;
     carousel.scrollTo({ left: scrollPosition - (carousel.offsetWidth / 2) + (testimonialWidth / 2), behavior: 'smooth' });
   }
+
+  readonly imageDimensions = {
+    creareAwb: {
+      width: 800,
+      height: 533  // assuming this is the actual aspect ratio of your image
+    },
+    // Add other image dimensions as needed
+  };
 }

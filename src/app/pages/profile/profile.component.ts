@@ -87,10 +87,9 @@ export class ProfileComponent implements OnInit {
         if (!billingInfoToSend.company_name ||
             !billingInfoToSend.cui ||
             !billingInfoToSend.registration_number ||
-            !billingInfoToSend.judet ||
-            !billingInfoToSend.oras ||
-            !billingInfoToSend.iban_name ||
-            !billingInfoToSend.adresa) {
+            // iban si nume iban sunt optionale
+            !billingInfoToSend.phone_number
+        ) {
           this.errorMessages.push("Toate câmpurile pentru persoana juridică sunt obligatorii.");
           return;
         }
@@ -103,11 +102,12 @@ export class ProfileComponent implements OnInit {
         // Validate personal fields
         if (!billingInfoToSend.first_name ||
             !billingInfoToSend.last_name ||
-            !billingInfoToSend.cnp ||
-            !billingInfoToSend.judet ||
-            !billingInfoToSend.oras ||
-            !billingInfoToSend.iban_name ||
-            !billingInfoToSend.adresa) {
+          // !billingInfoToSend.cnp ||   optional
+          // !billingInfoToSend.iban_name || optional
+          !billingInfoToSend.judet ||
+          !billingInfoToSend.oras ||
+          !billingInfoToSend.phone_number
+        ){
           this.errorMessages.push("Toate câmpurile pentru persoana fizică sunt obligatorii.");
           return;
         }
@@ -121,15 +121,12 @@ export class ProfileComponent implements OnInit {
       }
 
       // Validate IBAN for both types
-      if (this.client.billing_info.iban) {
+      if (this.client.billing_info.iban && this.client.billing_info.iban !== 'None') {
         const ibanRegex = /RO[a-zA-Z0-9]{2}\s?([a-zA-Z]{4}\s?){1}([a-zA-Z0-9]{4}\s?){4}\s?/;
         if (!ibanRegex.test(this.client.billing_info.iban)) {
           this.errorMessages.push("IBAN-ul introdus nu este valid.");
           return;
         }
-      } else {
-        this.errorMessages.push("IBAN-ul este obligatoriu.");
-        return;
       }
 
       this.clientService.modifyBillingInfo(this.client.email, billingInfoToSend)
@@ -164,8 +161,16 @@ export class ProfileComponent implements OnInit {
     {
       this.auth.logout();
     }
+
+    onFieldFocus(field: string) {
+      if (this.client.billing_info[field] === 'None') {
+        this.client.billing_info[field] = '';
+      }
+    }
+
+    onFieldBlur(field: string) {
+      if (!this.client.billing_info[field]) {
+        this.client.billing_info[field] = 'None';
+      }
+    }
 }
-
-
-
-

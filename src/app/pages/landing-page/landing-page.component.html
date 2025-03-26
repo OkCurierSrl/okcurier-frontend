@@ -64,7 +64,14 @@
         </div>
       </div>
       <div class="grid-item">
-        <img src="assets/creeare-awb-feature.png" alt="Step 1" class="step-image"/>
+        <img
+          ngSrc="assets/creeare-awb-feature.png"
+          [width]="imageDimensions.creareAwb.width"
+          [height]="imageDimensions.creareAwb.height"
+          priority
+          alt="Creare AWB"
+          class="responsive-image"
+        />
       </div>
 
       <!-- Step 2 -->
