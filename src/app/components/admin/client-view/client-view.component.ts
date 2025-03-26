@@ -38,6 +38,8 @@ export class ClientViewComponent implements OnInit {
   selectedCourier: string | null = null;
   alertBoolean: boolean = false;
   private services: ServicePricing[];
+  isContractModified = false;
+  originalContractNumber: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -56,7 +58,8 @@ export class ClientViewComponent implements OnInit {
             this.client = client;
             this.clientName = client.name;
             this.fetchDiscountsForCourier('DPD');
-            this.fetchPricesForCourier('DPD')
+            this.fetchPricesForCourier('DPD');
+            this.originalContractNumber = this.client?.billing_info?.contract_number || '';
           },
           error => {
             console.error('Error fetching client data', error);
@@ -146,5 +149,33 @@ export class ClientViewComponent implements OnInit {
   getFinalPriceWithDiscount(key: string) {
     let number = this.getBasicPrice(key) - this.discount.servicesEnumDoubleMap[key]/100 * this.getBasicPrice(key);
     return number.toFixed(2);
+  }
+
+  onContractNumberChange(newValue: string) {
+    this.isContractModified = newValue !== this.originalContractNumber;
+  }
+
+  saveContractNumber() {
+    if (!this.client || !this.client.billing_info) return;
+
+    const updatedBillingInfo = {
+      ...this.client.billing_info,
+      contract_number: this.client.billing_info.contract_number
+    };
+
+    this.clientService.modifyBillingInfo(this.client.email, updatedBillingInfo)
+      .subscribe({
+        next: () => {
+          this.originalContractNumber = this.client.billing_info.contract_number;
+          this.isContractModified = false;
+          // Show success message
+          this.alertBoolean = true;
+          setTimeout(() => this.alertBoolean = false, 3000);
+        },
+        error: (error) => {
+          console.error('Error updating contract number:', error);
+          // Optionally show error message to user
+        }
+      });
   }
 }

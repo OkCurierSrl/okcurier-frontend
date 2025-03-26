@@ -105,3 +105,38 @@ h2 {
   margin-top: 10px;
   color: var(--ok-accent-color);
 }
+
+.contract-number-field {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  input {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+
+    &.modified {
+      border-color: #007bff;
+      background-color: #f8f9fa;
+    }
+  }
+
+  .save-contract-btn {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: #0056b3;
+    }
+  }
+}

@@ -20,6 +20,25 @@
         <td>{{ client?.name }}</td>
       </tr>
       <tr>
+        <th>Contract Number</th>
+        <td>
+          <div class="contract-number-field">
+            <input
+              type="text"
+              [(ngModel)]="client.billing_info.contract_number"
+              [class.modified]="isContractModified"
+              (ngModelChange)="onContractNumberChange($event)"
+              placeholder="Enter contract number">
+            <button
+              class="save-contract-btn"
+              [disabled]="!isContractModified"
+              (click)="saveContractNumber()">
+              Save Contract
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr>
         <th>Family Name</th>
         <td>{{ client?.family_name }}</td>
       </tr>

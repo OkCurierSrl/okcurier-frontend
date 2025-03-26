@@ -156,6 +156,7 @@
               <p><strong>Nume Firmă:</strong> {{ client.billing_info?.company_name }}</p>
               <p><strong>CUI:</strong> {{ client.billing_info?.cui }}</p>
               <p><strong>Numar de inregistrare (J):</strong> {{ client.billing_info?.registration_number }}</p>
+              <p><strong>Număr Contract:</strong> {{ client.billing_info?.contract_number || 'N/A' }}</p>
             </div>
             <div class="col-md-6">
               <p><strong>IBAN:</strong> {{ client.billing_info?.iban }}</p>
@@ -171,6 +172,7 @@
               <p><strong>Nume:</strong> {{ client.billing_info?.last_name }}</p>
               <p><strong>CNP:</strong> {{ client.billing_info?.cnp }}</p>
               <p><strong>Judet:</strong> {{ client.billing_info?.judet }}</p>
+              <p><strong>Număr Contract:</strong> {{ client.billing_info?.contract_number || 'N/A' }}</p>
             </div>
             <div class="col-md-6">
               <p><strong>Oras:</strong> {{ client.billing_info?.oras }}</p>

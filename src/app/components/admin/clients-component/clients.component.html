@@ -26,6 +26,7 @@
       <tr>
         <th>Nume</th>
         <th>Email</th>
+        <th>Contract</th>
         <th>Ultima Logare</th>
         <th>Acțiuni</th>
         <th>Oprește din ramburs</th>
@@ -36,6 +37,7 @@
         <tr>
           <td>{{ client.name }}</td>
           <td>{{ client.email }}</td>
+          <td>{{ client.billing_info?.contract_number || 'N/A' }}</td>
           <td>{{ client.last_login | date: 'short' }}</td>
           <td>
             <div class="action-buttons">
