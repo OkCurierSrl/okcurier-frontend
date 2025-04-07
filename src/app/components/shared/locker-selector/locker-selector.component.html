@@ -12,11 +12,17 @@
   </div>
 
   <!-- Map container -->
-  <div #mapContainer class="map-container"></div>
+  <div class="map-wrapper">
+    <div #mapContainer class="map-container"></div>
+  </div>
 
   <!-- Selected locker info -->
-  <div *ngIf="selectedLockerId" class="selected-locker-info">
-    <p><strong>Selected Locker:</strong> {{ selectedLockerId }}</p>
+  <div *ngIf="selectedLocker" class="selected-locker-info">
+    <h4>Selected Locker</h4>
+    <p><strong>ID:</strong> {{ selectedLocker.id }}</p>
+    <p><strong>Name:</strong> {{ selectedLocker.name }}</p>
+    <p><strong>Address:</strong> {{ selectedLocker.address }}</p>
+    <p><strong>Courier:</strong> {{ selectedLocker.courier }}</p>
   </div>
 
   <!-- Instructions -->

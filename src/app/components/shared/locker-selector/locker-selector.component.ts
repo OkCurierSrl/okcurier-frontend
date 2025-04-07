@@ -27,6 +27,7 @@ export class LockerSelectorComponent implements OnInit, OnChanges, OnDestroy {
   hasError: boolean = false;
   errorMessage: string = '';
   selectedLockerId: string = '';
+  selectedLocker: any = null;
   private subscriptions = new Subscription();
 
   constructor(private lockerService: LockerService) {}
@@ -41,12 +42,19 @@ export class LockerSelectorComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     // If the selected courier changes, reload lockers
     if (changes['selectedCourier'] && !changes['selectedCourier'].firstChange) {
+      // Reset selected locker when courier changes
+      this.selectedLockerId = '';
+      this.selectedLocker = null;
       this.loadLockersByCourier(this.selectedCourier);
     }
 
     // If useLocker changes to true, initialize the map
     if (changes['useLocker'] && this.useLocker && this.mapContainer) {
       setTimeout(() => this.initMap(), 100); // Small delay to ensure the DOM is ready
+    } else if (changes['useLocker'] && !this.useLocker) {
+      // Reset selected locker when useLocker is set to false
+      this.selectedLockerId = '';
+      this.selectedLocker = null;
     }
   }
 
@@ -147,6 +155,8 @@ export class LockerSelectorComponent implements OnInit, OnChanges, OnDestroy {
         <div class="locker-info">
           <h3>${locker.name}</h3>
           <p>${locker.address}</p>
+          <p><strong>Courier:</strong> ${locker.courier}</p>
+          <p><strong>ID:</strong> ${locker.id}</p>
           <button id="select-locker-${locker.id}" class="select-locker-btn">Select this locker</button>
         </div>
       `;
@@ -198,10 +208,14 @@ export class LockerSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
   selectLocker(locker: any): void {
     this.selectedLockerId = locker.id;
+    // Store the selected locker for display
+    this.selectedLocker = locker;
+    // Emit the event to the parent component
     this.lockerSelected.emit({
       lockerId: locker.id,
       courier: locker.courier
     });
+    console.log('Locker selected:', locker);
   }
 
   getMarkerIcon(courier: string): string {

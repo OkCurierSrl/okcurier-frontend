@@ -41,12 +41,19 @@
       <label for="useLocker">Deliver to Locker</label>
     </div>
 
-    <app-locker-selector
-      *ngIf="useLocker && hasSelectedCourier()"
-      [useLocker]="useLocker"
-      [selectedCourier]="getSelectedCourierName()"
-      (lockerSelected)="onLockerSelected($event)">
-    </app-locker-selector>
+    <!-- Display selected locker info in parent component -->
+    <div *ngIf="selectedLockerId && useLocker" class="selected-locker-summary">
+      <p><strong>Selected Locker:</strong> {{ selectedLockerId }}</p>
+    </div>
+
+    <div class="locker-selector-wrapper">
+      <app-locker-selector
+        *ngIf="useLocker && hasSelectedCourier()"
+        [useLocker]="useLocker"
+        [selectedCourier]="getSelectedCourierName()"
+        (lockerSelected)="onLockerSelected($event)">
+      </app-locker-selector>
+    </div>
   </div>
 
   <div class="actions">

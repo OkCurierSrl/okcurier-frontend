@@ -165,11 +165,14 @@ export class CourierOptionsNewComponent implements OnInit {
     this.selectedLockerId = event.lockerId;
     this.selectedLockerCourier = event.courier;
 
+    console.log('Parent received locker selection:', event);
+
     // Update orderData with locker information
     if (this.orderData) {
       this.orderData.useLocker = true;
       this.orderData.lockerId = event.lockerId;
       this.orderData.lockerCourier = event.courier;
+      console.log('Updated orderData with locker info:', this.orderData);
     }
   }
 
