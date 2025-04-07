@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { AuthService } from '@auth0/auth0-angular';
 import { environment } from '../../environments/environment';
 
-interface Locker {
+export interface Locker {
   id: string;
   name: string;
   address: string;
@@ -20,13 +22,38 @@ interface Locker {
 export class LockerService {
   private apiUrl = `${environment.apiUrl}/lockers`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
-  getLockersByCourier(courier: string): Observable<Locker[]> {
-    return this.http.get<Locker[]>(`${this.apiUrl}/${courier}`);
+  getLockersByCourier(courier: string, useAuth: boolean = true): Observable<Locker[]> {
+    if (useAuth) {
+      return this.addAuthHeader().pipe(
+        switchMap(headers => this.http.get<Locker[]>(`${this.apiUrl}/${courier}`, { headers }))
+      );
+    } else {
+      return this.http.get<Locker[]>(`${this.apiUrl}/${courier}`);
+    }
   }
 
-  getLockerById(lockerId: string): Observable<Locker> {
-    return this.http.get<Locker>(`${this.apiUrl}/locker/${lockerId}`);
+  getLockerById(lockerId: string, useAuth: boolean = true): Observable<Locker> {
+    if (useAuth) {
+      return this.addAuthHeader().pipe(
+        switchMap(headers => this.http.get<Locker>(`${this.apiUrl}/locker/${lockerId}`, { headers }))
+      );
+    } else {
+      return this.http.get<Locker>(`${this.apiUrl}/locker/${lockerId}`);
+    }
+  }
+
+  private addAuthHeader(): Observable<HttpHeaders> {
+    return this.auth.getAccessTokenSilently().pipe(
+      switchMap(token => {
+        const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`
+        });
+        return [headers];
+      })
+    );
   }
 }
