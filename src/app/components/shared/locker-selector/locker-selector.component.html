@@ -1,0 +1,26 @@
+<div class="locker-selector-container">
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Loading lockers...</p>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="hasError" class="error-message">
+    <p>{{ errorMessage }}</p>
+    <button (click)="loadLockersByCourier(selectedCourier)">Try Again</button>
+  </div>
+
+  <!-- Map container -->
+  <div #mapContainer class="map-container"></div>
+
+  <!-- Selected locker info -->
+  <div *ngIf="selectedLockerId" class="selected-locker-info">
+    <p><strong>Selected Locker:</strong> {{ selectedLockerId }}</p>
+  </div>
+
+  <!-- Instructions -->
+  <div class="instructions">
+    <p>Click on a marker to view locker details and select it for delivery.</p>
+  </div>
+</div>

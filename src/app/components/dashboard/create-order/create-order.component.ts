@@ -22,14 +22,13 @@ import {AuthService} from "@auth0/auth0-angular";
 import {Client} from "../../../model/client";
 import {ClientService} from "../../../services/client.service";
 import {OrderData} from "../../../model/order-data";
-import {auth} from "express-oauth2-jwt-bearer";
 import {RoleService} from "../../../services/role-service.service";
-
+import {LockerSelectorComponent} from '../../shared/locker-selector/locker-selector.component';
 
 @Component({
   selector: 'app-create-order',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, OrderFormComponent, InputTextModule, CheckboxModule, ButtonDirective, PackageFormComponent, FormsModule, PackageOverviewComponent],
+  imports: [CommonModule, ReactiveFormsModule, OrderFormComponent, InputTextModule, CheckboxModule, ButtonDirective, PackageFormComponent, FormsModule, PackageOverviewComponent, LockerSelectorComponent],
   templateUrl: './create-order.component.html',
   styleUrl: './create-order.component.css'
 })
@@ -64,6 +63,10 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
   iban: any;
   detinatorIban: any;
   private email: string;
+
+  useLocker: boolean = false;
+  selectedLockerId: string | null = null;
+  selectedLockerCourier: string | null = null;
 
   constructor(private fb: FormBuilder,
               private renderer: Renderer2,
@@ -268,7 +271,10 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       },
       isPlicSelected: this.isPlicSelected,
       iban: this.iban,
-      detinatorIban: this.detinatorIban
+      detinatorIban: this.detinatorIban,
+      useLocker: this.useLocker,
+      lockerId: this.selectedLockerId,
+      lockerCourier: this.selectedLockerCourier
     };
 
     if (this.isLoggedIn) {

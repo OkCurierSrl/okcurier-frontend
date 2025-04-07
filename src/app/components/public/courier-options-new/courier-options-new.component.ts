@@ -6,14 +6,16 @@ import { AuthService } from '@auth0/auth0-angular';
 import { ClientService } from '../../../services/client.service';
 import { CourierOption } from '../../../model/courier.option';
 import { OrderData } from '../../../model/order-data';
-import {RoleService} from "../../../services/role-service.service";
+import { RoleService } from "../../../services/role-service.service";
+import { LockerSelectorComponent } from "../../shared/locker-selector/locker-selector.component";
+import { FormsModule } from "@angular/forms";
 
 @Component({
   selector: 'app-courier-options-new',
   templateUrl: './courier-options-new.component.html',
   styleUrls: ['./courier-options-new.component.css'],
   standalone: true,
-  imports: [NgClass, NgForOf, NgIf, NgOptimizedImage]
+  imports: [NgClass, NgForOf, NgIf, NgOptimizedImage, LockerSelectorComponent, FormsModule]
 })
 export class CourierOptionsNewComponent implements OnInit {
   couriers: CourierOption[] = [];
@@ -23,6 +25,9 @@ export class CourierOptionsNewComponent implements OnInit {
   isAuthenticated: boolean = false;
   hasContract: boolean = false;
   origin: string = '';
+  useLocker: boolean = false;
+  selectedLockerId: string = '';
+  selectedLockerCourier: string = '';
 
   constructor(
     private router: Router,
@@ -148,6 +153,24 @@ export class CourierOptionsNewComponent implements OnInit {
   selectCourier(courier: CourierOption): void {
     this.couriers.forEach(c => c.selected = false);
     courier.selected = true;
+
+    // Reset locker selection when courier changes
+    if (this.selectedLockerCourier !== courier.courier) {
+      this.selectedLockerId = '';
+      this.selectedLockerCourier = '';
+    }
+  }
+
+  onLockerSelected(event: { lockerId: string, courier: string }): void {
+    this.selectedLockerId = event.lockerId;
+    this.selectedLockerCourier = event.courier;
+
+    // Update orderData with locker information
+    if (this.orderData) {
+      this.orderData.useLocker = true;
+      this.orderData.lockerId = event.lockerId;
+      this.orderData.lockerCourier = event.courier;
+    }
   }
 
   getCourierLogo(courier: string): string {
@@ -175,5 +198,28 @@ export class CourierOptionsNewComponent implements OnInit {
     } else {
       this.router.navigate([this.isAuthenticated ? '/dashboard/order' : '/order']);
     }
+  }
+
+  hasSelectedCourier(): boolean {
+    return this.couriers.some(courier => courier.selected);
+  }
+
+  setUseLocker(value: boolean): void {
+    this.useLocker = value;
+    if (!value) {
+      // Reset locker selection when disabling locker delivery
+      this.selectedLockerId = '';
+      this.selectedLockerCourier = '';
+      if (this.orderData) {
+        this.orderData.useLocker = false;
+        this.orderData.lockerId = '';
+        this.orderData.lockerCourier = '';
+      }
+    }
+  }
+
+  getSelectedCourierName(): string {
+    const selectedCourier = this.couriers.find(courier => courier.selected);
+    return selectedCourier ? selectedCourier.courier : '';
   }
 }

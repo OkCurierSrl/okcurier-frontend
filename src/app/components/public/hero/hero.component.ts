@@ -79,6 +79,7 @@ export class HeroComponent implements OnInit {
 
   calculateTariff(): void {
     const orderData: OrderData = {
+      lockerCourier: "", lockerId: "", useLocker: false,
       detinatorIban: '',
       iban: '',
       email: "",

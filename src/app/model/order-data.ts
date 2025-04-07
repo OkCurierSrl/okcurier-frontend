@@ -22,6 +22,9 @@ export interface OrderData {
         rambursCont?: number;
     };
     isPlicSelected: boolean;
+    useLocker: boolean;
+    lockerId: string;
+  lockerCourier: string;
     iban: string;
     detinatorIban: string;
 }

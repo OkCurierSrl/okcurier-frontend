@@ -375,4 +375,7 @@ export class OrderFormComponent implements OnInit {
     return this.orderForm;
   }
 
+  setLockerDelivery(selectedLockerId: string) {
+    console.log('Selected Locker ID:', selectedLockerId);
+  }
 }

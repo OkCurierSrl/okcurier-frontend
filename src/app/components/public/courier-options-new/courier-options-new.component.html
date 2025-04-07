@@ -1,45 +1,59 @@
 <div class="courier-options">
-  <h5>Alegeți una din ofertele de mai jos:</h5>
+  <h5>Choose from the offers below:</h5>
 
   <!-- Loading overlay -->
   <div class="loading-overlay" *ngIf="isLoading">
-    <img src="assets/logo.png" alt="Loading Logo" class="spinner-logo">
+    <img ngSrc="assets/logo.png" alt="Loading Logo" class="spinner-logo" width="100" height="100">
     <div class="spinner"></div>
-    <p>Se încarcă...</p>
+    <p>Loading...</p>
   </div>
 
-  <div *ngFor="let courier of couriers"
-       class="courier-option"
-       [ngClass]="{'selected': courier.selected}"
-       (click)="selectCourier(courier)"
-       tabindex="0"
-       role="button"
-       [attr.aria-pressed]="courier.selected">
+  <button *ngFor="let courier of couriers"
+          class="courier-option"
+          [ngClass]="{'selected': courier.selected}"
+          (click)="selectCourier(courier)"
+          (keydown)="selectCourier(courier)"
+          [attr.aria-pressed]="courier.selected">
     <div class="courier-details">
-      <img [src]="getCourierLogo(courier.courier)" alt="{{ courier.courier }} logo">
+      <img ngSrc="{{getCourierLogo(courier.courier)}}" [alt]="courier.courier + ' logo'" width="100" height="50">
       <span class="price">
         {{ courier.totalPrice.toFixed(2) }} RON <i class="fas fa-money-bill-wave"></i>
       </span>
     </div>
     <div class="courier-info">
-      <span><b>Ridicare:</b> 11-07-2024 <i class="fas fa-home"></i></span>
+      <span><b>Pickup:</b> 11-07-2024 <i class="fas fa-home"></i></span>
       <span><b>Deadline:</b> 13-07-2024 <i class="fas fa-truck"></i></span>
       <span>17:00 <i class="fas fa-clock"></i></span>
       <div class="icon-group">
-        <span class="icon" title="Curierul acceptă plata cu cardul"><i class="fas fa-credit-card"></i></span>
+        <span class="icon" title="Card payment accepted"><i class="fas fa-credit-card"></i></span>
         <span class="icon" title="Envelope"><i class="fas fa-envelope"></i></span>
         <span class="icon" title="Calendar"><i class="fas fa-calendar"></i></span>
         <span class="icon" title="File"><i class="fas fa-file-alt"></i></span>
         <span class="icon" title="Shield"><i class="fas fa-shield-alt"></i></span>
       </div>
     </div>
+  </button>
+
+  <!-- Locker delivery option -->
+  <div class="locker-option" *ngIf="hasSelectedCourier()">
+    <div class="p-field-checkbox">
+      <input type="checkbox" id="useLocker" [ngModel]="useLocker" (ngModelChange)="setUseLocker($event)">
+      <label for="useLocker">Deliver to Locker</label>
+    </div>
+
+    <app-locker-selector
+      *ngIf="useLocker && hasSelectedCourier()"
+      [useLocker]="useLocker"
+      [selectedCourier]="getSelectedCourierName()"
+      (lockerSelected)="onLockerSelected($event)">
+    </app-locker-selector>
   </div>
 
   <div class="actions">
     <button class="btn btn-primary" *ngIf="isContractFlow() && !isGlsOrSamedaySelected()" (click)="generateAWB()">
-      Generează AWB
+      Generate AWB
     </button>
-    <button class="btn btn-primary" (click)="orderCourier()">Comandă Curier</button>
-    <button class="btn btn-secondary" (click)="goBack()">Înapoi</button>
+    <button class="btn btn-primary" (click)="orderCourier()">Order Courier</button>
+    <button class="btn btn-secondary" (click)="goBack()">Back</button>
   </div>
 </div>
