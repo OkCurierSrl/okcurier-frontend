@@ -23,17 +23,32 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
   amount: number = 0;
   description: string = '';
   stripeInitialized: boolean = false;
-  email: string;
-  courier: string;
-   orderData: OrderData;
-  isLoading: boolean;
-  isDisabled: boolean;
+  email: string = '';
+  courier: string = '';
+  orderData: OrderData;
+  isLoading: boolean = false;
+  isDisabled: boolean = false;
 
-  constructor(private stripeService: StripeService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private downloadService: DownloadService,
-              private orderService: OrderService) {}
+  constructor(
+    private stripeService: StripeService,
+    private router: Router,
+    private downloadService: DownloadService,
+    private orderService: OrderService
+  ) {
+    // Get data from navigation state
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state) {
+      const state = navigation.extras.state as any;
+      this.amount = state.amount;
+      this.email = state.email;
+      this.courier = state.courier;
+      this.orderData = state.orderData;
+      this.description = state.description || 'Default description';
+    } else {
+      // Redirect to home if no state data
+      this.router.navigate(['/']);
+    }
+  }
 
   async ngOnInit(): Promise<void> {
     try {
@@ -43,16 +58,6 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
         throw new Error('Stripe initialization failed');
       }
       this.stripeInitialized = true;
-      // Get query parameters
-      this.route.queryParams.subscribe((params) => {
-        this.amount = +params['amount'] || 0;
-        this.description = params['description'] || 'Default description';
-        this.email = params['email'] || 'default email';
-        this.orderData = typeof params['orderData'] === 'string'
-          ? JSON.parse(params['orderData'])
-          : params['orderData'];
-        this.courier = params['courier'];
-      });
     } catch (error) {
       console.error('Error during Stripe initialization:', error);
     }
@@ -89,7 +94,6 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
     this.isLoading = true;
     this.isDisabled = true;
     try {
-      // Create Payment Intent and confirm payment with Stripe
       const paymentIntentResponse = await this.stripeService.createPaymentIntent(
         this.amount,
         this.email,
@@ -117,19 +121,15 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
           paymentRoute = '/track/';
         }
 
-        // Call orderService.placeOrder
         this.orderService.placeOrder(this.orderData, this.courier, true).subscribe({
           next: (response) => {
-            // Send confirmation email with invoice and AWB links
             this.sendConfirmationEmail(response.awb, invoiceUrl);
 
-            // Navigate to confirmation pagecou
-            paymentRoute = paymentRoute + response.awb;
-            this.router.navigate([paymentRoute]);
+            // Navigate using state
+            this.router.navigate([paymentRoute + response.awb]);
 
-            // Trigger the download asynchronously
             setTimeout(() => {
-              this.downloadService.downloadLabel(response);
+              this.downloadService.downloadLabel(response, this.courier, response.awb);
             }, 0);
           },
           error: (error) => {
@@ -152,17 +152,17 @@ export class PaymentPortalComponent implements OnInit, AfterViewInit {
   }
 
   private sendConfirmationEmail(awb: string, invoiceUrl: string): void {
-    // Don't stringify orderData, let Angular's HttpClient handle the JSON serialization
     this.stripeService.sendConfirmationEmail({
       email: this.email,
       awb: awb,
       invoiceUrl: invoiceUrl,
       amount: this.amount,
-      orderData: this.orderData, // Remove JSON.stringify()
+      orderData: this.orderData,
       courier: this.courier,
     }).subscribe({
       error: (error) => {
         console.error('Error sending confirmation email:', error);
       }
     });
-  }}
+  }
+}

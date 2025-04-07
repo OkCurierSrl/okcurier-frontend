@@ -93,7 +93,7 @@ export class OrderListRecheckedComponent implements OnInit {
     this.orderService.downloadLabel(order.awb).subscribe(
       response => {
         // Update order status or provide feedback
-        this.downloadService.downloadLabel(response);
+        this.downloadService.downloadLabel(response, order.courier, order.awb);
       },
       error => {
         console.error(`Failed to download label for order ${order.awb}.`, error);

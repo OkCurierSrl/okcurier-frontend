@@ -124,7 +124,7 @@
         <p><span>Ramburs:</span> {{ shipment?.codPrice }} RON</p>
         <p><span>Ramburs in cont:</span> {{ shipment?.codToAccount ? 'DA' : 'NU' }}</p>
         <p><span>Deschidere la livrare:</span> {{ shipment?.parcelOpening ? 'DA' : 'NU' }}</p>
-        <p><span>Cost livrare adaugat in ramburs:</span> DA</p>
+        <p><span>Cost livrare adaugat in ramburs:</span> {{shipment.transportIncluded ? 'DA' : 'NU'}}</p>
       </div>
 
       <div class="col">

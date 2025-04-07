@@ -246,7 +246,6 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
 
 
   onSubmit(): void {
-    // if (this.isFormValid()) {
     const expeditorData = this.expeditorFormComponent.orderForm.getRawValue();
     const destinatarData = this.destinatarFormComponent.orderForm.getRawValue();
     const packagesData = this.courierPackages.map(pkg => pkg.form.getRawValue());
@@ -278,26 +277,24 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
       this.priceCalculationService.getPrices(orderData).subscribe(
         (response) => {
           const basePath = this.isAdmin ? '/admin' : '/dashboard';
-          this.router.navigate([`${basePath}/courier-options`],
-            {
-              queryParams: {
-                couriers: JSON.stringify(response),
-                orderData: JSON.stringify(orderData)
-              }
-            });
+          // Use state navigation to hide data from URL
+          this.router.navigate([`${basePath}/courier-options`], {
+            state: {
+              couriers: response,
+              orderData: orderData
+            }
+          });
         });
     } else {
       this.priceCalculationService.getPricesFree(orderData).subscribe(
         (response) => {
-          this.router.navigate(['/courier-options'],
-            {
-              queryParams: {
-                couriers: JSON.stringify(response),
-                orderData: JSON.stringify(orderData)
-              }
-            });
-        })
-      // }
+          this.router.navigate(['/courier-options'], {
+            state: {
+              couriers: response,
+              orderData: orderData
+            }
+          });
+        });
     }
   }
 

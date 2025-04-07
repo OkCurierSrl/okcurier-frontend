@@ -17,38 +17,37 @@ import {RoleService} from "../../../services/role-service.service";
 })
 export class CourierOptionsNewComponent implements OnInit {
   couriers: CourierOption[] = [];
-  private orderData: OrderData;
-  origin: string = '';
+  orderData: OrderData;
+  isLoading = false;
+  isAdmin: boolean = false;
   isAuthenticated: boolean = false;
   hasContract: boolean = false;
-  isLoading: boolean = false;  // new loading flag
-  private isAdmin: boolean = false;
+  origin: string = '';
 
   constructor(
-    private route: ActivatedRoute,
-    private auth: AuthService,
     private router: Router,
     private orderService: OrderService,
+    private auth: AuthService,
     private clientService: ClientService,
     private roleService: RoleService
-  ) {}
+  ) {
+    // Get data from navigation state
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state) {
+      const state = navigation.extras.state as {couriers: any, orderData: OrderData};
+      this.couriers = state.couriers;
+      this.orderData = state.orderData;
+    }
+  }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      if (params['couriers']) {
-        this.couriers = JSON.parse(params['couriers']);
-      }
-      if (params['orderData']) {
-        this.orderData = JSON.parse(params['orderData']);
-      }
-      if (params['origin']) {
-        this.origin = params['origin'];
-      }
-
-      this.roleService.hasRequiredRole(['ADMIN']).subscribe((hasAdminRole) => {
-        this.isAdmin = hasAdminRole;
-      });
-
+    if (!this.orderData || !this.couriers) {
+      // Handle case when data is not available
+      this.router.navigate(['/']);
+      return;
+    }
+    this.roleService.hasRequiredRole(['ADMIN']).subscribe((hasAdminRole) => {
+      this.isAdmin = hasAdminRole;
     });
 
     this.auth.isAuthenticated$.subscribe(isAuth => {
@@ -101,21 +100,21 @@ export class CourierOptionsNewComponent implements OnInit {
       } else {
         const basePath = this.isAdmin ? '/admin' : '/dashboard';
         this.router.navigate([`${basePath}/payment`], {
-          queryParams: {
+          state: {
             amount: selected.totalPrice,
             email: this.orderData.email,
             courier: selected.courier,
-            orderData: JSON.stringify(this.orderData)
+            orderData: this.orderData
           }
         });
       }
     } else {
       this.router.navigate(['/payment'], {
-        queryParams: {
+        state: {
           amount: selected.totalPrice,
           email: this.orderData.email,
           courier: selected.courier,
-          orderData: JSON.stringify(this.orderData)
+          orderData: this.orderData
         }
       });
     }
@@ -132,7 +131,6 @@ export class CourierOptionsNewComponent implements OnInit {
     this.orderService.placeOrder(this.orderData, selected.courier, false).subscribe({
       next: response => {
         console.log('AWB generated successfully:', response);
-        // Fix: Use conditional routing based on isAdmin
         const routePath = this.isAdmin ? '/admin/order-list' : '/dashboard/order-list';
         this.router.navigate([routePath]);
       },

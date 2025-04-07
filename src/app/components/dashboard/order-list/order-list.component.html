@@ -18,7 +18,8 @@
     <table class="order-list-table">
       <thead>
       <tr>
-        <th>Sel</th>
+        <th>
+        </th>
         <th>Număr AWB</th>
         <th>Curier</th>
         <th>Nume Expeditor</th>
@@ -36,7 +37,10 @@
         <th>Acțiuni</th>
       </tr>
       <tr>
-        <th></th>
+        <th><input type="checkbox"
+                 [checked]="areAllOrdersSelected()"
+                 (change)="toggleAllOrders($event)"
+                 title="Selectează toate AWB-urile generate"/></th>
         <th><input type="text" [(ngModel)]="filter.awb"></th>
         <th><input type="text" [(ngModel)]="filter.courier"></th>
         <th><input type="text" [(ngModel)]="filter.senderName"></th>
@@ -69,7 +73,7 @@
       <ng-container *ngFor="let order of filteredOrders">
         <tr [ngClass]="{'roll-green': order.status === 'COMANDA_TRIMISA'}">
           <td>
-            <input *ngIf="awbGenerat(order.status)" type="checkbox" [(ngModel)]="order.isSelected" />
+            <input type="checkbox" [(ngModel)]="order.isSelected" />
           </td>
           <td>{{ order.awb }}</td>
           <td><img [src]="getCourierLogo(order?.courier)" alt="{{ order.courier }} logo"></td>

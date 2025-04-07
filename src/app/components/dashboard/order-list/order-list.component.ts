@@ -98,8 +98,9 @@ export class OrderListComponent implements OnInit {
   }
 
   downloadOrder(order: FlatShipment): void {
+    console.log(order)
     this.orderService.downloadLabel(order.awb).subscribe(
-      response => { this.downloadService.downloadLabel(response); },
+      response => { this.downloadService.downloadLabel(response, order.courier, order.awb); },
       error => { console.error(`Failed to download label for order ${order.awb}.`, error); }
     );
   }
@@ -170,18 +171,48 @@ export class OrderListComponent implements OnInit {
     const selectedOrders = this.filteredOrders.filter(order => order.isSelected);
     this.selectedOrders = selectedOrders;
     if (selectedOrders.length === 0) {
-      alert('Please select at least one order.');
+      alert('Vă rugăm să selectați cel puțin o comandă.');
       return;
     }
     this.showDialog = true;
   }
 
   exportExcel(): void {
-    // Obținem toate comenzile pentru export (fără paginare)
+    const selectedOrders = this.filteredOrders.filter(order => order.isSelected);
+    if (selectedOrders.length === 0) {
+      // If no orders are selected, export all orders
+      this.exportAllOrders();
+      return;
+    }
+
+    // Export only selected orders
+    const excelData = selectedOrders.map(order => ({
+      'Număr AWB': order.awb,
+      'Curier': order.courier,
+      'Nume Expeditor': order.senderName,
+      'Adresă Expeditor': order.senderAddress,
+      'Nume Destinatar': order.recipientName,
+      'Adresă Destinatar': order.recipientAddress,
+      'Data Creare': order.creationDate,
+      'Data Ridicare': order.pickupDate,
+      'IBAN': order.iban,
+      'Număr Comandă': order.orderNumber,
+      'Număr Colete': order.packageCount,
+      'Greutate': order.weight,
+      'Ramburs': `${order.cashOnDelivery} RON`,
+      'Status': order.status
+    }));
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(excelData);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Orders');
+    XLSX.writeFile(wb, 'selected_orders.xlsx');
+  }
+
+  private exportAllOrders(): void {
     this.isLoading = true;
     this.orderService.filterShipments(this.filter, 0, 999999).subscribe(
       (orders: FlatShipment[]) => {
-        // Pregătim datele pentru Excel
         const excelData = orders.map(order => ({
           'Număr AWB': order.awb,
           'Curier': order.courier,
@@ -199,24 +230,14 @@ export class OrderListComponent implements OnInit {
           'Status': order.status
         }));
 
-        // Creăm worksheet
-        const worksheet = XLSX.utils.json_to_sheet(excelData);
-
-        // Creăm workbook
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Comenzi');
-
-        // Generăm numele fișierului cu data curentă
-        const currentDate = new Date().toISOString().split('T')[0];
-        const fileName = `comenzi_${currentDate}.xlsx`;
-
-        // Salvăm fișierul
-        XLSX.writeFile(workbook, fileName);
+        const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(excelData);
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Orders');
+        XLSX.writeFile(wb, 'all_orders.xlsx');
         this.isLoading = false;
       },
       error => {
-        console.error('Eroare la exportul Excel:', error);
-        alert('A apărut o eroare la generarea fișierului Excel. Vă rugăm încercați din nou.');
+        console.error('Error exporting to Excel:', error);
         this.isLoading = false;
       }
     );
@@ -257,5 +278,15 @@ export class OrderListComponent implements OnInit {
 
   awbGenerat(status: string): boolean {
     return status?.toUpperCase() === 'AWB_GENERAT';
+  }
+
+  areAllOrdersSelected(): boolean {
+    return this.filteredOrders.length > 0 &&
+           this.filteredOrders.every(order => order.isSelected);
+  }
+
+  toggleAllOrders(event: any): void {
+    const isChecked = event.target.checked;
+    this.filteredOrders.forEach(order => order.isSelected = isChecked);
   }
 }

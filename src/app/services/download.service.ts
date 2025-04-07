@@ -7,7 +7,7 @@ import {Injectable} from "@angular/core";
   providedIn: 'root'
 })
 export class DownloadService {
-  public downloadLabel(response: ApiDownloadResponse): void {
+  public downloadLabel(response: ApiDownloadResponse, courier: string, awb: string): void {
     const labelData = response.label;
 
     if (!labelData) {
@@ -36,7 +36,7 @@ export class DownloadService {
     // Create a link element and trigger the download
     const link = document.createElement('a');
     link.href = blobUrl;
-    link.download = 'label.pdf'; // You can set a dynamic filename if needed
+    link.download = courier + '_' + awb + '.pdf';
     link.click();
 
     // Clean up

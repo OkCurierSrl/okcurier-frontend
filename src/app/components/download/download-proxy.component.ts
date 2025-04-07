@@ -27,7 +27,7 @@ export class DownloadProxyComponent implements OnInit {
   downloadAwb(awb: string): void {
     this.orderService.downloadLabel(awb).subscribe(
       response => {
-        this.downloadService.downloadLabel(response);
+        this.downloadService.downloadLabel(response, 'AWB', 'okcurier');
       },
       error => {
         console.error(`Failed to download label for order ${awb}.`, error);
