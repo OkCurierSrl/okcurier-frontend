@@ -9,6 +9,7 @@ import { OrderData } from '../../../model/order-data';
 import { RoleService } from "../../../services/role-service.service";
 import { LockerSelectorComponent } from "../../shared/locker-selector/locker-selector.component";
 import { FormsModule } from "@angular/forms";
+import { CourierCompatibilityService } from "../../../services/courier-compatibility.service";
 
 @Component({
   selector: 'app-courier-options-new',
@@ -31,26 +32,49 @@ export class CourierOptionsNewComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private orderService: OrderService,
     private auth: AuthService,
     private clientService: ClientService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private courierCompatibilityService: CourierCompatibilityService
   ) {
     // Get data from navigation state
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state) {
-      const state = navigation.extras.state as {couriers: any, orderData: OrderData};
+      const state = navigation.extras.state as {couriers: any, orderData: OrderData, origin?: string};
       this.couriers = state.couriers;
       this.orderData = state.orderData;
+      this.origin = state.origin || '';
     }
   }
 
   ngOnInit(): void {
+    // Check if we need to get data from query params (for page refreshes or direct links)
+    this.route.queryParams.subscribe(params => {
+      if (params['couriers'] && params['orderData'] && (!this.orderData || !this.couriers)) {
+        try {
+          this.couriers = JSON.parse(params['couriers']);
+          this.orderData = JSON.parse(params['orderData']);
+          this.origin = params['origin'] || '';
+          console.log('Loaded data from query params');
+        } catch (error) {
+          console.error('Error parsing query params:', error);
+          this.router.navigate(['/']);
+          return;
+        }
+      }
+    });
+
     if (!this.orderData || !this.couriers) {
-      // Handle case when data is not available
+      // Handle case when data is not available from both state and query params
+      console.log('No data available, redirecting to home');
       this.router.navigate(['/']);
       return;
     }
+
+    // Filter out incompatible couriers
+    this.filterIncompatibleCouriers();
     this.roleService.hasRequiredRole(['ADMIN']).subscribe((hasAdminRole) => {
       this.isAdmin = hasAdminRole;
     });
@@ -224,5 +248,58 @@ export class CourierOptionsNewComponent implements OnInit {
   getSelectedCourierName(): string {
     const selectedCourier = this.couriers.find(courier => courier.selected);
     return selectedCourier ? selectedCourier.courier : '';
+  }
+
+  /**
+   * Check if any extra services are selected
+   */
+  hasSelectedServices(): boolean {
+    if (!this.orderData || !this.orderData.extraServices) {
+      return false;
+    }
+
+    return (
+      this.orderData.extraServices.deschidereColet ||
+      this.orderData.extraServices.coletSchimb ||
+      this.orderData.extraServices.documentSchimb ||
+      (this.orderData.extraServices.asigurare > 0) ||
+      (this.orderData.extraServices.rambursCont > 0)
+    );
+  }
+
+  /**
+   * Filter out couriers that don't support the selected services
+   */
+  filterIncompatibleCouriers(): void {
+    if (!this.orderData || !this.orderData.extraServices) {
+      return;
+    }
+
+    // Create a filtered list of couriers
+    const filteredCouriers = this.couriers.filter(courier => {
+      const isCompatible = this.courierCompatibilityService.isCourierCompatible(
+        courier.courier,
+        this.orderData.extraServices
+      );
+
+      if (!isCompatible) {
+        console.log(`Courier ${courier.courier} is incompatible with selected services`);
+        // Get the incompatible services for logging
+        const incompatibleServices = this.courierCompatibilityService.getIncompatibleServices(courier.courier)
+          .filter(service => this.orderData.extraServices[service]);
+        console.log(`Incompatible services: ${incompatibleServices.join(', ')}`);
+      }
+
+      return isCompatible;
+    });
+
+    // Update the couriers list
+    this.couriers = filteredCouriers;
+
+    // If we filtered out all couriers, show an alert
+    if (this.couriers.length === 0) {
+      alert('Nu există curieri disponibili pentru serviciile selectate. Vă rugăm să modificați selecția de servicii.');
+      this.router.navigate([this.isAuthenticated ? '/dashboard/order' : '/order']);
+    }
   }
 }

@@ -99,11 +99,11 @@ export class HeroComponent implements OnInit {
 
     this.priceCalculationService.getPricesFree(orderData).subscribe(response => {
       console.log(response);
-      // Note the extra query parameter 'origin=hero'
+      // Use state instead of queryParams for consistency with other components
       this.router.navigate(['/courier-options'], {
-        queryParams: {
-          couriers: JSON.stringify(response),
-          orderData: JSON.stringify(orderData),
+        state: {
+          couriers: response,
+          orderData: orderData,
           origin: 'hero'
         }
       });

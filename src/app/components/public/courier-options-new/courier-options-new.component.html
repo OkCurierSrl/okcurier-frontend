@@ -1,6 +1,19 @@
 <div class="courier-options">
   <h5>Choose from the offers below:</h5>
 
+  <!-- Warning about incompatible services -->
+  <div class="service-warning" *ngIf="hasSelectedServices()">
+    <p>Notă: Unii curieri nu sunt afișați deoarece nu oferă toate serviciile selectate.</p>
+    <p>Serviciile selectate:</p>
+    <ul>
+      <li *ngIf="orderData?.extraServices?.deschidereColet">Deschidere Colet</li>
+      <li *ngIf="orderData?.extraServices?.coletSchimb">Colet la Schimb</li>
+      <li *ngIf="orderData?.extraServices?.documentSchimb">Document la Schimb</li>
+      <li *ngIf="orderData?.extraServices?.asigurare">Asigurare: {{orderData?.extraServices?.asigurare}} RON</li>
+      <li *ngIf="orderData?.extraServices?.rambursCont">Ramburs în Cont: {{orderData?.extraServices?.rambursCont}} RON</li>
+    </ul>
+  </div>
+
   <!-- Loading overlay -->
   <div class="loading-overlay" *ngIf="isLoading">
     <img ngSrc="assets/logo.png" alt="Loading Logo" class="spinner-logo" width="100" height="100">
