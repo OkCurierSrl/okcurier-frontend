@@ -24,6 +24,7 @@ export class LockerSelectorComponent implements OnInit, OnChanges, OnDestroy {
   markers: any[] = [];
   lockers: any[] = [];
   isLoading: boolean = false;
+  isMapLoading: boolean = true;
   hasError: boolean = false;
   errorMessage: string = '';
   selectedLockerId: string = '';
@@ -69,31 +70,52 @@ export class LockerSelectorComponent implements OnInit, OnChanges, OnDestroy {
     if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
       console.error('Google Maps API not loaded');
       this.hasError = true;
+      this.isMapLoading = false;
       this.errorMessage = 'Google Maps could not be loaded. Please refresh the page and try again.';
       return;
     }
+
+    // Set a timeout to ensure isMapLoading is set to false even if map loading fails
+    setTimeout(() => {
+      if (this.isMapLoading) {
+        console.log('Map loading timeout reached, forcing loading state to complete');
+        this.isMapLoading = false;
+      }
+    }, 10000); // 10 seconds timeout
 
     try {
       // Default center on Romania
       const center = { lat: 45.9443, lng: 25.0094 };
 
-      // Create the map
+      // Create the map with optimized settings
       this.map = new google.maps.Map(this.mapContainer.nativeElement, {
         zoom: 7,
         center: center,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         mapTypeControl: false,
         streetViewControl: false,
-        fullscreenControl: false
+        fullscreenControl: false,
+        gestureHandling: 'cooperative',
+        disableDefaultUI: true,
+        zoomControl: true,
+        clickableIcons: false,
+        maxZoom: 15,
+        minZoom: 5
       });
 
-      // If we have lockers, add markers
-      if (this.lockers.length > 0) {
-        this.addMarkersToMap();
-      }
+      // Add a listener for when the map is idle (fully loaded)
+      google.maps.event.addListenerOnce(this.map, 'idle', () => {
+        console.log('Map fully loaded');
+        this.isMapLoading = false;
+        // If we have lockers, add markers
+        if (this.lockers.length > 0) {
+          this.addMarkersToMap();
+        }
+      });
     } catch (error) {
       console.error('Error initializing map:', error);
       this.hasError = true;
+      this.isMapLoading = false;
       this.errorMessage = 'Error initializing map. Please try again.';
     }
   }
@@ -102,6 +124,13 @@ export class LockerSelectorComponent implements OnInit, OnChanges, OnDestroy {
     this.isLoading = true;
     this.hasError = false;
     this.errorMessage = '';
+
+    console.log('Loading lockers for courier:', courier);
+
+    // Initialize map first if it doesn't exist
+    if (!this.map && this.mapContainer) {
+      this.initMap();
+    }
 
     const subscription = this.lockerService.getLockersByCourier(courier)
       .pipe(
@@ -116,6 +145,7 @@ export class LockerSelectorComponent implements OnInit, OnChanges, OnDestroy {
         })
       )
       .subscribe(lockers => {
+        console.log(`Received ${lockers.length} lockers for ${courier}`);
         this.lockers = lockers;
 
         // If map is initialized, add markers
@@ -132,78 +162,117 @@ export class LockerSelectorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   addMarkersToMap(): void {
+    console.log('Adding markers to map...');
     this.clearMarkers();
 
-    this.lockers.forEach(locker => {
-      const position = {
-        lat: locker.coordinates ? locker.coordinates.lat : locker.lat,
-        lng: locker.coordinates ? locker.coordinates.lng : locker.lng
-      };
+    // Create bounds object to fit all markers
+    const bounds = new google.maps.LatLngBounds();
 
-      const marker = new google.maps.Marker({
-        position: position,
-        map: this.map,
-        title: locker.name,
-        icon: {
-          url: this.getMarkerIcon(locker.courier),
-          scaledSize: new google.maps.Size(30, 30)
-        }
-      });
+    // Batch marker creation for better performance
+    const batchSize = 10;
+    const totalLockers = this.lockers.length;
 
-      // Create info window content
-      const contentString = `
-        <div class="locker-info">
-          <h3>${locker.name}</h3>
-          <p>${locker.address}</p>
-          <p><strong>Courier:</strong> ${locker.courier}</p>
-          <p><strong>ID:</strong> ${locker.id}</p>
-          <button id="select-locker-${locker.id}" class="select-locker-btn">Select this locker</button>
-        </div>
-      `;
+    // Function to add markers in batches
+    const addMarkerBatch = (startIndex: number) => {
+      const endIndex = Math.min(startIndex + batchSize, totalLockers);
 
-      const infoWindow = new google.maps.InfoWindow({
-        content: contentString
-      });
+      for (let i = startIndex; i < endIndex; i++) {
+        const locker = this.lockers[i];
+        const position = {
+          lat: locker.coordinates ? locker.coordinates.lat : locker.lat,
+          lng: locker.coordinates ? locker.coordinates.lng : locker.lng
+        };
 
-      // Add click listener to marker
-      marker.addListener('click', () => {
-        // Close all other info windows first
-        this.markers.forEach(m => m.infoWindow.close());
+        // Extend bounds with this position
+        bounds.extend(position);
 
-        // Open this info window
-        infoWindow.open(this.map, marker);
-
-        // Add event listener to the select button after the info window is opened
-        setTimeout(() => {
-          const selectButton = document.getElementById(`select-locker-${locker.id}`);
-          if (selectButton) {
-            selectButton.addEventListener('click', () => {
-              this.selectLocker(locker);
-              infoWindow.close();
-            });
+        // Create marker with optimized settings
+        const marker = new google.maps.Marker({
+          position: position,
+          map: this.map,
+          title: locker.name,
+          animation: google.maps.Animation.DROP,
+          optimized: true,
+          icon: {
+            url: this.getMarkerIcon(locker.courier),
+            scaledSize: new google.maps.Size(30, 30)
           }
-        }, 100);
-      });
+        });
 
-      // Store marker and info window for later cleanup
-      this.markers.push({ marker, infoWindow });
-    });
+        // Create info window content
+        const contentString = `
+          <div class="locker-info">
+            <h3>${locker.name}</h3>
+            <p>${locker.address}</p>
+            <p><strong>Courier:</strong> ${locker.courier}</p>
+            <p><strong>ID:</strong> ${locker.id}</p>
+            <button id="select-locker-${locker.id}" class="select-locker-btn">Select this locker</button>
+          </div>
+        `;
 
-    // Adjust map bounds to fit all markers if there are any
-    if (this.markers.length > 0) {
-      const bounds = new google.maps.LatLngBounds();
-      this.markers.forEach(m => bounds.extend(m.marker.getPosition()));
-      this.map.fitBounds(bounds);
+        // Create info window but don't open it yet
+        const infoWindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+        // Add click listener to marker
+        marker.addListener('click', () => {
+          // Close all other info windows first
+          this.markers.forEach(m => m.infoWindow.close());
+
+          // Open this info window
+          infoWindow.open(this.map, marker);
+
+          // Add event listener to the select button after the info window is opened
+          setTimeout(() => {
+            const selectButton = document.getElementById(`select-locker-${locker.id}`);
+            if (selectButton) {
+              selectButton.addEventListener('click', () => {
+                this.selectLocker(locker);
+                infoWindow.close();
+              });
+            }
+          }, 100);
+        });
+
+        // Store marker and info window for later cleanup
+        this.markers.push({ marker, infoWindow });
+      }
+
+      // If there are more markers to add, schedule the next batch
+      if (endIndex < totalLockers) {
+        setTimeout(() => addMarkerBatch(endIndex), 50);
+      } else {
+        // All markers added, now fit bounds
+        if (this.markers.length > 0) {
+          this.map.fitBounds(bounds);
+          // Limit zoom level to prevent excessive zoom on single marker
+          google.maps.event.addListenerOnce(this.map, 'bounds_changed', () => {
+            if (this.map.getZoom() > 15) this.map.setZoom(15);
+          });
+        }
+        console.log('All markers added to map');
+      }
+    };
+
+    // Start adding markers in batches
+    if (totalLockers > 0) {
+      addMarkerBatch(0);
+    } else {
+      console.log('No lockers to add to map');
     }
   }
 
   clearMarkers(): void {
     // Remove all markers from the map and clear the array
-    this.markers.forEach(m => {
-      m.infoWindow.close();
-      m.marker.setMap(null);
-    });
-    this.markers = [];
+    if (this.markers.length > 0) {
+      console.log(`Clearing ${this.markers.length} markers`);
+      this.markers.forEach(m => {
+        m.infoWindow.close();
+        m.marker.setMap(null);
+      });
+      this.markers = [];
+    }
   }
 
   selectLocker(locker: any): void {

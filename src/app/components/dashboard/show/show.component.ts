@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {routes} from "../../../app-routing.module";
 import {FlatShipment} from "../../../model/flatShipment";
 import {Address} from "../../../model/address";
+import {Contact} from "../../../model/contact";
 import {ExpandOperator} from "rxjs/internal/operators/expand";
 
 export interface TrackingResponse {
@@ -46,8 +47,8 @@ export interface Shipment {
   returnUnDeliveredParcel: boolean | null;
 
   // Sender and Receiver
-  sender: Address | null;
-  receiver: Address | null;
+  sender: Contact | null;
+  receiver: Contact | null;
 }
 
 export interface ApiParcelResponse {
@@ -88,13 +89,11 @@ export class ShowComponent implements OnInit {
               private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    console.log('lalalalalalalal')
     // Get the AWB from the route parameters
     this.route.paramMap.subscribe(params => {
       const awb = params.get('awb');
         this.fetchOrderDetails(awb); // Fetch order details using AWB
     });
-    console.log('lalalalalalalal')
   }
 
   fetchOrderDetails(awb: string): void {

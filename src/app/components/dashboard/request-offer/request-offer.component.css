@@ -35,6 +35,13 @@
   margin-top: 5px;
 }
 
+.form-group .form-hint {
+  color: #ccc;
+  font-size: 0.8em;
+  margin-top: 5px;
+  display: block;
+}
+
 /* Disabled button styling */
 button:disabled {
   opacity: 0.6;

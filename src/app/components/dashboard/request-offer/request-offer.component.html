@@ -25,7 +25,7 @@
 
     <div class="form-group">
       <label for="contactPhone">Telefon Contact</label>
-      <input id="contactPhone" formControlName="contactPhone" placeholder="Numărul de telefon" />
+      <input id="contactPhone" formControlName="contactPhone" placeholder="07XXXXXXXX" pattern="^07\d{8}$" maxlength="10" />
       <div *ngIf="requestForm.get('contactPhone').touched && requestForm.get('contactPhone').invalid" class="error">
         {{ getErrorMessage('contactPhone') }}
       </div>

@@ -185,7 +185,7 @@ export const routes: Routes = [
       {path: 'oferta', component: RequestOfferComponent},
       {path: 'order', component: CreateOrderComponent},
       {path: 'courier-options', component: CourierOptionsNewComponent},
-      {path: 'info', component: HowToOrderComponent},
+      {path: 'faq', component: HowToOrderComponent},
       {path: 'track/:awb', component: ShowComponent},
       {path: 'track', component: TrackComponent},
     ]

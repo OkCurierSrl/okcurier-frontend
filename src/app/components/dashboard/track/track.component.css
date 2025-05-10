@@ -36,13 +36,13 @@ button {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+  box-shadow: 0 0 10px rgba(167, 40, 40, 0.5);
 }
 
 /* Add hover effect to the button */
 button:hover {
-  background-color: #218838;
-  box-shadow: 0 0 15px rgba(33, 136, 56, 0.7);
+  background-color: var(--ok-primary-color-dark);
+  box-shadow: 0 0 15px rgba(167, 40, 40, 0.5);
 }
 
 

@@ -143,7 +143,7 @@ export class OrderListComponent implements OnInit {
 
   filterOrders(): void {
     this.isLoading = true;
-    this.orderService.filterShipments(this.filter, this.currentPage - 1, 3).subscribe(
+    this.orderService.filterShipments(this.filter, this.currentPage - 1, this.pageSize).subscribe(
       (response) => {
         const data = response as FlatShipment[];
         this.filteredOrders = data;

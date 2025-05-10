@@ -86,28 +86,30 @@
       <h3>Expeditor</h3>
       <p><span>Nume:</span> {{ shipment?.sender?.name }}</p>
       <p><span>Judet:</span> {{ shipment?.sender?.county }}</p>
-      <p><span>Localitate:</span> {{ shipment?.sender?.city }}</p>
+      <p><span>Localitate:</span> {{ shipment?.sender?.locality }}</p>
       <p><span>Strada:</span> {{ shipment?.sender?.street }}</p>
       <p><span>Numarul:</span> {{ shipment?.sender?.number }}</p>
-      <p><span>Bloc:</span> {{ shipment?.sender?.block }}</p>
-      <p><span>Scara:</span> {{ shipment?.sender?.staircase }}</p>
-      <p><span>Etaj:</span> {{ shipment?.sender?.floor }}</p>
-      <p><span>Telefon:</span> {{ shipment?.sender?.phone1 }}</p>
-      <p><span>Telefon 2:</span> {{ shipment?.sender?.phone2 }}</p>
+      <p><span>Bloc:</span> {{ shipment?.sender?.blockNumber }}</p>
+      <p><span>Etaj:</span> {{ shipment?.sender?.floorNumber }}</p>
+      <p><span>Apartament:</span> {{ shipment?.sender?.apartmentNumber }}</p>
+      <p><span>Cod Postal:</span> {{ shipment?.sender?.zipCode }}</p>
+      <p><span>Telefon:</span> {{ shipment?.sender?.phoneNumber }}</p>
+      <p><span>Email:</span> {{ shipment?.sender?.email }}</p>
     </div>
 
     <div class="destinatar">
       <h3>Destinatar</h3>
       <p><span>Nume:</span> {{ shipment?.receiver?.name }}</p>
       <p><span>Judet:</span> {{ shipment?.receiver?.county }}</p>
-      <p><span>Localitate:</span> {{ shipment?.receiver?.city }}</p>
+      <p><span>Localitate:</span> {{ shipment?.receiver?.locality }}</p>
       <p><span>Strada:</span> {{ shipment?.receiver?.street }}</p>
       <p><span>Numarul:</span> {{ shipment?.receiver?.number }}</p>
-      <p><span>Bloc:</span> {{ shipment?.receiver?.block }}</p>
-      <p><span>Scara:</span> {{ shipment?.receiver?.staircase }}</p>
-      <p><span>Etaj:</span> {{ shipment?.receiver?.floor }}</p>
-      <p><span>Telefon:</span> {{ shipment?.receiver?.phone1 }}</p>
-      <p><span>Telefon 2:</span> {{ shipment?.receiver?.phone2 }}</p>
+      <p><span>Bloc:</span> {{ shipment?.receiver?.blockNumber }}</p>
+      <p><span>Etaj:</span> {{ shipment?.receiver?.floorNumber }}</p>
+      <p><span>Apartament:</span> {{ shipment?.receiver?.apartmentNumber }}</p>
+      <p><span>Cod Postal:</span> {{ shipment?.receiver?.zipCode }}</p>
+      <p><span>Telefon:</span> {{ shipment?.receiver?.phoneNumber }}</p>
+      <p><span>Email:</span> {{ shipment?.receiver?.email }}</p>
     </div>
   </div>
 

@@ -6,8 +6,8 @@ import { environment as env } from './environments/environment';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { provideRouter } from '@angular/router';
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {importProvidersFrom} from "@angular/core";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { importProvidersFrom } from "@angular/core";
 
 bootstrapApplication(AppComponent, {
   providers: [

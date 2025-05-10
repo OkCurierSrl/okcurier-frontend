@@ -35,7 +35,7 @@ export class RequestOfferComponent implements OnInit {
       packagesPerMonth: ['', Validators.required],
       message: ['', Validators.required],
       contactPerson: ['', Validators.required],
-      contactPhone: ['', Validators.required],
+      contactPhone: ['', [Validators.required, Validators.pattern('^07\\d{8}$')]],
       email: ['', [Validators.required, Validators.email]],
     });
   }
@@ -64,6 +64,9 @@ export class RequestOfferComponent implements OnInit {
       if (control.errors.email) {
         return 'Adresa de e-mail nu este validă.';
       }
+      if (control.errors.pattern && controlName === 'contactPhone') {
+        return 'Numărul trebuie să înceapă cu 07 și să aibă 10 cifre în total.';
+      }
     }
     return '';
   }
@@ -76,12 +79,12 @@ export class RequestOfferComponent implements OnInit {
         to: 'contact@okcurier.ro',
         subject: 'Solicitare Ofertă Nouă',
         body: `
-          CUI / Denumire societate: ${formData.cui}
-          Persoană de contact: ${formData.contactPerson}
-          Telefon contact: ${formData.contactPhone}
-          Email: ${formData.email}
-          Număr colete pe lună: ${formData.packagesPerMonth}
-          Mesaj: ${formData.message}
+          CUI / Denumire societate: ${formData.cui} \n
+          Persoană de contact: ${formData.contactPerson} \n
+          Telefon contact: ${formData.contactPhone} \n
+          Email: ${formData.email} \n
+          Număr colete pe lună: ${formData.packagesPerMonth} \n
+          Mesaj: ${formData.message} \n
         `
       };
 
