@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
+import {DOCUMENT} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
 import {Client} from "../../model/client";
 import {AuthService} from "@auth0/auth0-angular";
@@ -27,7 +28,12 @@ export class ProfileComponent implements OnInit {
   successMessage: string = '';
   infoMessage: string = '';
 
-  constructor(protected auth: AuthService, private http: HttpClient, private clientService: ClientService) {
+  constructor(
+    protected auth: AuthService,
+    private http: HttpClient,
+    private clientService: ClientService,
+    @Inject(DOCUMENT) private doc: Document
+  ) {
   }
 
   ngOnInit() { // Assume client is fetched from auth service (which includes billing_info)
@@ -182,7 +188,7 @@ export class ProfileComponent implements OnInit {
 
     logout()
     {
-      this.auth.logout();
+      this.auth.logout({ logoutParams: { returnTo: this.doc.location.origin } });
     }
 
     onFieldFocus(field: string) {
