@@ -33,10 +33,12 @@ h3 {
 .package-section {
   flex: 1;
   min-width: 400px;
-  margin: 0 0.5rem; /* Reduce the horizontal margin */
+  margin: 2rem 0.5rem; /* Reduce the horizontal margin */
+  max-height: 600px !important; /* Limitează înălțimea totală a secțiunii */
 }
 
 .scrollable-content {
+  max-height: 600px !important; /* Limitează înălțimea totală a secțiunii */
   overflow-y: auto;
   border: 1px solid #ccc;
   padding: var(--spacing);
@@ -106,7 +108,6 @@ h3 {
   margin-right: 10px;
   margin-bottom: 0.5rem;
 }
-
 
 
 .extra-input {
@@ -195,7 +196,7 @@ button.p-mt-2 {
   position: relative;
   display: inline-block;
   width: 100%;
-  margin: 1rem;
+  margin: 0; /* Eliminăm marginile pentru a evita suprapunerea */
   padding: 1rem 2rem;
   font-size: 2rem;
   font-weight: bold;
@@ -206,6 +207,7 @@ button.p-mt-2 {
   cursor: pointer;
   overflow: hidden;
   transition: background-color 0.3s ease;
+  z-index: 20; /* Asigurăm că butonul este deasupra altor elemente */
 }
 
 .arrow-button:disabled {
@@ -316,5 +318,29 @@ input:checked + .slider:before {
   line-height: 34px;
 }
 
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem; /* Mărim spațiul deasupra butonului */
+  margin-bottom: 2rem; /* Adaugă spațiu sub buton */
+  clear: both; /* Asigură că containerul începe sub toate elementele anterioare */
+  position: relative; /* Adaugăm poziționare relativă */
+  z-index: 10; /* Asigurăm că butonul este deasupra altor elemente */
+}
 
+/* Media query pentru ecrane mici */
+@media (max-width: 768px) {
+  .scrollable-content {
+    max-height: 400px !important;
+  }
 
+  .button-container {
+    margin-top: 1rem; /* Mărim și mai mult spațiul deasupra butonului pe ecrane mici */
+  }
+
+  .arrow-button {
+    font-size: 1.5rem; /* Reducem dimensiunea fontului pe ecrane mici */
+    padding: 0.8rem 1.5rem;
+  }
+}

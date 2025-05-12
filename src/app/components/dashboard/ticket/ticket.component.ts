@@ -15,6 +15,8 @@ import {NgIf} from "@angular/common";
 })
 export class TicketComponent implements OnInit {
   ticketForm: FormGroup;
+  isLoading: boolean = false;
+  successMessage: string = '';
 
   constructor(private fb: FormBuilder, private emailService: EmailService) {}
 
@@ -34,6 +36,7 @@ export class TicketComponent implements OnInit {
 
   onSubmit(): void {
     if (this.ticketForm.valid) {
+      this.isLoading = true;
       const formValue = this.ticketForm.value;
       const emailPayload = {
         to: 'contact@okcurier.ro',
@@ -48,11 +51,19 @@ export class TicketComponent implements OnInit {
       };
       this.emailService.sendEmail(emailPayload).subscribe(response => {
         console.log('Ticket submitted successfully');
+        this.isLoading = false;
+        this.successMessage = 'Vă mulțumim pentru raportare, veți fi contactat în cel mai scurt timp de echipa OkCurier';
+        setTimeout(() => {
+          this.successMessage = '';
+          this.initForm(); // Reset form after success
+        }, 6000);
       }, error => {
         console.error('Error submitting ticket', error);
+        this.isLoading = false;
       });
     } else {
       console.log('Form is invalid');
+      this.ticketForm.markAllAsTouched();
     }
   }
 }

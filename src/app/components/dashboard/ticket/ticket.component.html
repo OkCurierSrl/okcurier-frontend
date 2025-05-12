@@ -1,5 +1,11 @@
 <div class="request-form">
   <h2>Raportare probleme</h2>
+
+  <!-- Success Message Div -->
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+
   <form [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="name">Name</label>
@@ -41,6 +47,9 @@
       </div>
     </div>
 
-    <button type="submit">Trimite</button>
+    <button type="submit" [disabled]="!ticketForm.valid || isLoading">
+      <span *ngIf="!isLoading">Trimite</span>
+      <span *ngIf="isLoading">Se încarcă...</span>
+    </button>
   </form>
 </div>
