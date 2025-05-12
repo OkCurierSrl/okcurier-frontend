@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit {
   editMode: boolean = false;
   errorMessages: string[] = [];
   successMessage: string = '';
+  infoMessage: string = '';
 
   constructor(protected auth: AuthService, private http: HttpClient, private clientService: ClientService) {
   }
@@ -50,6 +51,21 @@ export class ProfileComponent implements OnInit {
     {
       this.editMode = !this.editMode; // Clear any previous messages
       this.errorMessages = [];
+      this.infoMessage = '';
+
+      // If entering edit mode, clear all 'None' values to make it easier for the user
+      if (this.editMode && this.client?.billing_info) {
+        const fieldsToCheck = [
+          'company_name', 'cui', 'registration_number', 'iban', 'phone_number', 'iban_name',
+          'first_name', 'last_name', 'cnp', 'judet', 'oras', 'adresa'
+        ];
+
+        fieldsToCheck.forEach(field => {
+          if (this.client.billing_info[field] === 'None') {
+            this.client.billing_info[field] = '';
+          }
+        });
+      }
     }
 
     onClientTypeChange()
@@ -178,6 +194,22 @@ export class ProfileComponent implements OnInit {
     onFieldBlur(field: string) {
       if (!this.client.billing_info[field]) {
         this.client.billing_info[field] = 'None';
+      }
+    }
+
+    // Method to display a formatted value in the non-editable profile view
+    displayValue(value: string): string {
+      return value === 'None' ? 'Lipsa Date' : value;
+    }
+
+    // Method to show a message when clicking on a field with 'None' value
+    showEditMessage() {
+      if (!this.editMode) {
+        this.infoMessage = 'Pentru a edita profilul, apăsați pe butonul "Editează Profil" din partea de sus a paginii.';
+        // Clear the message after 3 seconds
+        setTimeout(() => {
+          this.infoMessage = '';
+        }, 3000);
       }
     }
 }

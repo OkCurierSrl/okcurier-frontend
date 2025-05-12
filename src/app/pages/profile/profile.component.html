@@ -150,36 +150,41 @@
 
       <!-- Non-editable Profile Display -->
       <div *ngIf="!editMode">
+        <!-- Info message when clicking on a field with 'None' value -->
+        <div *ngIf="infoMessage" class="alert alert-info mt-3 mb-3">
+          {{ infoMessage }}
+        </div>
+
         <div *ngIf="client?.billing_info?.client_type === 'juridica'">
           <div class="row">
             <div class="col-md-6">
-              <p><strong>Nume Firmă:</strong> {{ client.billing_info?.company_name }}</p>
-              <p><strong>CUI:</strong> {{ client.billing_info?.cui }}</p>
-              <p><strong>Numar de inregistrare (J):</strong> {{ client.billing_info?.registration_number }}</p>
+              <p><strong>Nume Firmă:</strong> <span (click)="showEditMessage()" [class.missing-data]="client.billing_info?.company_name === 'None'">{{ displayValue(client.billing_info?.company_name) }}</span></p>
+              <p><strong>CUI:</strong> <span (click)="showEditMessage()" [class.missing-data]="client.billing_info?.cui === 'None'">{{ displayValue(client.billing_info?.cui) }}</span></p>
+              <p><strong>Numar de inregistrare (J):</strong> <span (click)="showEditMessage()" [class.missing-data]="client.billing_info?.registration_number === 'None'">{{ displayValue(client.billing_info?.registration_number) }}</span></p>
               <p><strong>Număr Contract:</strong> {{ client.billing_info?.contract_number || 'N/A' }}</p>
             </div>
             <div class="col-md-6">
-              <p><strong>IBAN:</strong> {{ client.billing_info?.iban }}</p>
-              <p><strong>Număr de Telefon:</strong> {{ client.billing_info?.phone_number }}</p>
-              <p><strong>Nume detinator IBAN:</strong> {{ client.billing_info?.iban_name }}</p>
+              <p><strong>IBAN:</strong> <span (click)="showEditMessage()" [class.missing-data]="client.billing_info?.iban === 'None'">{{ displayValue(client.billing_info?.iban) }}</span></p>
+              <p><strong>Număr de Telefon:</strong> <span (click)="showEditMessage()" [class.missing-data]="client.billing_info?.phone_number === 'None'">{{ displayValue(client.billing_info?.phone_number) }}</span></p>
+              <p><strong>Nume detinator IBAN:</strong> <span (click)="showEditMessage()" [class.missing-data]="client.billing_info?.iban_name === 'None'">{{ displayValue(client.billing_info?.iban_name) }}</span></p>
             </div>
           </div>
         </div>
         <div *ngIf="client?.billing_info?.client_type === 'fizica'">
           <div class="row">
             <div class="col-md-6">
-              <p><strong>Prenume:</strong> {{ client.billing_info?.first_name }}</p>
-              <p><strong>Nume:</strong> {{ client.billing_info?.last_name }}</p>
-              <p><strong>CNP:</strong> {{ client.billing_info?.cnp }}</p>
-              <p><strong>Judet:</strong> {{ client.billing_info?.judet }}</p>
+              <p><strong>Prenume:</strong> <span (click)="showEditMessage()" [class.missing-data]="client.billing_info?.first_name === 'None'">{{ displayValue(client.billing_info?.first_name) }}</span></p>
+              <p><strong>Nume:</strong> <span (click)="showEditMessage()" [class.missing-data]="client.billing_info?.last_name === 'None'">{{ displayValue(client.billing_info?.last_name) }}</span></p>
+              <p><strong>CNP:</strong> <span (click)="showEditMessage()" [class.missing-data]="client.billing_info?.cnp === 'None'">{{ displayValue(client.billing_info?.cnp) }}</span></p>
+              <p><strong>Judet:</strong> <span (click)="showEditMessage()" [class.missing-data]="client.billing_info?.judet === 'None'">{{ displayValue(client.billing_info?.judet) }}</span></p>
               <p><strong>Număr Contract:</strong> {{ client.billing_info?.contract_number || 'N/A' }}</p>
             </div>
             <div class="col-md-6">
-              <p><strong>Oras:</strong> {{ client.billing_info?.oras }}</p>
-              <p><strong>Adresa:</strong> {{ client.billing_info?.adresa }}</p>
-              <p><strong>IBAN:</strong> {{ client.billing_info?.iban }}</p>
-              <p><strong>Număr de Telefon:</strong> {{ client.billing_info?.phone_number }}</p>
-              <p><strong>Nume detinator IBAN:</strong> {{ client.billing_info?.iban_name }}</p>
+              <p><strong>Oras:</strong> <span (click)="showEditMessage()" [class.missing-data]="client.billing_info?.oras === 'None'">{{ displayValue(client.billing_info?.oras) }}</span></p>
+              <p><strong>Adresa:</strong> <span (click)="showEditMessage()" [class.missing-data]="client.billing_info?.adresa === 'None'">{{ displayValue(client.billing_info?.adresa) }}</span></p>
+              <p><strong>IBAN:</strong> <span (click)="showEditMessage()" [class.missing-data]="client.billing_info?.iban === 'None'">{{ displayValue(client.billing_info?.iban) }}</span></p>
+              <p><strong>Număr de Telefon:</strong> <span (click)="showEditMessage()" [class.missing-data]="client.billing_info?.phone_number === 'None'">{{ displayValue(client.billing_info?.phone_number) }}</span></p>
+              <p><strong>Nume detinator IBAN:</strong> <span (click)="showEditMessage()" [class.missing-data]="client.billing_info?.iban_name === 'None'">{{ displayValue(client.billing_info?.iban_name) }}</span></p>
             </div>
           </div>
         </div>

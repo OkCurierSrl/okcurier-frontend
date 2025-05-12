@@ -23,5 +23,14 @@
   margin: 5px;
 }
 
+.missing-data {
+  color: #dc3545;
+  font-style: italic;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
 
-
+.missing-data:hover {
+  color: #c82333;
+}
