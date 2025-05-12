@@ -362,11 +362,11 @@ export class CreateOrderComponent implements OnInit, AfterViewInit {
     this.renderer.setStyle(button, 'marginTop', '10px');
     this.renderer.setStyle(button, 'padding', '10px 20px');
     this.renderer.setStyle(button, 'border', 'none');
-    this.renderer.setStyle(button, 'backgroundColor', '#007bff');
+    this.renderer.setStyle(button, 'backgroundColor', '#ef4444');
     this.renderer.setStyle(button, 'color', '#fff');
     this.renderer.setStyle(button, 'borderRadius', '4px');
     this.renderer.setStyle(button, 'cursor', 'pointer');
-    const buttonText = this.renderer.createText('Go to Profile');
+    const buttonText = this.renderer.createText('Mergi la profil');
     this.renderer.appendChild(button, buttonText);
 
     // Add click event listener to the button to navigate and remove the overlay

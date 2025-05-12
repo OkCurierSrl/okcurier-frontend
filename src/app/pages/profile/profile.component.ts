@@ -77,6 +77,13 @@ export class ProfileComponent implements OnInit {
         lastName: undefined
       };
 
+      // Validate phone number format for both types
+      const phoneRegex = /^07\d{8}$/;
+      if (!phoneRegex.test(billingInfoToSend.phone_number)) {
+        this.errorMessages.push("Numărul de telefon trebuie să înceapă cu 07 și să conțină 10 cifre.");
+        return;
+      }
+
       if (this.client.billing_info.client_type === 'juridica') {
         // Reset personal fields for company
         billingInfoToSend.first_name = 'None';

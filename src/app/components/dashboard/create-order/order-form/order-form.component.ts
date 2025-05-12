@@ -300,8 +300,8 @@ export class OrderFormComponent implements OnInit {
 
     this.orderForm = this.fb.group({
       name: ['', Validators.required],
-      phone1: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
-      phone2: ['', [Validators.pattern(/^[0-9]{10}$/)]],
+      phone1: ['', [Validators.required, Validators.pattern(/^07\d{8}$/)]],
+      phone2: ['', [Validators.pattern(/^07\d{8}$/)]],
       county: ['', Validators.required],
       city: ['', Validators.required],
       street: ['', Validators.required],

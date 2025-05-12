@@ -33,7 +33,7 @@ export class RequestMaterialsComponent implements OnInit {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       address: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      phone: ['', [Validators.required, Validators.pattern(/^07\d{8}$/)]],
       numEnvelopes: ['', [Validators.required, Validators.min(0)]],
       numBags: ['', [Validators.required, Validators.min(0)]]
     });
@@ -64,7 +64,7 @@ export class RequestMaterialsComponent implements OnInit {
         return 'Adresa de e-mail nu este validă.';
       }
       if (control.errors.pattern && controlName === 'phone') {
-        return 'Numărul de telefon trebuie să conțină 10 cifre.';
+        return 'Numărul de telefon trebuie să înceapă cu 07 și să conțină 10 cifre.';
       }
     }
     return '';
