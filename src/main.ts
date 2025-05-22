@@ -8,6 +8,9 @@ import { HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { provideRouter } from '@angular/router';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { importProvidersFrom } from "@angular/core";
+import { provideClientHydration } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { Meta } from '@angular/platform-browser';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -29,5 +32,8 @@ bootstrapApplication(AppComponent, {
         },
       },
     },
+    provideClientHydration(),
+    provideAnimations(),
+    Meta,
   ],
 });

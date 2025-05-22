@@ -1,9 +1,10 @@
 
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { OrderService } from '../../../services/order.service';
+import { MetaTagService } from '../../../services/meta-tag.service';
 
 @Component({
   selector: 'app-track',
@@ -12,11 +13,21 @@ import { OrderService } from '../../../services/order.service';
   templateUrl: './track.component.html',
   styleUrls: ['./track.component.css']
 })
-export class TrackComponent {
+export class TrackComponent implements OnInit, OnDestroy {
   awbNumber: string = '';
   showError: boolean = false; // Flag to show error message
 
-  constructor(private router: Router, private orderService: OrderService) {}
+  constructor(private router: Router, private orderService: OrderService, private metaTagService: MetaTagService) {}
+
+  ngOnInit(): void {
+    // Set noindex meta tag for tracking pages
+    this.metaTagService.setNoIndexForTrackingPage();
+  }
+
+  ngOnDestroy(): void {
+    // Reset meta tags when component is destroyed (if needed)
+    this.metaTagService.resetMetaTags();
+  }
 
   navigateToAWB() {
     if (this.awbNumber.trim()) {

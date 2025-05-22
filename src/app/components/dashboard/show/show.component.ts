@@ -1,15 +1,10 @@
 // show.component.ts
-import {Component, OnInit} from '@angular/core';
-import {OrderData} from "../../../model/order-data";
-import {ShipmentDetails} from "../../../model/shipmentDetails";
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {OrderService} from "../../../services/order.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {routes} from "../../../app-routing.module";
-import {FlatShipment} from "../../../model/flatShipment";
-import {Address} from "../../../model/address";
 import {Contact} from "../../../model/contact";
-import {ExpandOperator} from "rxjs/internal/operators/expand";
+import {MetaTagService} from "../../../services/meta-tag.service";
 
 export interface TrackingResponse {
   shipmentData: Shipment;
@@ -78,7 +73,7 @@ export interface ParcelGenericStatus {
   ],
   styleUrls: ['./show.component.css']
 })
-export class ShowComponent implements OnInit {
+export class ShowComponent implements OnInit, OnDestroy {
   shipment: Shipment;
   apiParcelResponse: ApiParcelResponse;
   iban: string;
@@ -86,14 +81,23 @@ export class ShowComponent implements OnInit {
 
   constructor(private orderService: OrderService,
               private router: Router,
-              private route: ActivatedRoute) {}
+              private route: ActivatedRoute,
+              private metaTagService: MetaTagService) {}
 
   ngOnInit(): void {
+    // Set noindex meta tag for tracking pages
+    this.metaTagService.setNoIndexForTrackingPage();
+
     // Get the AWB from the route parameters
     this.route.paramMap.subscribe(params => {
       const awb = params.get('awb');
         this.fetchOrderDetails(awb); // Fetch order details using AWB
     });
+  }
+
+  ngOnDestroy(): void {
+    // Reset meta tags when component is destroyed (if needed)
+    this.metaTagService.resetMetaTags();
   }
 
   fetchOrderDetails(awb: string): void {

@@ -1,2 +1,7 @@
 User-agent: *
-Disallow: /
+Disallow: /track/
+Disallow: /track
+Disallow: /dashboard/track/
+Disallow: /dashboard/track
+Disallow: /admin/track/
+Disallow: /admin/track
