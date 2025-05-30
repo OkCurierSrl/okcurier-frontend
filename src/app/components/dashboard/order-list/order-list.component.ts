@@ -90,6 +90,36 @@ export class OrderListComponent implements OnInit {
     return clas;
   }
 
+  getStatusAnimationClass(status: string): string {
+    if (!status) return '';
+    switch (status.toUpperCase()) {
+      case 'COMANDA_TRIMISA':
+      case 'RAMBURSAT':
+        return 'status-animated-green';
+      case 'EROARE':
+        return 'status-animated-red';
+      case 'IN_LIVRARE':
+      case 'TRANZIT':
+        return 'status-animated-orange';
+      case 'LIVRAT':
+        return 'status-animated-blue';
+      default:
+        return 'status-animated-default';
+    }
+  }
+
+  formatStatusText(status: string): string {
+    if (!status) return '';
+    // Replace underscores with line breaks for multi-line display
+    return status.replace(/_/g, '\n');
+  }
+
+  getStatusLines(status: string): string[] {
+    if (!status) return [''];
+    // Split status by underscores to create array of lines
+    return status.split('_');
+  }
+
   viewOrder(order: FlatShipment): void {
     const currentPath = this.router.url;
     const basePath = currentPath.replace(/\/order-list$/, '');

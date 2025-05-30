@@ -214,45 +214,252 @@
 }
 
 
-/* .statusuri */
+/* Enhanced Status Styling with Animations */
+.status-cell {
+  padding: 0.5rem !important;
+  position: relative;
+  overflow: visible;
+  vertical-align: middle;
+  min-width: 120px;
+  max-width: 140px;
+}
+
+.status-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  min-height: 2rem;
+  max-width: 100%;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  line-height: 1.1;
+  height: auto;
+}
+
+.status-text {
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+}
+
+.status-text.multi-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+}
+
+.status-line {
+  display: block;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.status-animation-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  border-radius: 8px;
+}
+
+/* Legacy status colors (maintained for compatibility) */
 .status-awb-generat {
-  color: #0f561f; /* Green */
+  color: #0f561f;
 }
 
 .status-comanda-trimisa {
-  color: #054373; /* Red */
+  color: #054373;
 }
 
 .status-ridicat-ridicat {
-  color: #69d281; /* Red */
+  color: #69d281;
 }
 
 .status-in-tranzit {
-  color: #ff6347; /* Orange */
+  color: #ff6347;
 }
 
 .status-in-livrare {
-  color: #20c997; /* Teal */
+  color: #20c997;
 }
 
 .status-livrat {
-  color: #054373; /* Teal */
+  color: #054373;
 }
 
 .status-rambursat {
-  color: #6c757d; /* Grey */
+  color: #6c757d;
 }
 
 .status-returnare {
-  color: #604949; /* Cyan */
+  color: #604949;
 }
 
 .status-redirectionare {
-  color: #6c5902; /* Orange */
+  color: #6c5902;
 }
 
 .status-eroare {
-  color: #d50c0c !important; /* Grey */
+  color: #d50c0c !important;
+}
+
+/* Animated Status Classes */
+.status-animated-green {
+  background: linear-gradient(135deg, #20be44, #529862);
+  color: white;
+  box-shadow: 0 2px 8px rgba(32, 190, 68, 0.3);
+  animation: pulseGreen 2s ease-in-out infinite;
+}
+
+.status-animated-green .status-animation-overlay {
+  background: linear-gradient(45deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 100%);
+  animation: shimmerGreen 3s ease-in-out infinite;
+}
+
+.status-animated-red {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+  animation: pulseRed 2s ease-in-out infinite;
+}
+
+.status-animated-red .status-animation-overlay {
+  background: linear-gradient(45deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 100%);
+  animation: shimmerRed 3s ease-in-out infinite;
+}
+
+.status-animated-orange {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: white;
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
+  animation: pulseOrange 2s ease-in-out infinite;
+}
+
+.status-animated-orange .status-animation-overlay {
+  background: linear-gradient(45deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 100%);
+  animation: shimmerOrange 3s ease-in-out infinite;
+}
+
+.status-animated-blue {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+  animation: pulseBlue 2s ease-in-out infinite;
+}
+
+.status-animated-blue .status-animation-overlay {
+  background: linear-gradient(45deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 100%);
+  animation: shimmerBlue 3s ease-in-out infinite;
+}
+
+.status-animated-default {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  color: white;
+  box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
+  animation: pulseDefault 2s ease-in-out infinite;
+}
+
+.status-animated-default .status-animation-overlay {
+  background: linear-gradient(45deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 100%);
+  animation: shimmerDefault 3s ease-in-out infinite;
+}
+
+/* Hover Effects for Status Containers */
+.status-container:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
+
+.status-animated-green:hover {
+  box-shadow: 0 4px 16px rgba(32, 190, 68, 0.6);
+  animation-duration: 1s;
+}
+
+.status-animated-red:hover {
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.6);
+  animation-duration: 1s;
+}
+
+.status-animated-orange:hover {
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.6);
+  animation-duration: 1s;
+}
+
+.status-animated-blue:hover {
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.6);
+  animation-duration: 1s;
+}
+
+.status-animated-default:hover {
+  box-shadow: 0 4px 16px rgba(107, 114, 128, 0.6);
+  animation-duration: 1s;
+}
+
+/* Responsive Design for Status Cells */
+@media (max-width: 768px) {
+  .status-container {
+    padding: 0.3rem 0.4rem;
+    font-size: 0.65rem;
+    min-height: 1.8rem;
+    letter-spacing: 0.2px;
+  }
+
+  .status-cell {
+    padding: 0.3rem !important;
+  }
+
+  .status-text.multi-line {
+    gap: 0.05rem;
+  }
+
+  .status-line {
+    line-height: 1.0;
+  }
+}
+
+@media (max-width: 480px) {
+  .status-container {
+    padding: 0.2rem 0.3rem;
+    font-size: 0.6rem;
+    min-height: 1.6rem;
+    letter-spacing: 0.1px;
+  }
+
+  .status-text.multi-line {
+    gap: 0.02rem;
+  }
+
+  .status-line {
+    line-height: 0.95;
+  }
 }
 
 .pagination {
@@ -323,4 +530,130 @@
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+/* Status Animation Keyframes */
+@keyframes pulseGreen {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(32, 190, 68, 0.3);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 4px 16px rgba(32, 190, 68, 0.5);
+  }
+}
+
+@keyframes shimmerGreen {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(200%) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+@keyframes pulseRed {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.5);
+  }
+}
+
+@keyframes shimmerRed {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(200%) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+@keyframes pulseOrange {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 4px 16px rgba(249, 115, 22, 0.5);
+  }
+}
+
+@keyframes shimmerOrange {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(200%) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+@keyframes pulseBlue {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.5);
+  }
+}
+
+@keyframes shimmerBlue {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(200%) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+@keyframes pulseDefault {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 4px 16px rgba(107, 114, 128, 0.5);
+  }
+}
+
+@keyframes shimmerDefault {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(200%) rotate(45deg);
+    opacity: 0;
+  }
 }

@@ -71,7 +71,7 @@
         <p>Se încarcă...</p>
       </div>
       <ng-container *ngFor="let order of filteredOrders">
-        <tr [ngClass]="{'roll-green': order.status === 'COMANDA_TRIMISA'}">
+        <tr [ngClass]="{'roll-green': order.status === 'COMANDA_TRIMISA' || order.status === 'RAMBURSAT'}">
           <td>
             <input type="checkbox" [(ngModel)]="order.isSelected" />
           </td>
@@ -88,7 +88,16 @@
           <td>{{ order?.packageCount }}</td>
           <td>{{ order?.weight }}</td>
           <td>{{ order?.cashOnDelivery }} RON</td>
-          <td [ngClass]="getStatusClass(order.status)">{{ order.status }}</td>
+          <td class="status-cell" [ngClass]="getStatusClass(order.status)">
+            <div class="status-container" [ngClass]="getStatusAnimationClass(order.status)">
+              <div class="status-text multi-line">
+                <div *ngFor="let line of getStatusLines(order.status)" class="status-line">
+                  {{ line }}
+                </div>
+              </div>
+              <div class="status-animation-overlay"></div>
+            </div>
+          </td>
           <td class="actions">
             <div class="action-buttons">
               <button class="btn btn-action" (click)="downloadOrder(order)">
