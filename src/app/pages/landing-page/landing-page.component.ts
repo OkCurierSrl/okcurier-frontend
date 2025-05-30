@@ -27,12 +27,12 @@ export class LandingPageComponent {
       author: 'Dumitrache G. Gabriel'
     },
     {
-      content: 'Folosesc okcurier.ro pentru a trimite ocazional plicuri cu documente și sunt impresionat de cât de ușor este procesul. Fără contract, plătesc cu cardul, iar curierul vine și ridică plicul rapid. Excelent pentru nevoile mele sporadice!',
-      author: 'Dumitrache G. Gabriel'
+      content: 'Serviciul OKCurier m-a ajutat enorm în dezvoltarea magazinului online. Livrările sunt întotdeauna la timp, iar clienții mei sunt foarte mulțumiți. Recomand cu încredere pentru orice business care vrea să crească!',
+      author: 'Maria Popescu, proprietar magazin online'
     },
     {
-      content: 'Folosesc okcurier.ro pentru a trimite ocazional plicuri cu documente și sunt impresionat de cât de ușor este procesul. Fără contract, plătesc cu cardul, iar curierul vine și ridică plicul rapid. Excelent pentru nevoile mele sporadice!',
-      author: 'Dumitrache G. Gabriel'
+      content: 'Am încercat mai multe servicii de curierat, dar OKCurier se remarcă prin profesionalism și prețuri competitive. Echipa lor este mereu disponibilă să răspundă la întrebări și să ofere soluții personalizate.',
+      author: 'Alexandru Ionescu, manager logistică'
     }
   ];
 

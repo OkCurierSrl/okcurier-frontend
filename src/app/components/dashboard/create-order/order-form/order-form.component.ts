@@ -87,12 +87,22 @@ export class OrderFormComponent implements OnInit {
 
     // Listen for county changes -> load cities
     this.orderForm.get('county')?.valueChanges.subscribe((county) => {
-      this.isSavedAddress = false;
-      this.placesService.getCities(county).subscribe((data) => {
-        this.cities = data;
-        this.initStreetAutocomplete(county, this.cities[0])
-        return true;
-      });
+      if (county) {
+        this.isSavedAddress = false;
+
+        // Clear the city selection when county changes
+        this.orderForm.get('city')?.setValue('');
+
+        this.placesService.getCities(county).subscribe((data) => {
+          this.cities = data;
+          console.log(`Loaded ${data.length} cities for county: ${county}`);
+
+          // Initialize street autocomplete with the first city if available
+          if (this.cities.length > 0) {
+            this.initStreetAutocomplete(county, this.cities[0]);
+          }
+        });
+      }
     });
 
     // Listen for city changes -> update street autocomplete bounds
@@ -335,7 +345,15 @@ export class OrderFormComponent implements OnInit {
   onCountyChange(event: any): void {
     const county = event.target.value;
     this.isSavedAddress = false;
-    this.placesService.getCities(county).subscribe((data) => (this.cities = data));
+
+    // Clear the city selection when county changes
+    this.orderForm.get('city')?.setValue('');
+
+    // Load cities for the selected county
+    this.placesService.getCities(county).subscribe((data) => {
+      this.cities = data;
+      console.log(`Loaded ${data.length} cities for county: ${county}`);
+    });
   }
 
   // Handle Favorite Address Selection

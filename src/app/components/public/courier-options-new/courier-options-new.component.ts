@@ -268,6 +268,35 @@ export class CourierOptionsNewComponent implements OnInit {
   }
 
   /**
+   * Check if there are services that are not supported by all couriers
+   * Only show warning when some couriers don't support selected services
+   */
+  hasIncompatibleServices(): boolean {
+    if (!this.orderData || !this.orderData.extraServices) {
+      return false;
+    }
+
+    // Get all available courier names (before filtering)
+    const allCouriers = ['DPD', 'CARGUS', 'SAMEDAY', 'GLS'];
+
+    // Check if any selected service is not supported by all couriers
+    for (const [service, isSelected] of Object.entries(this.orderData.extraServices)) {
+      if (isSelected && (typeof isSelected === 'boolean' || (typeof isSelected === 'number' && isSelected > 0))) {
+        // Check if this service is not supported by all couriers
+        const unsupportedCouriers = allCouriers.filter(courier =>
+          !this.courierCompatibilityService.isCourierCompatible(courier, { [service]: isSelected })
+        );
+
+        if (unsupportedCouriers.length > 0) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * Filter out couriers that don't support the selected services
    */
   filterIncompatibleCouriers(): void {

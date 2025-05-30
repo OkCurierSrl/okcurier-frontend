@@ -64,13 +64,32 @@ ul {
 .partners-logos {
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  gap: 5px;
 }
 
 .partners-logos img {
-  width: 100px;
-  margin: 5px;
+  height: 36px;
+  width: auto;
+  max-width: 120px;
+  margin: 5px 10px;
+  transition: opacity 0.3s ease;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+.partners-logos a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 5px;
+}
+
+.partners-logos a:hover img {
+  opacity: 0.8;
 }
 
 .footer-bottom p {

@@ -1,3 +1,10 @@
+<!-- Navigation Section -->
+<div class="navigation-section">
+  <button class="btn btn-secondary back-button" (click)="goBack()">
+    <i class="fas fa-arrow-left"></i> Înapoi
+  </button>
+</div>
+
 <div *ngFor="let parcel of apiParcelResponse?.parcelGenericStatuses" class="order-details">
   <!-- Header Section with SVG Icons -->
   <div class="header">

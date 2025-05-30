@@ -47,18 +47,8 @@ export class NavBarComponent {
     @Inject(DOCUMENT) private doc: Document,
     private router: Router
   ) {
-    this.auth.isAuthenticated$.subscribe((loggedIn) => {
-      if (loggedIn) {
-        // Subscribe to the Observable returned by hasRequiredRole to get the actual boolean value
-        this.roleService.hasRequiredRole(['ADMIN']).subscribe((hasAdminRole) => {
-          if (hasAdminRole) {
-            this.router.navigate(['/admin']);
-          } else {
-            this.router.navigate(['/dashboard']);
-          }
-        });
-      }
-    });
+    // Removed automatic redirect logic that was causing unintended navigation
+    // when accessing shared components like GDPR from different layouts
   }
 
   loginWithRedirect() {

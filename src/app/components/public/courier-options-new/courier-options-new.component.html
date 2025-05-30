@@ -1,8 +1,8 @@
 <div class="courier-options">
-  <h5>Choose from the offers below:</h5>
+  <h5>Alege din ofertele de mai jos:</h5>
 
   <!-- Warning about incompatible services -->
-  <div class="service-warning" *ngIf="hasSelectedServices()">
+  <div class="service-warning" *ngIf="hasIncompatibleServices()">
     <p>Notă: Unii curieri nu sunt afișați deoarece nu oferă toate serviciile selectate.</p>
     <p>Serviciile selectate:</p>
     <ul>
@@ -34,8 +34,8 @@
       </span>
     </div>
     <div class="courier-info">
-      <span><b>Pickup:</b> 11-07-2024 <i class="fas fa-home"></i></span>
-      <span><b>Deadline:</b> 13-07-2024 <i class="fas fa-truck"></i></span>
+      <span><b>Ridicare:</b> 11-07-2024 <i class="fas fa-home"></i></span>
+      <span><b>Termen:</b> 13-07-2024 <i class="fas fa-truck"></i></span>
       <span>17:00 <i class="fas fa-clock"></i></span>
       <div class="icon-group">
         <span class="icon" title="Card payment accepted"><i class="fas fa-credit-card"></i></span>
@@ -51,12 +51,12 @@
   <div class="locker-option" *ngIf="hasSelectedCourier()">
     <div class="p-field-checkbox">
       <input type="checkbox" id="useLocker" [ngModel]="useLocker" (ngModelChange)="setUseLocker($event)">
-      <label for="useLocker">Deliver to Locker</label>
+      <label for="useLocker">Livrare în Locker</label>
     </div>
 
     <!-- Display selected locker info in parent component -->
     <div *ngIf="selectedLockerId && useLocker" class="selected-locker-summary">
-      <p><strong>Selected Locker:</strong> {{ selectedLockerId }}</p>
+      <p><strong>Locker Selectat:</strong> {{ selectedLockerId }}</p>
     </div>
 
     <div class="locker-selector-wrapper">
@@ -71,9 +71,9 @@
 
   <div class="actions">
     <button class="btn btn-primary" *ngIf="isContractFlow() && !isGlsOrSamedaySelected()" (click)="generateAWB()">
-      Generate AWB
+      Generează AWB
     </button>
-    <button class="btn btn-primary" (click)="orderCourier()">Order Courier</button>
-    <button class="btn btn-secondary" (click)="goBack()">Back</button>
+    <button class="btn btn-primary" (click)="orderCourier()">Comandă Curier</button>
+    <button class="btn btn-secondary" (click)="goBack()">Înapoi</button>
   </div>
 </div>

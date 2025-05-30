@@ -25,6 +25,7 @@ import {PaymentPortalComponent} from "./components/public/payment-portal/payment
 import {CourierOptionsNewComponent} from "./components/public/courier-options-new/courier-options-new.component";
 import {DownloadProxyComponent} from "./components/download/download-proxy.component";
 import { TrackRedirectGuard } from './guards/track-redirect.guard';
+import {GdprComponent} from "./components/public/gdpr/gdpr.component";
 
 export const routes: Routes = [
   // Standalone routes that don't need layouts
@@ -94,6 +95,7 @@ export const routes: Routes = [
         component: PaymentPortalComponent,
       },
       {path: 'confirm-payment', component: PaymentConfirmationComponent},
+      {path: 'gdpr', component: GdprComponent},
     ]
   },
 
@@ -170,7 +172,8 @@ export const routes: Routes = [
         path: 'payment',
         component: PaymentPortalComponent,
       },
-      {path: 'confirm-payment', component: PaymentConfirmationComponent}
+      {path: 'confirm-payment', component: PaymentConfirmationComponent},
+      {path: 'gdpr', component: GdprComponent}
     ]
   },
   // Public routes
@@ -186,6 +189,7 @@ export const routes: Routes = [
       {path: 'order', component: CreateOrderComponent},
       {path: 'courier-options', component: CourierOptionsNewComponent},
       {path: 'faq', component: HowToOrderComponent},
+      {path: 'gdpr', component: GdprComponent},
       {path: 'track/:awb', component: ShowComponent},
       {path: 'track', component: TrackComponent},
     ]

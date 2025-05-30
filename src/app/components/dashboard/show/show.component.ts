@@ -120,5 +120,15 @@ export class ShowComponent implements OnInit, OnDestroy {
     );
   }
 
+  goBack(): void {
+    // Navigate back to the previous page or to a default location
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      // Fallback navigation to home or track page
+      this.router.navigate(['/track']);
+    }
+  }
+
 }
 
